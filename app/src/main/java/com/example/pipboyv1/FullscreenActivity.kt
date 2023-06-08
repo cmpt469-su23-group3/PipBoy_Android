@@ -10,6 +10,7 @@ import com.example.pipboyv1.fragments.RadioFragment
 import com.example.pipboyv1.fragments.StatFragment
 import com.example.pipboyv1.fragments.adapters.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 
 class FullscreenActivity : AppCompatActivity() {
     private lateinit var tabLayout: TabLayout
@@ -37,33 +38,13 @@ class FullscreenActivity : AppCompatActivity() {
         )
 
         for (topNavTab in topNavTabs.entries.iterator()) {
-            adapter.addFragment(topNavTab.value)
-            tabLayout.addTab(tabLayout.newTab().setText(topNavTab.key))
+            adapter.addFragment(topNavTab.value, topNavTab.key)
         }
 
         viewPager2.adapter = adapter
 
-        tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                if (tab != null) {
-                    viewPager2.currentItem = tab.position
-                }
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-
-            }
-        })
-
-        viewPager2.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback(){
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                tabLayout.selectTab(tabLayout.getTabAt(position))
-            }
-        })
+        TabLayoutMediator(tabLayout, viewPager2) {
+                tab, position -> tab.text = adapter.getFragmentTitle(position)
+        }.attach()
     }
 }
