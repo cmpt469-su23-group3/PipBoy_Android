@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Tab unselected -->
+    <item android:state_selected="false" android:state_pressed="false">
+        <layer-list>
+            <item android:top="45dp" android:left="-2dp" android:right="-2dp">
+                <shape android:shape="line">
+                    <stroke android:color="@color/text_1" android:width="1dp"/>
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+    <!-- Tab selected -->
+    <item android:state_selected="true">
+        <layer-list>
+            <!-- TODO: Style selected tab -->
+        </layer-list>
+    </item>
+</selector>
