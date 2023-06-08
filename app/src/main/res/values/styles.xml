@@ -1,11 +1,19 @@
 <resources>
+    <style name="Theme.PipBoyV1" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/text_1</item>
+        <item name="colorPrimaryVariant">@color/text_2</item>
+        <item name="colorOnPrimary">@color/white</item>
 
-    <style name="Widget.Theme.PipBoyV1.ActionBar.Fullscreen" parent="Widget.AppCompat.ActionBar">
-        <item name="android:background">@color/black_overlay</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/background_1</item>
+        <item name="colorSecondaryVariant">@color/background_2</item>
+        <item name="colorOnSecondary">@color/black</item>
+
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
     </style>
-
-    <style name="Widget.Theme.PipBoyV1.ButtonBar.Fullscreen" parent="">
-        <item name="android:background">@color/black_overlay</item>
-        <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
+    <style name="TopNavStyle" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">10sp</item>
     </style>
 </resources>
