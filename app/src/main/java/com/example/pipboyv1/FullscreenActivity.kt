@@ -37,11 +37,12 @@ class FullscreenActivity : AppCompatActivity() {
         )
 
         for (topNavTab in topNavTabs.entries.iterator()) {
-            adapter.addFragment(topNavTab.value, topNavTab.key)
+            adapter.addFragment(topNavTab.value)
             tabLayout.addTab(tabLayout.newTab().setText(topNavTab.key))
         }
 
         viewPager2.adapter = adapter
+
         tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if (tab != null) {

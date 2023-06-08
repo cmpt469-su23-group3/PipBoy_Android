@@ -10,18 +10,16 @@ class ViewPagerAdapter(
     lifecycle: Lifecycle
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
     private val fragmentList = ArrayList<Fragment>()
-    private val fragmentTitleList = ArrayList<String>()
 
     override fun getItemCount(): Int {
         return fragmentList.size
     }
 
     override fun createFragment(position: Int): Fragment {
-        return fragmentList[position]
+        return if (position <= itemCount - 1) fragmentList[position] else fragmentList[0]
     }
 
-    fun addFragment(fragment: Fragment, title: String) {
+    fun addFragment(fragment: Fragment) {
         fragmentList.add(fragment)
-        fragmentTitleList.add(title)
     }
 }
