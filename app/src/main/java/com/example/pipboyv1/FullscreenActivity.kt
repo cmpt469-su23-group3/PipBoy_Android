@@ -3,11 +3,11 @@ package com.example.pipboyv1
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.viewpager2.widget.ViewPager2
-import com.example.pipboyv1.fragments.DataFragment
-import com.example.pipboyv1.fragments.InvFragment
-import com.example.pipboyv1.fragments.MapFragment
-import com.example.pipboyv1.fragments.RadioFragment
-import com.example.pipboyv1.fragments.StatFragment
+import com.example.pipboyv1.fragments.topnav.DataFragment
+import com.example.pipboyv1.fragments.topnav.InvFragment
+import com.example.pipboyv1.fragments.topnav.MapFragment
+import com.example.pipboyv1.fragments.topnav.RadioFragment
+import com.example.pipboyv1.fragments.topnav.StatFragment
 import com.example.pipboyv1.fragments.adapters.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -21,8 +21,8 @@ class FullscreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fullscreen)
 
-        tabLayout = findViewById(R.id.tabLayout)
-        viewPager2 = findViewById(R.id.viewPager2)
+        tabLayout = findViewById(R.id.topNavTabLayout)
+        viewPager2 = findViewById(R.id.topNavViewPager2)
         adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
 
         setupTopNav()

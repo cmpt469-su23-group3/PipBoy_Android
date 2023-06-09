@@ -23,5 +23,8 @@
     <string name="data_workshops_button">WORKSHOPS</string>
     <string name="data_stats_button">STATS</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <!-- Note: Map and Radio do not have any sub-nav tabs -->
 </resources>
