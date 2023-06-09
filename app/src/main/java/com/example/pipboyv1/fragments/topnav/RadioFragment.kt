@@ -1,4 +1,4 @@
-package com.example.pipboyv1.fragments
+package com.example.pipboyv1.fragments.topnav
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -16,7 +16,6 @@ class RadioFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_radio, container, false)
     }
 }
