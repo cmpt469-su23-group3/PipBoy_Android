@@ -31,7 +31,7 @@ class DataFragment : Fragment() {
 
         tabLayout = requireView().findViewById(R.id.dataSubNavTabLayout)
         viewPager2 = requireView().findViewById(R.id.dataSubNavViewPager2)
-        adapter = ViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
+        adapter = ViewPagerAdapter(childFragmentManager, lifecycle)
 
         setupSubNav()
     }

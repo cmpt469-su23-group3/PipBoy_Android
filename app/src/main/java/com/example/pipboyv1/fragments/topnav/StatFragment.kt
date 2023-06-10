@@ -31,7 +31,7 @@ class StatFragment : Fragment() {
 
         tabLayout = requireView().findViewById(R.id.statSubNavTabLayout)
         viewPager2 = requireView().findViewById(R.id.statSubNavViewPager2)
-        adapter = ViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
+        adapter = ViewPagerAdapter(childFragmentManager, lifecycle)
 
         setupSubNav()
     }

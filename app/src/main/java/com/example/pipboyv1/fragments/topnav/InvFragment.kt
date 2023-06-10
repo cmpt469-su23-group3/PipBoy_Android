@@ -31,7 +31,7 @@ class InvFragment : Fragment() {
 
         tabLayout = requireView().findViewById(R.id.invSubNavTabLayout)
         viewPager2 = requireView().findViewById(R.id.invSubNavViewPager2)
-        adapter = ViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
+        adapter = ViewPagerAdapter(childFragmentManager, lifecycle)
 
         setupSubNav()
     }
