@@ -10,19 +10,18 @@
     tools:context=".FullscreenActivity"
 >
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
+        android:id="@+id/topNavTabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabMode="fixed"
-        app:tabTextColor="@color/text_1"
-        app:tabIndicatorHeight="0dp"
-        app:tabBackground="@drawable/tab_background"
+        app:tabBackground="@drawable/top_nav_tab_background"
+        style="@style/TopNavTabLayout"
     />
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager2"
+        android:id="@+id/topNavViewPager2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toBottomOf="@id/tabLayout"
+        app:layout_constraintTop_toBottomOf="@id/topNavTabLayout"
         android:layout_marginTop="?attr/actionBarSize"
     />
 </FrameLayout>
