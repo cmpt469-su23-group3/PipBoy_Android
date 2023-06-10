@@ -1,11 +1,13 @@
 <resources>
-
-    <style name="Widget.Theme.PipBoyV1.ActionBar.Fullscreen" parent="Widget.AppCompat.ActionBar">
-        <item name="android:background">@color/black_overlay</item>
+    <style
+        name="Widget.Theme.PipBoyV1.ActionBar.Fullscreen"
+        parent="Widget.AppCompat.ActionBar"
+    >
+        <item name="android:background">@color/background_1</item>
     </style>
-
     <style name="Widget.Theme.PipBoyV1.ButtonBar.Fullscreen" parent="">
-        <item name="android:background">@color/black_overlay</item>
+        <!-- Status bar color. -->
+        <item name="android:background">@color/background_1</item>
         <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
     </style>
 </resources>

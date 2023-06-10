@@ -1,5 +1,27 @@
 <resources>
     <string name="app_name">PipBoyV1</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <!-- Main nav tabs -->
+    <string name="stat_button">STAT</string>
+    <string name="inv_button">INV</string>
+    <string name="data_button">DATA</string>
+    <string name="map_button">MAP</string>
+    <string name="radio_button">RADIO</string>
+
+    <!-- Stat sub-nav tabs -->
+    <string name="stat_status_button">STATUS</string>
+    <string name="stat_special_button">SPECIAL</string>
+    <string name="stat_perks_button">PERKS</string>
+
+    <!-- Inv sub-nav tabs -->
+    <string name="inv_weapons_button">WEAPONS</string>
+    <string name="inv_apparel_button">APPAREL</string>
+    <string name="inv_aid_button">AID</string>
+
+    <!-- Data sub-nav tabs -->
+    <string name="data_quests_button">QUESTS</string>
+    <string name="data_workshops_button">WORKSHOPS</string>
+    <string name="data_stats_button">STATS</string>
+
+    <!-- Note: Map and Radio do not have any sub-nav tabs -->
 </resources>
