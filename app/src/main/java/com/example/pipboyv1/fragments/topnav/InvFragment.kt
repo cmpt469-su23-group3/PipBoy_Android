@@ -10,6 +10,7 @@ import com.example.pipboyv1.R
 import com.example.pipboyv1.fragments.adapters.ViewPagerAdapter
 import com.example.pipboyv1.fragments.inv_subnav.AidFragment
 import com.example.pipboyv1.fragments.inv_subnav.ApparelFragment
+import com.example.pipboyv1.fragments.inv_subnav.MiscFragment
 import com.example.pipboyv1.fragments.inv_subnav.WeaponsFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -41,6 +42,10 @@ class InvFragment : Fragment() {
             getString(R.string.inv_weapons_button) to WeaponsFragment(),
             getString(R.string.inv_apparel_button) to ApparelFragment(),
             getString(R.string.inv_aid_button) to AidFragment(),
+            getString(R.string.inv_misc_button) to MiscFragment(),
+            getString(R.string.inv_junk_button) to MiscFragment(),
+            getString(R.string.inv_mods_button) to MiscFragment(),
+            getString(R.string.inv_ammo_button) to MiscFragment(),
         )
 
         for (subNavTab in subNavTabs.entries.iterator()) {
