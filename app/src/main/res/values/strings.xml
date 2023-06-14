@@ -17,6 +17,10 @@
     <string name="inv_weapons_button">WEAPONS</string>
     <string name="inv_apparel_button">APPAREL</string>
     <string name="inv_aid_button">AID</string>
+    <string name="inv_misc_button">MISC</string>
+    <string name="inv_junk_button">JUNK</string>
+    <string name="inv_mods_button">MODS</string>
+    <string name="inv_ammo_button">AMMO</string>
 
     <!-- Data sub-nav tabs -->
     <string name="data_quests_button">QUESTS</string>
