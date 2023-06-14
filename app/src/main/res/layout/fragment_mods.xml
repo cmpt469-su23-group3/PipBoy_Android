@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.inv_subnav.AidFragment"
->
+    tools:context=".fragments.inv_subnav.ModsFragment">
     <!-- TODO: Replace with actual layout -->
     <RelativeLayout
         android:layout_width="match_parent"
@@ -14,10 +12,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/inv_aid_button"
+            android:text="@string/inv_mods_button"
             android:textColor="@color/white"
-            android:textSize="24sp"
-        />
+            android:textSize="24sp" />
     </RelativeLayout>
 
 </FrameLayout>
