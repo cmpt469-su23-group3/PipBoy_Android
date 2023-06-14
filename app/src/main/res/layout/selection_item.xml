@@ -4,6 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:baselineAligned="false"
+    android:id="@+id/selectionItem"
 >
     <!-- Left-aligned content -->
     <LinearLayout
@@ -17,18 +18,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/text_1"
+            android:layout_gravity="start"
         />
         <TextView
             android:id="@+id/selectionItemTextLeft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/text_1"
+            android:layout_gravity="start"
         />
         <TextView
             android:id="@+id/selectionItemTextLeftPostfix"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/text_1"
+            android:layout_gravity="end"
         />
     </LinearLayout>
 
@@ -44,18 +48,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/text_1"
+            android:layout_gravity="start"
         />
         <TextView
             android:id="@+id/selectionItemTextRight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/text_1"
+            android:layout_gravity="start"
         />
         <TextView
             android:id="@+id/selectionItemTextRightPostfix"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/text_1"
+            android:layout_gravity="end"
         />
     </LinearLayout>
 </LinearLayout>
