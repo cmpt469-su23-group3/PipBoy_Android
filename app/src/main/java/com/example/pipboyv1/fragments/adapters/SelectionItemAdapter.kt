@@ -11,8 +11,8 @@ import com.example.pipboyv1.R
 import com.example.pipboyv1.classes.SelectionItem
 
 class SelectionItemAdapter(private val selectionItemList: ArrayList<SelectionItem>): RecyclerView.Adapter<SelectionItemAdapter.ViewHolder>() {
-    private var previousSelection: LinearLayout? = null
-    private var previousSelectionPosition: Int = -1
+    private var selectionItemLayoutList: ArrayList<LinearLayout> = ArrayList()
+    private var previousSelectionPosition: Int = 0
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val selectionItem: LinearLayout
@@ -40,6 +40,13 @@ class SelectionItemAdapter(private val selectionItemList: ArrayList<SelectionIte
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+        // Add selection item layout to list
+        selectionItemLayoutList.add(viewHolder.selectionItem)
+
+        // Select first item by default
+        selectionItemList[position].selected = true
+        updateSelectionItemStyling(selectionItemLayoutList[previousSelectionPosition], viewHolder, true)
+
         // Add an click listener to the selection item itself
         viewHolder.selectionItem.setOnClickListener {
             handleSelectionItemClick(viewHolder, position)
@@ -58,20 +65,17 @@ class SelectionItemAdapter(private val selectionItemList: ArrayList<SelectionIte
     }
 
     private fun handleSelectionItemClick(viewHolder: ViewHolder, position: Int) {
-         if (previousSelection != null){
-            // Deselect previous selection
-            selectionItemList[previousSelectionPosition].selected = false
+        // Deselect previous selection
+        selectionItemList[previousSelectionPosition].selected = false
 
-            // Reset styling on (now) deselected item
-            updateSelectionItemStyling(previousSelection, viewHolder, false)
-        }
+        // Reset styling on (now) deselected item
+        updateSelectionItemStyling(selectionItemLayoutList[previousSelectionPosition], viewHolder, false)
 
         // Assign new selection value
         // TODO: 5-Create-DisplayInfo-Pane -> handle rendering selection item data
         selectionItemList[position].selected = true
 
         // Store selection
-        previousSelection = viewHolder.selectionItem
         previousSelectionPosition = position
 
         updateSelectionItemStyling(viewHolder.selectionItem, viewHolder, true)
