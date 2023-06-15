@@ -7,7 +7,6 @@ open class SelectionItem(
     val textRightPrefix: String? = "",
     val textRight: String? = "",
     val textRightPostfix: String? = "",
-    val description: String? = "",
-    val image: Int? = 0,
-    var selected: Boolean = false
+    var selected: Boolean = false,
+    var data: SelectionItemData = SelectionItemData()
 )
