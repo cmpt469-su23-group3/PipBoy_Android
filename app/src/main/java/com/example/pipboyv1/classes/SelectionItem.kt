@@ -1,6 +1,6 @@
 package com.example.pipboyv1.classes
 
-open class SelectionItem(
+class SelectionItem(
     val textLeft: String = "",
     val textCenter: String = "",
     val textRight: String = "",
