@@ -85,11 +85,6 @@ class SelectionItemAdapter(private val selectionItemList: ArrayList<SelectionIte
         selectionItem.setBackgroundColor(bgColorId)
 
         // Update the text colour
-        // TODO: FIND A BETTER WAY TO DO THIS
-        for (child in selectionItem.children) {
-            if (child is TextView) {
-                child.setTextColor(txtColorId)
-            }
-        }
+        selectionItem.children.filterIsInstance<TextView>().forEach { it.setTextColor(txtColorId) }
     }
 }
