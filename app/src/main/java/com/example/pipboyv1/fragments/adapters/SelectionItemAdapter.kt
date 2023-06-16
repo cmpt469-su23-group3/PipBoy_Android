@@ -16,21 +16,15 @@ class SelectionItemAdapter(private val selectionItemList: ArrayList<SelectionIte
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val selectionItem: LinearLayout
-        val textLeftPrefix: TextView
         val textLeft: TextView
-        val textLeftPostfix: TextView
-        val textRightPrefix: TextView
+        val textCenter: TextView
         val textRight: TextView
-        val textRightPostfix: TextView
 
         init {
             selectionItem = view.findViewById(R.id.selectionItem)
-            textLeftPrefix = view.findViewById(R.id.selectionItemTextLeftPrefix)
             textLeft = view.findViewById(R.id.selectionItemTextLeft)
-            textLeftPostfix = view.findViewById(R.id.selectionItemTextLeftPostfix)
-            textRightPrefix = view.findViewById(R.id.selectionItemTextRightPrefix)
+            textCenter = view.findViewById(R.id.selectionItemTextCenter)
             textRight = view.findViewById(R.id.selectionItemTextRight)
-            textRightPostfix = view.findViewById(R.id.selectionItemTextRightPostfix)
         }
     }
 
@@ -52,12 +46,9 @@ class SelectionItemAdapter(private val selectionItemList: ArrayList<SelectionIte
             handleSelectionItemClick(viewHolder, position)
         }
 
-        viewHolder.textLeftPrefix.text = selectionItemList[position].textLeftPrefix
         viewHolder.textLeft.text = selectionItemList[position].textLeft
-        viewHolder.textLeftPostfix.text = selectionItemList[position].textLeftPostfix
-        viewHolder.textRightPrefix.text = selectionItemList[position].textRightPrefix
+        viewHolder.textCenter.text = selectionItemList[position].textCenter
         viewHolder.textRight.text = selectionItemList[position].textRight
-        viewHolder.textRightPostfix.text = selectionItemList[position].textRightPostfix
     }
 
     override fun getItemCount(): Int {
@@ -96,12 +87,8 @@ class SelectionItemAdapter(private val selectionItemList: ArrayList<SelectionIte
         // Update the text colour
         // TODO: FIND A BETTER WAY TO DO THIS
         for (child in selectionItem.children) {
-            if (child is LinearLayout) {
-                for (grandchild in child.children) {
-                    if (grandchild is TextView) {
-                        grandchild.setTextColor(txtColorId)
-                    }
-                }
+            if (child is TextView) {
+                child.setTextColor(txtColorId)
             }
         }
     }

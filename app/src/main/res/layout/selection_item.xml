@@ -1,68 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:baselineAligned="false"
     android:id="@+id/selectionItem"
 >
-    <!-- Left-aligned content -->
-    <LinearLayout
-        android:layout_width="fill_parent"
+
+    <!-- Left-aligned text -->
+    <TextView
+        android:id="@+id/selectionItemTextLeft"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_gravity="start"
-    >
-        <TextView
-            android:id="@+id/selectionItemTextLeftPrefix"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/text_1"
-            android:layout_gravity="start"
-        />
-        <TextView
-            android:id="@+id/selectionItemTextLeft"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/text_1"
-            android:layout_gravity="start"
-        />
-        <TextView
-            android:id="@+id/selectionItemTextLeftPostfix"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/text_1"
-            android:layout_gravity="end"
-        />
-    </LinearLayout>
+        android:gravity="start"
+        android:textColor="@color/text_1"
+    />
 
-    <!-- Right-aligned content -->
-    <LinearLayout
-        android:layout_width="fill_parent"
+    <!-- Center-aligned text -->
+    <TextView
+        android:id="@+id/selectionItemTextCenter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/text_1"
+    />
+
+    <!-- Right-aligned text -->
+    <TextView
+        android:id="@+id/selectionItemTextRight"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_gravity="end"
-    >
-        <TextView
-            android:id="@+id/selectionItemTextRightPrefix"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/text_1"
-            android:layout_gravity="start"
-        />
-        <TextView
-            android:id="@+id/selectionItemTextRight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/text_1"
-            android:layout_gravity="start"
-        />
-        <TextView
-            android:id="@+id/selectionItemTextRightPostfix"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/text_1"
-            android:layout_gravity="end"
-        />
-    </LinearLayout>
+        android:gravity="end"
+        android:textColor="@color/text_1"
+    />
 </LinearLayout>
