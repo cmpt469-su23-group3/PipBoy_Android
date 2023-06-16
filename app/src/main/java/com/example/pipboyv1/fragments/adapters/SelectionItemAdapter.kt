@@ -81,7 +81,7 @@ class SelectionItemAdapter(private val selectionItemList: ArrayList<SelectionIte
         updateSelectionItemStyling(viewHolder.selectionItem, viewHolder, true)
     }
 
-    private fun updateSelectionItemStyling(selectionItem: LinearLayout?, viewHolder: ViewHolder, selected: Boolean) {
+    private fun updateSelectionItemStyling(selectionItem: LinearLayout, viewHolder: ViewHolder, selected: Boolean) {
         // Note: Here, we pass `selectionItem` separately from `viewHolder` in order to update items *not currently selected*
         val primaryColorId: Int = viewHolder.itemView.context.resources.getColor(R.color.text_1, null)
         val backgroundColorId: Int = viewHolder.itemView.context.resources.getColor(R.color.background_1, null)
@@ -96,11 +96,11 @@ class SelectionItemAdapter(private val selectionItemList: ArrayList<SelectionIte
         }
 
         // Update the background colour
-        selectionItem?.setBackgroundColor(bgColorId)
+        selectionItem.setBackgroundColor(bgColorId)
 
         // Update the text colour
         // TODO: FIND A BETTER WAY TO DO THIS
-        for (child in selectionItem?.children!!) {
+        for (child in selectionItem.children) {
             if (child is LinearLayout) {
                 for (grandchild in child.children) {
                     if (grandchild is TextView) {
