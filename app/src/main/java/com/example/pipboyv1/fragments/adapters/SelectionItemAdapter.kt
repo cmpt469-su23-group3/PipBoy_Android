@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pipboyv1.R
 import com.example.pipboyv1.classes.SelectionItem
 
-class SelectionItemAdapter(private val selectionItemList: ArrayList<SelectionItem>): RecyclerView.Adapter<SelectionItemAdapter.ViewHolder>() {
-    private var selectionItemLayoutList: ArrayList<LinearLayout> = ArrayList()
+class SelectionItemAdapter(private val selectionItemList: List<SelectionItem>): RecyclerView.Adapter<SelectionItemAdapter.ViewHolder>() {
+    private var selectionItemLayoutList: MutableList<LinearLayout> = mutableListOf()
     private var previousSelectionPosition: Int = 0
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

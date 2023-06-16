@@ -26,7 +26,7 @@ class PerksFragment : Fragment() {
         val specialRecyclerView: RecyclerView = view.findViewById(R.id.statPerksSelectorRecyclerView) as RecyclerView
         specialRecyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
-        val selectionItems: ArrayList<SelectionItem> = arrayListOf(
+        val selectionItems: List<SelectionItem> = listOf(
             SelectionItem(textLeft="Iron Fist", data=SelectionItemData(description="Channel your chi to unleash devastating fury! Punching attacks do 20% more damage to your opponent.")),
             SelectionItem(textLeft="Pickpocket", data=SelectionItemData(description="Your quick hands and sticky fingers make picking pockets 25% easier.")),
             SelectionItem(textLeft="Toughness", data=SelectionItemData(description="If nothing else, you can take a beating! Instantly gain +10 damage resistance.")),

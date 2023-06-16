@@ -26,7 +26,7 @@ class SpecialFragment : Fragment() {
         val specialRecyclerView: RecyclerView = view.findViewById(R.id.statSpecialSelectorRecyclerView) as RecyclerView
         specialRecyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
-        val selectionItems: ArrayList<SelectionItem> = arrayListOf(
+        val selectionItems: List<SelectionItem> = listOf(
             SelectionItem(textLeft="Strength", textRight="0", data=SelectionItemData(description="Strength is a measure of your raw physical power. It affects how much you can carry, and determines the effectiveness of all melee attacks.", image=R.drawable.stat_strength)),
             SelectionItem(textLeft="Perception", textRight="0", data=SelectionItemData(description="Perception is the ability to see, hear, taste and notice unusual things. A high Perception is important for a sharpshooter.", image=R.drawable.stat_perception)),
             SelectionItem(textLeft="Endurance", textRight="0", data=SelectionItemData(description="Endurance is the measure of overall physical fitness. It affects your total health and the action point drain from sprinting.", image=R.drawable.stat_endurance)),
