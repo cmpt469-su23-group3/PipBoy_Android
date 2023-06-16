@@ -44,7 +44,7 @@ class SelectionItemAdapter(private val selectionItemList: ArrayList<SelectionIte
         selectionItemLayoutList.add(viewHolder.selectionItem)
 
         // Select first item by default
-        selectionItemList[position].selected = true
+        selectionItemList[previousSelectionPosition].selected = true
         updateSelectionItemStyling(selectionItemLayoutList[previousSelectionPosition], viewHolder, true)
 
         // Add an click listener to the selection item itself
@@ -65,19 +65,14 @@ class SelectionItemAdapter(private val selectionItemList: ArrayList<SelectionIte
     }
 
     private fun handleSelectionItemClick(viewHolder: ViewHolder, position: Int) {
-        // Deselect previous selection
+        // Deselect previous selection and reset styling
         selectionItemList[previousSelectionPosition].selected = false
-
-        // Reset styling on (now) deselected item
         updateSelectionItemStyling(selectionItemLayoutList[previousSelectionPosition], viewHolder, false)
 
-        // Assign new selection value
+        // Update selection
         // TODO: 5-Create-DisplayInfo-Pane -> handle rendering selection item data
         selectionItemList[position].selected = true
-
-        // Store selection
         previousSelectionPosition = position
-
         updateSelectionItemStyling(viewHolder.selectionItem, viewHolder, true)
     }
 
