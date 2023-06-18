@@ -29,7 +29,7 @@ class SelectionItemAdapter(private val selectionItemList: List<SelectionItem>): 
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.selection_item, viewGroup, false)
+        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.fragment_selection_item, viewGroup, false)
         return ViewHolder(view)
     }
 
