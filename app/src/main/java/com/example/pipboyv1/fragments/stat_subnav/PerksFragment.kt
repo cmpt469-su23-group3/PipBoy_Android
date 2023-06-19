@@ -7,14 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pipboyv1.R
 import com.example.pipboyv1.classes.SelectionItem
 import com.example.pipboyv1.classes.SelectionItemData
 import com.example.pipboyv1.fragments.adapters.SelectionItemAdapter
-import com.example.pipboyv1.fragments.items.DisplayItemFragment
 
 class PerksFragment : Fragment() {
     private val selectionItems: MutableList<SelectionItem> = mutableListOf(
@@ -27,7 +25,6 @@ class PerksFragment : Fragment() {
         SelectionItem(textLeft="Fortune Finder", data=SelectionItemData(description="You've learned to discover the Wasteland's hidden wealth, and discover more bottle caps in containers.")),
     )
     private var position: Int = 0
-    private lateinit var fragmentManager: FragmentManager
 
     inner class PositionListener : SelectionItemAdapter.ValueChangeListener {
         override fun onValueChange(newPosition: Int) {
@@ -52,13 +49,6 @@ class PerksFragment : Fragment() {
         val adapter = SelectionItemAdapter(selectionItems)
         adapter.setValueChangeListener(PositionListener())
         specialRecyclerView.adapter = adapter
-
-        // Create display panel
-        fragmentManager = this.requireActivity().supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.add(R.id.statPerkDisplayView, DisplayItemFragment())
-        fragmentTransaction.addToBackStack(null)
-        fragmentTransaction.commit()
 
         // Populate display panel
         populateDisplayItem()
