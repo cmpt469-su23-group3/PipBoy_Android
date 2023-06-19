@@ -70,11 +70,11 @@
     	1. Listen to the Nuka-Cola Family Radio
 		2. Travel to the Nuka-World Transit Center - ACTIVE
 
-		3. **The Watering Hole:** 
-			* Description: 
-				- For the next Vault 88 experiment I need to get chemical formulas Hallucigen, Inc.
-			* Objectives:
-				1. Get the Chemical Research from Hallucigen, Inc. - ACTIVE
+3. **The Watering Hole:** 
+	* Description: 
+		- For the next Vault 88 experiment I need to get chemical formulas Hallucigen, Inc.
+	* Objectives:
+		1. Get the Chemical Research from Hallucigen, Inc. - ACTIVE
 
 4. **Quartermastry:**
 	* Description: 
