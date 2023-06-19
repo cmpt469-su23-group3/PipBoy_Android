@@ -25,14 +25,16 @@
     </LinearLayout>
 
     <!-- Right column -->
-    <!-- TODO: 5-Create-DisplayInfo-Pane -->
     <LinearLayout
+        android:id="@+id/statPerkDisplayView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_gravity="end"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
+        android:orientation="vertical"
         >
+        <include layout="@layout/fragment_display_item"/>
     </LinearLayout>
 </LinearLayout>

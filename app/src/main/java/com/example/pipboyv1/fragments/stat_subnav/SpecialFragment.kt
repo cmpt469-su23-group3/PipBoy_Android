@@ -4,13 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pipboyv1.R
 import com.example.pipboyv1.classes.SelectionItem
 import com.example.pipboyv1.classes.SelectionItemData
 import com.example.pipboyv1.fragments.adapters.SelectionItemAdapter
+import com.example.pipboyv1.fragments.items.DisplayItemFragment
 
 class SpecialFragment : Fragment() {
     private val selectionItems: MutableList<SelectionItem> = mutableListOf(
@@ -23,6 +27,7 @@ class SpecialFragment : Fragment() {
         SelectionItem(textLeft="Luck", textRight="0", data=SelectionItemData(description="Luck is a measure of your general good fortune, and affects the recharge rates of critical hits.", imageId=R.drawable.stat_luck))
     )
     private var position: Int = 0
+    private lateinit var fragmentManager: FragmentManager
 
     inner class PositionListener : SelectionItemAdapter.ValueChangeListener {
         override fun onValueChange(newPosition: Int) {
@@ -47,9 +52,29 @@ class SpecialFragment : Fragment() {
         val adapter = SelectionItemAdapter(selectionItems)
         adapter.setValueChangeListener(PositionListener())
         specialRecyclerView.adapter = adapter
+
+        // Create display panel fragment
+        fragmentManager = this.requireActivity().supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.add(R.id.statSpecialDisplayView, DisplayItemFragment())
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+
+        // Populate display panel
+        populateDisplayItem()
     }
 
     private fun handleSelectionItemPositionChange() {
-        // TODO: Implement!
+        populateDisplayItem()
+    }
+
+    private fun populateDisplayItem() {
+        val selectionItemData = selectionItems[position].data
+
+        val imageView: ImageView = this.requireView().findViewById(R.id.displayItemImage)
+        val textView: TextView = this.requireView().findViewById(R.id.displayItemDescription)
+
+        if (selectionItemData.imageId >= 0) { imageView.setImageResource(selectionItemData.imageId) }
+        if (selectionItemData.description.isNotEmpty()) { textView.text = selectionItemData.description }
     }
 }
