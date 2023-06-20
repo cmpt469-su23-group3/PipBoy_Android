@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:baselineAligned="false"
+    android:id="@+id/attribute"
+    >
+
+    <!-- Left-aligned text -->
+    <TextView
+        android:id="@+id/attributeTextLeft"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="start"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:gravity="start"
+        android:background="@color/text_2"
+        android:textColor="@color/text_1"
+    />
+
+    <!-- Right-aligned text -->
+    <TextView
+        android:id="@+id/attributeTextRight"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="end"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:gravity="end"
+        android:background="@color/text_2"
+        android:textColor="@color/text_1"
+    />
+</LinearLayout>
