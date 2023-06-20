@@ -28,4 +28,7 @@
     <string name="data_stats_button">STATS</string>
 
     <!-- Note: Map and Radio do not have any sub-nav tabs -->
+
+    <!-- Selection/Display items -->
+    <string name="display_item_image">Display Item Image</string>
 </resources>
