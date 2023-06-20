@@ -1,4 +1,4 @@
-package com.example.pipboyv1.fragments.adapters
+package com.example.pipboyv1.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

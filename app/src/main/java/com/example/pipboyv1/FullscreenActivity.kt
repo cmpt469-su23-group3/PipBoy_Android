@@ -8,7 +8,7 @@ import com.example.pipboyv1.fragments.topnav.InvFragment
 import com.example.pipboyv1.fragments.topnav.MapFragment
 import com.example.pipboyv1.fragments.topnav.RadioFragment
 import com.example.pipboyv1.fragments.topnav.StatFragment
-import com.example.pipboyv1.fragments.adapters.ViewPagerAdapter
+import com.example.pipboyv1.adapters.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 

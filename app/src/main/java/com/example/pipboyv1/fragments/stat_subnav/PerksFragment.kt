@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pipboyv1.R
 import com.example.pipboyv1.classes.SelectionItem
 import com.example.pipboyv1.classes.SelectionItemData
-import com.example.pipboyv1.fragments.adapters.SelectionItemAdapter
+import com.example.pipboyv1.adapters.SelectionItemAdapter
 
 class PerksFragment : Fragment() {
     private val selectionItems: MutableList<SelectionItem> = mutableListOf(

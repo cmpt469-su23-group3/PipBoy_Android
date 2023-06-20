@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
 import com.example.pipboyv1.R
-import com.example.pipboyv1.fragments.adapters.ViewPagerAdapter
+import com.example.pipboyv1.adapters.ViewPagerAdapter
 import com.example.pipboyv1.fragments.stat_subnav.PerksFragment
 import com.example.pipboyv1.fragments.stat_subnav.SpecialFragment
 import com.example.pipboyv1.fragments.stat_subnav.StatusFragment
