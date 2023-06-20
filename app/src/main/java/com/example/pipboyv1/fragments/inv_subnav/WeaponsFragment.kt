@@ -1,6 +1,5 @@
 package com.example.pipboyv1.fragments.inv_subnav
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,7 +15,6 @@ import com.example.pipboyv1.helpers.populateDisplayItem
 import com.example.pipboyv1.input.PositionChangeListener
 
 class WeaponsFragment : Fragment() {
-
     private var DAMAGE: String = "Damage"
     private var FIRERATE: String = "Fire Rate"
     private var RANGE: String = "Range"
@@ -28,6 +26,7 @@ class WeaponsFragment : Fragment() {
     private val selectionItems: MutableList<SelectionItem> = mutableListOf(
         SelectionItem(textLeft="10mm Pistol", data= SelectionItemData(imageId=R.drawable.weapon_10mm_pistol, attributes= mapOf(
             DAMAGE to "18",
+            "10mm" to "158",
             FIRERATE to "46",
             RANGE to "83",
             ACCURACY to "60",
@@ -36,6 +35,7 @@ class WeaponsFragment : Fragment() {
         ))),
         SelectionItem(textLeft="Gatling Laser", data= SelectionItemData(imageId=R.drawable.weapon_gatling_laser, attributes= mapOf(
             DAMAGE to "14",
+            "Core" to "45",
             FIRERATE to "272",
             RANGE to "203",
             ACCURACY to "48",
@@ -44,6 +44,7 @@ class WeaponsFragment : Fragment() {
         ))),
         SelectionItem(textLeft="Pipe Bolt-Action Pistol", data= SelectionItemData(imageId=R.drawable.weapon_pipe_bolt_action, attributes= mapOf(
             DAMAGE to "34",
+            ".38" to "734",
             FIRERATE to "2",
             RANGE to "95",
             ACCURACY to "63",
@@ -52,6 +53,7 @@ class WeaponsFragment : Fragment() {
         ))),
         SelectionItem(textLeft="Combat Shotgun", data= SelectionItemData(imageId=R.drawable.weapon_combat_shotgun, attributes= mapOf(
             DAMAGE to "50",
+            "Shell" to "253",
             FIRERATE to "20",
             RANGE to "47",
             ACCURACY to "23",
@@ -60,6 +62,7 @@ class WeaponsFragment : Fragment() {
         ))),
         SelectionItem(textLeft="Fat Man", data= SelectionItemData(imageId=R.drawable.weapon_fatman, attributes= mapOf(
             DAMAGE to "468",
+            "Mini Nuke" to "16",
             FIRERATE to "1",
             RANGE to "117",
             ACCURACY to "63",
@@ -68,6 +71,7 @@ class WeaponsFragment : Fragment() {
         ))),
         SelectionItem(textLeft="Assault Rifle", data= SelectionItemData(imageId=R.drawable.weapon_assault_rifle, attributes= mapOf(
             DAMAGE to "30",
+            "5.56mm" to "1235",
             FIRERATE to "40",
             RANGE to "119",
             ACCURACY to "72",
