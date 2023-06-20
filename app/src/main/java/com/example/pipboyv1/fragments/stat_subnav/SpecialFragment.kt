@@ -65,7 +65,13 @@ class SpecialFragment : Fragment() {
         val imageView: ImageView = this.requireView().findViewById(R.id.displayItemImage)
         val textView: TextView = this.requireView().findViewById(R.id.displayItemDescription)
 
-        if (selectionItemData.imageId >= 0) { imageView.setImageResource(selectionItemData.imageId) }
+        if (selectionItemData.imageId >= 0) {
+            val imageViewLayoutParams = imageView.layoutParams
+            imageViewLayoutParams.width = 450
+            imageViewLayoutParams.height = 450
+            imageView.layoutParams = imageViewLayoutParams
+            imageView.setImageResource(selectionItemData.imageId)
+        }
         if (selectionItemData.description.isNotEmpty()) { textView.text = selectionItemData.description }
     }
 }

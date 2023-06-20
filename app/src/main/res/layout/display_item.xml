@@ -11,8 +11,8 @@
     <!-- TODO: Better image sizing -->
     <ImageView
         android:id="@+id/displayItemImage"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:tintMode="multiply"
         app:tint="@color/text_1"
