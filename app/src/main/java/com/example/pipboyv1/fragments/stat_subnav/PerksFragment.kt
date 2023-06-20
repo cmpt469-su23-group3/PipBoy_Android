@@ -5,14 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pipboyv1.R
 import com.example.pipboyv1.classes.SelectionItem
 import com.example.pipboyv1.classes.SelectionItemData
 import com.example.pipboyv1.adapters.SelectionItemAdapter
+import com.example.pipboyv1.helpers.populateDisplayItem
 import com.example.pipboyv1.input.PositionChangeListener
 
 class PerksFragment : Fragment() {
@@ -30,7 +29,7 @@ class PerksFragment : Fragment() {
     inner class PositionListener : PositionChangeListener {
         override fun onValueChange(newPosition: Int) {
             position = newPosition
-            populateDisplayItem()
+            populateDisplayItem(selectionItems[position].data, requireView(), requireContext())
         }
     }
 
@@ -52,22 +51,6 @@ class PerksFragment : Fragment() {
         recyclerView.adapter = adapter
 
         // Populate display panel
-        populateDisplayItem()
-    }
-
-    private fun populateDisplayItem() {
-        val selectionItemData = selectionItems[position].data
-        
-        val imageView: ImageView = this.requireView().findViewById(R.id.displayItemImage)
-        val textView: TextView = this.requireView().findViewById(R.id.displayItemDescription)
-
-        if (selectionItemData.imageId >= 0) {
-            val imageViewLayoutParams = imageView.layoutParams
-            imageViewLayoutParams.width = 450
-            imageViewLayoutParams.height = 450
-            imageView.layoutParams = imageViewLayoutParams
-            imageView.setImageResource(selectionItemData.imageId)
-        }
-        if (selectionItemData.description.isNotEmpty()) { textView.text = selectionItemData.description }
+        populateDisplayItem(selectionItems[position].data, view, requireContext())
     }
 }
