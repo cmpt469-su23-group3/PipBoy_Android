@@ -1,5 +1,5 @@
-<resources>
-    <string name="app_name">PipBoyV1</string>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name" tools:ignore="Typos">PipBoyV1</string>
 
     <!-- Main nav tabs -->
     <string name="stat_button">STAT</string>
