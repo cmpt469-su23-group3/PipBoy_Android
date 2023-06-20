@@ -44,12 +44,12 @@ class PerksFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val specialRecyclerView: RecyclerView = view.findViewById(R.id.statPerksSelectorRecyclerView) as RecyclerView
-        specialRecyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        val recyclerView: RecyclerView = view.findViewById(R.id.statPerksSelectorRecyclerView) as RecyclerView
+        recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
         val adapter = SelectionItemAdapter(selectionItems)
         adapter.setValueChangeListener(PositionListener())
-        specialRecyclerView.adapter = adapter
+        recyclerView.adapter = adapter
 
         // Populate display panel
         populateDisplayItem()
