@@ -30,7 +30,7 @@ class SpecialFragment : Fragment() {
     inner class PositionListener : PositionChangeListener {
         override fun onValueChange(newPosition: Int) {
             position = newPosition
-            handleSelectionItemPositionChange()
+            populateDisplayItem()
         }
     }
 
@@ -52,10 +52,6 @@ class SpecialFragment : Fragment() {
         specialRecyclerView.adapter = adapter
 
         // Populate display panel
-        populateDisplayItem()
-    }
-
-    private fun handleSelectionItemPositionChange() {
         populateDisplayItem()
     }
 
