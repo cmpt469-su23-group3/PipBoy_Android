@@ -8,7 +8,7 @@ import com.example.pipboyv1.fragments.topnav.InvFragment
 import com.example.pipboyv1.fragments.topnav.MapFragment
 import com.example.pipboyv1.fragments.topnav.RadioFragment
 import com.example.pipboyv1.fragments.topnav.StatFragment
-import com.example.pipboyv1.fragments.adapters.ViewPagerAdapter
+import com.example.pipboyv1.adapters.ViewPagerAdapter
 import com.example.pipboyv1.input.IPotInputContainer
 import com.example.pipboyv1.input.MockPotInputContainer
 import com.google.android.material.tabs.TabLayout
@@ -25,7 +25,7 @@ class FullscreenActivity : AppCompatActivity() {
         setContentView(R.layout.activity_fullscreen)
 
         potInputContainer = MockPotInputContainer() // FIXME use BlePotInputContainer eventually
-        
+
         tabLayout = findViewById(R.id.topNavTabLayout)
         viewPager2 = findViewById(R.id.topNavViewPager2)
         adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)

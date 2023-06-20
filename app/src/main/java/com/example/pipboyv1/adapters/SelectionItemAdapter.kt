@@ -1,4 +1,4 @@
-package com.example.pipboyv1.fragments.adapters
+package com.example.pipboyv1.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,10 +9,12 @@ import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pipboyv1.R
 import com.example.pipboyv1.classes.SelectionItem
+import com.example.pipboyv1.input.PositionChangeListener
 
-class SelectionItemAdapter(private val selectionItemList: List<SelectionItem>): RecyclerView.Adapter<SelectionItemAdapter.ViewHolder>() {
+class SelectionItemAdapter(private val selectionItemList: MutableList<SelectionItem>): RecyclerView.Adapter<SelectionItemAdapter.ViewHolder>() {
     private var selectionItemLayoutList: MutableList<LinearLayout> = mutableListOf()
-    private var previousSelectionPosition: Int = 0
+    private var selectionPosition: Int = 0
+    private lateinit var positionChangeListener: PositionChangeListener
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val selectionItem: LinearLayout
@@ -38,8 +40,8 @@ class SelectionItemAdapter(private val selectionItemList: List<SelectionItem>): 
         selectionItemLayoutList.add(viewHolder.selectionItem)
 
         // Select first item by default
-        selectionItemList[previousSelectionPosition].selected = true
-        updateSelectionItemStyling(selectionItemLayoutList[previousSelectionPosition], viewHolder, true)
+        selectionItemList[selectionPosition].selected = true
+        updateSelectionItemStyling(selectionItemLayoutList[selectionPosition], viewHolder, true)
 
         // Add an click listener to the selection item itself
         viewHolder.selectionItem.setOnClickListener {
@@ -55,16 +57,25 @@ class SelectionItemAdapter(private val selectionItemList: List<SelectionItem>): 
         return selectionItemList.size
     }
 
+    // Method must be called by the parent to listen for position change
+    fun setValueChangeListener(positionChangeListener: PositionChangeListener?) {
+        this.positionChangeListener = positionChangeListener!!
+    }
+
     private fun handleSelectionItemClick(viewHolder: ViewHolder, position: Int) {
         // Deselect previous selection and reset styling
-        selectionItemList[previousSelectionPosition].selected = false
-        updateSelectionItemStyling(selectionItemLayoutList[previousSelectionPosition], viewHolder, false)
+        selectionItemList[selectionPosition].selected = false
+        updateSelectionItemStyling(selectionItemLayoutList[selectionPosition], viewHolder, false)
 
-        // Update selection
-        // TODO: 5-Create-DisplayInfo-Pane -> handle rendering selection item data
+        // Update selection in current view
         selectionItemList[position].selected = true
-        previousSelectionPosition = position
+        selectionPosition = position
         updateSelectionItemStyling(viewHolder.selectionItem, viewHolder, true)
+
+        // Update selection in parent
+        if (positionChangeListener != null) {
+            positionChangeListener.onValueChange(position)
+        }
     }
 
     private fun updateSelectionItemStyling(selectionItem: LinearLayout, viewHolder: ViewHolder, selected: Boolean) {

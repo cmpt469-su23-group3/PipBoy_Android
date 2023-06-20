@@ -25,7 +25,6 @@
     </LinearLayout>
 
     <!-- Right column -->
-    <!-- TODO: 5-Create-DisplayInfo-Pane -->
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -33,6 +32,8 @@
         android:layout_gravity="end"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
+        android:orientation="vertical"
     >
+        <include layout="@layout/display_item"/>
     </LinearLayout>
 </LinearLayout>
