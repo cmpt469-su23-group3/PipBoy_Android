@@ -13,6 +13,7 @@ import com.example.pipboyv1.R
 import com.example.pipboyv1.classes.SelectionItem
 import com.example.pipboyv1.classes.SelectionItemData
 import com.example.pipboyv1.adapters.SelectionItemAdapter
+import com.example.pipboyv1.input.PositionChangeListener
 
 class SpecialFragment : Fragment() {
     private val selectionItems: MutableList<SelectionItem> = mutableListOf(
@@ -26,7 +27,7 @@ class SpecialFragment : Fragment() {
     )
     private var position: Int = 0
 
-    inner class PositionListener : SelectionItemAdapter.ValueChangeListener {
+    inner class PositionListener : PositionChangeListener {
         override fun onValueChange(newPosition: Int) {
             position = newPosition
             handleSelectionItemPositionChange()
