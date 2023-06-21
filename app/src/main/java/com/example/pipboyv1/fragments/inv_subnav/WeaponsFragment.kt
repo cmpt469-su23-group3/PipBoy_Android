@@ -15,6 +15,9 @@ import com.example.pipboyv1.helpers.populateDisplayItem
 import com.example.pipboyv1.input.PositionChangeListener
 
 class WeaponsFragment : Fragment() {
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: SelectionItemAdapter
+    private var position: Int = 0
     private val imgDimension: Int = 250
     private val selectionItems: List<SelectionItem> = listOf(
         SelectionItem(textLeft="10mm Pistol", data= SelectionItemData(imageId=R.drawable.weapon_10mm_pistol, attributes= mapOf(
@@ -26,7 +29,6 @@ class WeaponsFragment : Fragment() {
             "Value" to "50",
         ))),
     )
-    private var position: Int = 0
 
     inner class PositionListener : PositionChangeListener {
         override fun onValueChange(newPosition: Int) {
@@ -44,13 +46,13 @@ class WeaponsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = SelectionItemAdapter(selectionItems)
+        adapter = SelectionItemAdapter(selectionItems)
         adapter.setHasStableIds(true)
         adapter.setValueChangeListener(PositionListener())
 
-        val recyclerView: RecyclerView = view.findViewById(R.id.invWeaponsSelectorRecyclerView) as RecyclerView
-        recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        recyclerView = view.findViewById(R.id.invWeaponsSelectorRecyclerView) as RecyclerView
         recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
         // Populate display panel
         populateDisplayItem(selectionItems[position].data, view, context, imgDimension)

@@ -22,6 +22,7 @@ class InvFragment : Fragment() {
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager2: ViewPager2
     private lateinit var adapter: ViewPagerAdapter
+    private lateinit var tabLayoutMediator: TabLayoutMediator
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,9 +57,9 @@ class InvFragment : Fragment() {
         }
 
         viewPager2.adapter = adapter
-
-        TabLayoutMediator(tabLayout, viewPager2) {
+        tabLayoutMediator = TabLayoutMediator(tabLayout, viewPager2) {
                 tab, position -> tab.text = adapter.getFragmentTitle(position)
-        }.attach()
+        }
+        tabLayoutMediator.attach()
     }
 }
