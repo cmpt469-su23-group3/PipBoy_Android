@@ -15,6 +15,10 @@ import com.example.pipboyv1.helpers.populateDisplayItem
 import com.example.pipboyv1.input.PositionChangeListener
 
 class AmmoFragment : Fragment() {
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: SelectionItemAdapter
+
+    private var position: Int = 0
     private var WEIGHT: String = "Weight"
     private var VALUE: String = "Value"
 
@@ -44,20 +48,22 @@ class AmmoFragment : Fragment() {
             WEIGHT to "0",
             VALUE to "2",
         ))),
-
-        )
-    private var position: Int = 0
+    )
 
     inner class PositionListener : PositionChangeListener {
         override fun onValueChange(newPosition: Int) {
             position = newPosition
-            populateDisplayItem(selectionItems[position].data, requireView(), requireContext(), imgDimension)
+            populateDisplayItem(selectionItems[position].data, view, context, imgDimension)
         }
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        adapter = SelectionItemAdapter(selectionItems)
+        adapter.setHasStableIds(true)
+        adapter.setValueChangeListener(PositionListener())
+
         return inflater.inflate(R.layout.fragment_ammo, container, false)
     }
 
@@ -66,15 +72,12 @@ class AmmoFragment : Fragment() {
 
         selectionItems.sortBy { it.textLeft }
 
-        val recyclerView: RecyclerView = view.findViewById(R.id.invAmmoSelectorRecyclerView) as RecyclerView
+        recyclerView= view.findViewById(R.id.invAmmoSelectorRecyclerView) as RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-
-        val adapter = SelectionItemAdapter(selectionItems)
-        adapter.setValueChangeListener(PositionListener())
         recyclerView.adapter = adapter
 
         // Populate display panel
-        populateDisplayItem(selectionItems[position].data, view, requireContext(), imgDimension)
+        populateDisplayItem(selectionItems[position].data, view, context, imgDimension)
     }
 
 }

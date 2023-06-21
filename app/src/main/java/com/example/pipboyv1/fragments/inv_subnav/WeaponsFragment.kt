@@ -17,6 +17,7 @@ import com.example.pipboyv1.input.PositionChangeListener
 class WeaponsFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: SelectionItemAdapter
+
     private var position: Int = 0
     private var DAMAGE: String = "Damage"
     private var FIRERATE: String = "Fire Rate"
