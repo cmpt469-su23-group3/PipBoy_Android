@@ -31,4 +31,20 @@
 
     <!-- Selection/Display items -->
     <string name="display_item_image">Display Item Image</string>
+
+    <!-- Weapons -->
+    <string name="inv_weapon_10mm_pistol">10mm Pistol</string>
+    <string name="inv_weapon_gatling_laser">Gatling Laser</string>
+    <string name="inv_weapon_pipe_boltaction">Pipe Bolt-Action Pistol</string>
+    <string name="inv_weapon_fatman">Fat Man</string>
+    <string name="inv_weapon_combat_shotgun">Combat Shotgun</string>
+    <string name="inv_weapon_assault_rifle">Assault Rifle</string>
+
+    <!-- Weapon Stats -->
+    <string name="inv_weapon_stat_damage">Damage</string>
+    <string name="inv_weapon_stat_firerate">Fire Rate</string>
+    <string name="inv_weapon_stat_range">Range</string>
+    <string name="inv_weapon_stat_accuracy">Accuracy</string>
+    <string name="inv_weapon_stat_weight">Weight</string>
+    <string name="inv_weapon_stat_value">Value</string>
 </resources>
