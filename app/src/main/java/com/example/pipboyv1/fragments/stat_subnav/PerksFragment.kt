@@ -15,7 +15,7 @@ import com.example.pipboyv1.helpers.populateDisplayItem
 import com.example.pipboyv1.input.PositionChangeListener
 
 class PerksFragment : Fragment() {
-    private val selectionItems: MutableList<SelectionItem> = mutableListOf(
+    private val selectionItems: List<SelectionItem> = listOf(
         SelectionItem(textLeft="Iron Fist", data=SelectionItemData(description="Channel your chi to unleash devastating fury! Punching attacks do 20% more damage to your opponent.", imageId=R.drawable.perk_iron_fist)),
         SelectionItem(textLeft="Pickpocket", data=SelectionItemData(description="Your quick hands and sticky fingers make picking pockets 25% easier.", imageId=R.drawable.perk_pickpocket)),
         SelectionItem(textLeft="Toughness", data=SelectionItemData(description="If nothing else, you can take a beating! Instantly gain +10 damage resistance.", imageId=R.drawable.perk_toughness)),
@@ -29,7 +29,7 @@ class PerksFragment : Fragment() {
     inner class PositionListener : PositionChangeListener {
         override fun onValueChange(newPosition: Int) {
             position = newPosition
-            populateDisplayItem(selectionItems[position].data, requireView(), requireContext())
+            populateDisplayItem(selectionItems[position].data, view, context)
         }
     }
 
@@ -43,14 +43,15 @@ class PerksFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val adapter = SelectionItemAdapter(selectionItems)
+        adapter.setHasStableIds(true)
+        adapter.setValueChangeListener(PositionListener())
+
         val recyclerView: RecyclerView = view.findViewById(R.id.statPerksSelectorRecyclerView) as RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-
-        val adapter = SelectionItemAdapter(selectionItems)
-        adapter.setValueChangeListener(PositionListener())
         recyclerView.adapter = adapter
 
         // Populate display panel
-        populateDisplayItem(selectionItems[position].data, view, requireContext())
+        populateDisplayItem(selectionItems[position].data, view, context)
     }
 }

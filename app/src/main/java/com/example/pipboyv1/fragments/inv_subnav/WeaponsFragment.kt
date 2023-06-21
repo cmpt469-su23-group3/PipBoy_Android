@@ -16,7 +16,7 @@ import com.example.pipboyv1.input.PositionChangeListener
 
 class WeaponsFragment : Fragment() {
     private val imgDimension: Int = 250
-    private val selectionItems: MutableList<SelectionItem> = mutableListOf(
+    private val selectionItems: List<SelectionItem> = listOf(
         SelectionItem(textLeft="10mm Pistol", data= SelectionItemData(imageId=R.drawable.weapon_10mm_pistol, attributes= mapOf(
             "Damage" to "18",
             "Fire Rate" to "46",
@@ -31,7 +31,7 @@ class WeaponsFragment : Fragment() {
     inner class PositionListener : PositionChangeListener {
         override fun onValueChange(newPosition: Int) {
             position = newPosition
-            populateDisplayItem(selectionItems[position].data, requireView(), requireContext(), imgDimension)
+            populateDisplayItem(selectionItems[position].data, view, context, imgDimension)
         }
     }
     override fun onCreateView(
@@ -44,14 +44,15 @@ class WeaponsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val adapter = SelectionItemAdapter(selectionItems)
+        adapter.setHasStableIds(true)
+        adapter.setValueChangeListener(PositionListener())
+
         val recyclerView: RecyclerView = view.findViewById(R.id.invWeaponsSelectorRecyclerView) as RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-
-        val adapter = SelectionItemAdapter(selectionItems)
-        adapter.setValueChangeListener(PositionListener())
         recyclerView.adapter = adapter
 
         // Populate display panel
-        populateDisplayItem(selectionItems[position].data, view, requireContext(), imgDimension)
+        populateDisplayItem(selectionItems[position].data, view, context, imgDimension)
     }
 }

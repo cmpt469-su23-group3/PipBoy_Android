@@ -11,7 +11,7 @@ import com.example.pipboyv1.R
 import com.example.pipboyv1.classes.SelectionItem
 import com.example.pipboyv1.input.PositionChangeListener
 
-class SelectionItemAdapter(private val selectionItemList: MutableList<SelectionItem>): RecyclerView.Adapter<SelectionItemAdapter.ViewHolder>() {
+class SelectionItemAdapter(private val selectionItemList: List<SelectionItem>): RecyclerView.Adapter<SelectionItemAdapter.ViewHolder>() {
     private var selectionItemLayoutList: MutableList<LinearLayout> = mutableListOf()
     private var selectionPosition: Int = 0
     private lateinit var positionChangeListener: PositionChangeListener
@@ -40,7 +40,6 @@ class SelectionItemAdapter(private val selectionItemList: MutableList<SelectionI
         selectionItemLayoutList.add(viewHolder.selectionItem)
 
         // Select first item by default
-        selectionItemList[selectionPosition].selected = true
         updateSelectionItemStyling(selectionItemLayoutList[selectionPosition], viewHolder, true)
 
         // Add an click listener to the selection item itself
@@ -51,6 +50,10 @@ class SelectionItemAdapter(private val selectionItemList: MutableList<SelectionI
         viewHolder.textLeft.text = selectionItemList[position].textLeft
         viewHolder.textCenter.text = selectionItemList[position].textCenter
         viewHolder.textRight.text = selectionItemList[position].textRight
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.hashCode().toLong()
     }
 
     override fun getItemCount(): Int {
@@ -64,18 +67,14 @@ class SelectionItemAdapter(private val selectionItemList: MutableList<SelectionI
 
     private fun handleSelectionItemClick(viewHolder: ViewHolder, position: Int) {
         // Deselect previous selection and reset styling
-        selectionItemList[selectionPosition].selected = false
         updateSelectionItemStyling(selectionItemLayoutList[selectionPosition], viewHolder, false)
 
         // Update selection in current view
-        selectionItemList[position].selected = true
         selectionPosition = position
         updateSelectionItemStyling(viewHolder.selectionItem, viewHolder, true)
 
         // Update selection in parent
-        if (positionChangeListener != null) {
-            positionChangeListener.onValueChange(position)
-        }
+        positionChangeListener.onValueChange(position)
     }
 
     private fun updateSelectionItemStyling(selectionItem: LinearLayout, viewHolder: ViewHolder, selected: Boolean) {
