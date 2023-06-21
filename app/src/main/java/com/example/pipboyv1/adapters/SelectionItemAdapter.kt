@@ -36,8 +36,10 @@ class SelectionItemAdapter(private val selectionItemList: List<SelectionItem>): 
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        // Add selection item layout to list
-        selectionItemLayoutList.add(viewHolder.selectionItem)
+        if (!selectionItemLayoutList.contains(viewHolder.selectionItem)) {
+            // Add selection item layout to list
+            selectionItemLayoutList.add(viewHolder.selectionItem)
+        }
 
         // Select first item by default
         updateSelectionItemStyling(selectionItemLayoutList[selectionPosition], viewHolder, true)
