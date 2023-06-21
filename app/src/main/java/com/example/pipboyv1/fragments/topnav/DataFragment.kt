@@ -18,20 +18,22 @@ class DataFragment : Fragment() {
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager2: ViewPager2
     private lateinit var adapter: ViewPagerAdapter
+    private lateinit var tabLayoutMediator: TabLayoutMediator
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        adapter = ViewPagerAdapter(childFragmentManager, lifecycle)
+
         return inflater.inflate(R.layout.fragment_data, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tabLayout = requireView().findViewById(R.id.dataSubNavTabLayout)
-        viewPager2 = requireView().findViewById(R.id.dataSubNavViewPager2)
-        adapter = ViewPagerAdapter(childFragmentManager, lifecycle)
+        tabLayout = view.findViewById(R.id.dataSubNavTabLayout)
+        viewPager2 = view.findViewById(R.id.dataSubNavViewPager2)
 
         setupSubNav()
     }
@@ -48,9 +50,9 @@ class DataFragment : Fragment() {
         }
 
         viewPager2.adapter = adapter
-
-        TabLayoutMediator(tabLayout, viewPager2) {
+        tabLayoutMediator = TabLayoutMediator(tabLayout, viewPager2) {
                 tab, position -> tab.text = adapter.getFragmentTitle(position)
-        }.attach()
+        }
+        tabLayoutMediator.attach()
     }
 }

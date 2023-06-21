@@ -18,6 +18,7 @@ class FullscreenActivity : AppCompatActivity() {
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager2: ViewPager2
     private lateinit var adapter: ViewPagerAdapter
+    private lateinit var tabLayoutMediator: TabLayoutMediator
     private lateinit var potInputContainer: IPotInputContainer
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,9 +48,9 @@ class FullscreenActivity : AppCompatActivity() {
         }
 
         viewPager2.adapter = adapter
-
-        TabLayoutMediator(tabLayout, viewPager2) {
+        tabLayoutMediator = TabLayoutMediator(tabLayout, viewPager2) {
                 tab, position -> tab.text = adapter.getFragmentTitle(position)
-        }.attach()
+        }
+        tabLayoutMediator.attach()
     }
 }
