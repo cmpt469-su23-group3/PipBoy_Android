@@ -39,15 +39,15 @@ class SpecialFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        adapter = SelectionItemAdapter(selectionItems)
+        adapter.setHasStableIds(true)
+        adapter.setValueChangeListener(PositionListener())
+
         return inflater.inflate(R.layout.fragment_special, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        adapter = SelectionItemAdapter(selectionItems)
-        adapter.setHasStableIds(true)
-        adapter.setValueChangeListener(PositionListener())
 
         recyclerView = view.findViewById(R.id.statSpecialSelectorRecyclerView) as RecyclerView
         recyclerView.adapter = adapter

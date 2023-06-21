@@ -28,15 +28,16 @@ class InvFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        adapter = ViewPagerAdapter(childFragmentManager, lifecycle)
+
         return inflater.inflate(R.layout.fragment_inv, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tabLayout = requireView().findViewById(R.id.invSubNavTabLayout)
-        viewPager2 = requireView().findViewById(R.id.invSubNavViewPager2)
-        adapter = ViewPagerAdapter(childFragmentManager, lifecycle)
+        tabLayout = view.findViewById(R.id.invSubNavTabLayout)
+        viewPager2 = view.findViewById(R.id.invSubNavViewPager2)
 
         setupSubNav()
     }

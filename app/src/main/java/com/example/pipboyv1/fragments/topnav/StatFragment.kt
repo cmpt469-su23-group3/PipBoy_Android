@@ -24,15 +24,16 @@ class StatFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        adapter = ViewPagerAdapter(childFragmentManager, lifecycle)
+
         return inflater.inflate(R.layout.fragment_stat, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tabLayout = requireView().findViewById(R.id.statSubNavTabLayout)
-        viewPager2 = requireView().findViewById(R.id.statSubNavViewPager2)
-        adapter = ViewPagerAdapter(childFragmentManager, lifecycle)
+        tabLayout = view.findViewById(R.id.statSubNavTabLayout)
+        viewPager2 = view.findViewById(R.id.statSubNavViewPager2)
 
         setupSubNav()
     }

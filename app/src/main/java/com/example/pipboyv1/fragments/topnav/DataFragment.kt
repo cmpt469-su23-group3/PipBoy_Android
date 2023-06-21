@@ -24,15 +24,16 @@ class DataFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        adapter = ViewPagerAdapter(childFragmentManager, lifecycle)
+
         return inflater.inflate(R.layout.fragment_data, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tabLayout = requireView().findViewById(R.id.dataSubNavTabLayout)
-        viewPager2 = requireView().findViewById(R.id.dataSubNavViewPager2)
-        adapter = ViewPagerAdapter(childFragmentManager, lifecycle)
+        tabLayout = view.findViewById(R.id.dataSubNavTabLayout)
+        viewPager2 = view.findViewById(R.id.dataSubNavViewPager2)
 
         setupSubNav()
     }
