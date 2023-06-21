@@ -15,14 +15,15 @@ import com.example.pipboyv1.helpers.populateDisplayItem
 import com.example.pipboyv1.input.PositionChangeListener
 
 class AidFragment : Fragment() {
-
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: SelectionItemAdapter
     private var HP: String = "HP"
     private var RADS: String = "Rads"
     private var WEIGHT: String = "Weight"
     private var VALUE: String = "Value"
 
     private val imgDimension: Int = 250
-    private val selectionItems: MutableList<SelectionItem> = mutableListOf(
+    private val selectionItems: List<SelectionItem> = listOf(
         SelectionItem(textLeft="Blamco Brand Mac and Cheese", data= SelectionItemData(imageId=R.drawable.aid_blamco, attributes= mapOf(
             HP to "+20",
             RADS to "+6",
@@ -65,7 +66,7 @@ class AidFragment : Fragment() {
     inner class PositionListener : PositionChangeListener {
         override fun onValueChange(newPosition: Int) {
             position = newPosition
-            populateDisplayItem(selectionItems[position].data, requireView(), requireContext(), imgDimension)
+            populateDisplayItem(selectionItems[position].data, view, context)
         }
     }
     override fun onCreateView(
@@ -78,7 +79,7 @@ class AidFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        selectionItems.sortBy { it.textLeft }
+        selectionItems.sortedBy { it.textLeft }
 
         val recyclerView: RecyclerView = view.findViewById(R.id.invAidSelectorRecyclerView) as RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)

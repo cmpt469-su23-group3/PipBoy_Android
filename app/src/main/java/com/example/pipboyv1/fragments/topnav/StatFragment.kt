@@ -18,20 +18,22 @@ class StatFragment : Fragment() {
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager2: ViewPager2
     private lateinit var adapter: ViewPagerAdapter
+    private lateinit var tabLayoutMediator: TabLayoutMediator
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        adapter = ViewPagerAdapter(childFragmentManager, lifecycle)
+
         return inflater.inflate(R.layout.fragment_stat, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tabLayout = requireView().findViewById(R.id.statSubNavTabLayout)
-        viewPager2 = requireView().findViewById(R.id.statSubNavViewPager2)
-        adapter = ViewPagerAdapter(childFragmentManager, lifecycle)
+        tabLayout = view.findViewById(R.id.statSubNavTabLayout)
+        viewPager2 = view.findViewById(R.id.statSubNavViewPager2)
 
         setupSubNav()
     }
@@ -48,9 +50,9 @@ class StatFragment : Fragment() {
         }
 
         viewPager2.adapter = adapter
-
-        TabLayoutMediator(tabLayout, viewPager2) {
+        tabLayoutMediator = TabLayoutMediator(tabLayout, viewPager2) {
                 tab, position -> tab.text = adapter.getFragmentTitle(position)
-        }.attach()
+        }
+        tabLayoutMediator.attach()
     }
 }

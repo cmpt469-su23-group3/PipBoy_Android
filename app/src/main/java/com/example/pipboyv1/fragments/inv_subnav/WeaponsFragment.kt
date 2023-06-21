@@ -15,6 +15,9 @@ import com.example.pipboyv1.helpers.populateDisplayItem
 import com.example.pipboyv1.input.PositionChangeListener
 
 class WeaponsFragment : Fragment() {
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: SelectionItemAdapter
+    private var position: Int = 0
     private var DAMAGE: String = "Damage"
     private var FIRERATE: String = "Fire Rate"
     private var RANGE: String = "Range"
@@ -23,7 +26,7 @@ class WeaponsFragment : Fragment() {
     private var VALUE: String = "Value"
 
     private val imgDimension: Int = 250
-    private val selectionItems: MutableList<SelectionItem> = mutableListOf(
+    private val selectionItems: List<SelectionItem> = listOf(
         SelectionItem(textLeft="10mm Pistol", data= SelectionItemData(imageId=R.drawable.weapon_10mm_pistol, attributes= mapOf(
             DAMAGE to "18",
             "10mm" to "158",
@@ -79,34 +82,33 @@ class WeaponsFragment : Fragment() {
             VALUE to "144",
         )))
     )
-    private var position: Int = 0
 
     inner class PositionListener : PositionChangeListener {
         override fun onValueChange(newPosition: Int) {
             position = newPosition
-            populateDisplayItem(selectionItems[position].data, requireView(), requireContext(), imgDimension)
+            populateDisplayItem(selectionItems[position].data, view, context, imgDimension)
         }
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        adapter = SelectionItemAdapter(selectionItems)
+        adapter.setHasStableIds(true)
+        adapter.setValueChangeListener(PositionListener())
+
         return inflater.inflate(R.layout.fragment_weapons, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        selectionItems.sortBy { it.textLeft }
-
-        val recyclerView: RecyclerView = view.findViewById(R.id.invWeaponsSelectorRecyclerView) as RecyclerView
+        recyclerView = view.findViewById(R.id.invWeaponsSelectorRecyclerView) as RecyclerView
+        recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
-        val adapter = SelectionItemAdapter(selectionItems)
-        adapter.setValueChangeListener(PositionListener())
-        recyclerView.adapter = adapter
 
         // Populate display panel
-        populateDisplayItem(selectionItems[position].data, view, requireContext(), imgDimension)
+        populateDisplayItem(selectionItems[position].data, view, context, imgDimension)
     }
 }

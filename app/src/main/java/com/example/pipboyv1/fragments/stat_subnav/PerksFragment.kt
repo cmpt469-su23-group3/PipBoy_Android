@@ -15,7 +15,10 @@ import com.example.pipboyv1.helpers.populateDisplayItem
 import com.example.pipboyv1.input.PositionChangeListener
 
 class PerksFragment : Fragment() {
-    private val selectionItems: MutableList<SelectionItem> = mutableListOf(
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: SelectionItemAdapter
+    private var position: Int = 0
+    private val selectionItems: List<SelectionItem> = listOf(
         SelectionItem(textLeft="Iron Fist", data=SelectionItemData(description="Channel your chi to unleash devastating fury! Punching attacks do 20% more damage to your opponent.", imageId=R.drawable.perk_iron_fist)),
         SelectionItem(textLeft="Pickpocket", data=SelectionItemData(description="Your quick hands and sticky fingers make picking pockets 25% easier.", imageId=R.drawable.perk_pickpocket)),
         SelectionItem(textLeft="Toughness", data=SelectionItemData(description="If nothing else, you can take a beating! Instantly gain +10 damage resistance.", imageId=R.drawable.perk_toughness)),
@@ -24,12 +27,11 @@ class PerksFragment : Fragment() {
         SelectionItem(textLeft="Gunslinger", data=SelectionItemData(description="Channel the spirit of the old west! Non-automatic pistols do 20% more damage.", imageId=R.drawable.perk_gunslinger)),
         SelectionItem(textLeft="Fortune Finder", data=SelectionItemData(description="You've learned to discover the Wasteland's hidden wealth, and discover more bottle caps in containers.", imageId=R.drawable.perk_fortune_finder)),
     )
-    private var position: Int = 0
 
     inner class PositionListener : PositionChangeListener {
         override fun onValueChange(newPosition: Int) {
             position = newPosition
-            populateDisplayItem(selectionItems[position].data, requireView(), requireContext())
+            populateDisplayItem(selectionItems[position].data, view, context)
         }
     }
 
@@ -37,20 +39,21 @@ class PerksFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        adapter = SelectionItemAdapter(selectionItems)
+        adapter.setHasStableIds(true)
+        adapter.setValueChangeListener(PositionListener())
+
         return inflater.inflate(R.layout.fragment_perks, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView: RecyclerView = view.findViewById(R.id.statPerksSelectorRecyclerView) as RecyclerView
+        recyclerView = view.findViewById(R.id.statPerksSelectorRecyclerView) as RecyclerView
+        recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
-        val adapter = SelectionItemAdapter(selectionItems)
-        adapter.setValueChangeListener(PositionListener())
-        recyclerView.adapter = adapter
-
         // Populate display panel
-        populateDisplayItem(selectionItems[position].data, view, requireContext())
+        populateDisplayItem(selectionItems[position].data, view, context)
     }
 }
