@@ -1,5 +1,8 @@
 package com.example.pipboyv1
 
+import android.content.Intent
+import android.nfc.NdefMessage
+import android.nfc.NfcAdapter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.viewpager2.widget.ViewPager2
@@ -20,6 +23,7 @@ class FullscreenActivity : AppCompatActivity() {
     private lateinit var adapter: ViewPagerAdapter
     private lateinit var tabLayoutMediator: TabLayoutMediator
     private lateinit var potInputContainer: IPotInputContainer
+    private lateinit var nfcAdapter: NfcAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,8 +34,32 @@ class FullscreenActivity : AppCompatActivity() {
         tabLayout = findViewById(R.id.topNavTabLayout)
         viewPager2 = findViewById(R.id.topNavViewPager2)
         adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
+        nfcAdapter = NfcAdapter.getDefaultAdapter(this)
 
         setupTopNav()
+        handleIntent(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
+            handleIntent(intent)
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent) {
+        intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)?.also { rawMsgs ->
+            (rawMsgs[0] as NdefMessage).apply {
+                // TODO: Handle payload!
+                var payload = String(records[0].payload)
+            }
+        }
+
     }
 
     private fun setupTopNav() {
