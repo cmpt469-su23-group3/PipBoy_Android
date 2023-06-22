@@ -12,10 +12,12 @@ import com.example.pipboyv1.fragments.topnav.MapFragment
 import com.example.pipboyv1.fragments.topnav.RadioFragment
 import com.example.pipboyv1.fragments.topnav.StatFragment
 import com.example.pipboyv1.adapters.ViewPagerAdapter
+import com.example.pipboyv1.classes.Holotape
 import com.example.pipboyv1.input.IPotInputContainer
 import com.example.pipboyv1.input.MockPotInputContainer
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import org.json.JSONObject
 
 class FullscreenActivity : AppCompatActivity() {
     private lateinit var tabLayout: TabLayout
@@ -55,11 +57,18 @@ class FullscreenActivity : AppCompatActivity() {
     private fun handleIntent(intent: Intent) {
         intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)?.also { rawMsgs ->
             (rawMsgs[0] as NdefMessage).apply {
-                // TODO: Handle payload!
-                var payload = String(records[0].payload)
+                handleHolotape(JSONObject(String(records[0].payload)))
             }
         }
+    }
 
+    private fun handleHolotape(payload: JSONObject) {
+        var holotape = Holotape(
+            payload.get(getString(R.string.type)) as String,
+            payload.get(getString(R.string.name)) as String
+        )
+
+        // TODO: Do something with holotape (ex. complete quest, add item to inv, etc.)
     }
 
     private fun setupTopNav() {
