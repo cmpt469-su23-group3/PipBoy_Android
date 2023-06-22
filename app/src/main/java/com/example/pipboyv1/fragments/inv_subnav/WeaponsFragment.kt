@@ -27,7 +27,7 @@ class WeaponsFragment : Fragment() {
     private var VALUE: String = "Value"
 
     private val imgDimension: Int = 250
-    private val selectionItems: List<SelectionItem> = listOf(
+    private val selectionItems: MutableList<SelectionItem> = mutableListOf(
         SelectionItem(textLeft="10mm Pistol", data= SelectionItemData(imageId=R.drawable.weapon_10mm_pistol, attributes= mapOf(
             DAMAGE to "18",
             "10mm" to "158",
@@ -104,6 +104,7 @@ class WeaponsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        selectionItems.sortBy { it.textLeft }
         recyclerView = view.findViewById(R.id.invWeaponsSelectorRecyclerView) as RecyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
