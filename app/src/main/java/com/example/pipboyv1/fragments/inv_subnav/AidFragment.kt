@@ -83,7 +83,7 @@ class AidFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        selectionItems.sortedBy { it.textLeft }
+        selectionItems.sortBy { it.textLeft }
 
         recyclerView= view.findViewById(R.id.invAidSelectorRecyclerView) as RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
