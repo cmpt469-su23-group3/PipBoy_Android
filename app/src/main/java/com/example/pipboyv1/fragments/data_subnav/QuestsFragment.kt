@@ -24,10 +24,27 @@ class QuestsFragment : Fragment() {
     private val imgDimension: Int = 250
     private val selectionItems: MutableList<SelectionItem> = mutableListOf(
 
-        SelectionItem(textLeft="Dangerous Minds", data= SelectionItemData(
-            description="There's a woman named Doctor Amari who might be able to extract the secrets of entering the Institute from Kellogg's brain.",
+        SelectionItem(textLeft="Lyon's Pride", data= SelectionItemData(
+            description="Elder Maxson says Paladin Lyons's holotape is in the ruins of the Boston Airport. It is crucial to the Brotherhood's future. I need to find it.",
             attributes= mapOf(
-                "Talk to Doctor Amari" to "",
+                "Find Paladin Lyons's Holotape" to "",
+                "Talk to Elder Maxson" to "",
+                "Talk to Paladin Danse" to "",
+                "Find Paladin Danse" to "",
+                "Talk to Proctor Ingram" to "",
+                "Talk to Elder Maxson" to "",
+                "Visit the Prydwen" to "",
+            ))),
+        SelectionItem(textLeft="All Aboard", data= SelectionItemData(
+            description="I tuned into an old Nuka-Cola family radio stations on my Pip-Boy. It was looping a jingle and advertisement for a place called Nuka-World. The broadcast mentioned a Nuka-World Transit Center with transportation to take me there. I should find it and see if I can still reach the amusement park.",
+            attributes= mapOf(
+                "Travel to the Nuka-World Transit Center" to "",
+                "Listen to the Nuka-Cola Family Radio" to "",
+            ))),
+        SelectionItem(textLeft="The Watering Hole", data= SelectionItemData(
+            description="For the next Vault 88 experiment I need to get chemical formulas Hallucigen, Inc.",
+            attributes= mapOf(
+                "Get the Chemical Research from Hallucigen, Inc." to "",
             ))),
         SelectionItem(textLeft="Out of Time", data= SelectionItemData(
             description="I haven't found Shaun yet, but I did meet a desperate man in need of help What kind of world have I woken up to?", attributes= mapOf(
