@@ -3,9 +3,12 @@
     <!-- Text colours -->
     <color name="text_1">#68e067</color>
     <color name="text_2">#3b6036</color>
+    <color name="text_finished_quest">#1D5B38</color>
 
     <!-- Background colours -->
     <color name="background_1">#66000000</color>
+    <color name="background_active_quest">#13281A</color>
+    <color name="background_finished_quest">#0F1D13</color>
     <color name="background_2">#333</color>
 
     <!-- Generic colours -->

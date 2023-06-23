@@ -16,12 +16,13 @@
         android:tintMode="multiply"
         app:tint="@color/text_1"
         android:contentDescription="@string/display_item_image" />
+
     <TextView
         android:id="@+id/displayItemDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/text_1"
-    />
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/text_1" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/displayItemRecyclerView"
         android:layout_width="fill_parent"

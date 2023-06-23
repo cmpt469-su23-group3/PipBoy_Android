@@ -25,18 +25,12 @@ class QuestsFragment : Fragment() {
     private val selectionItems: MutableList<SelectionItem> = mutableListOf(
 
         SelectionItem(textLeft="Dangerous Minds", data= SelectionItemData(
-            description="There's a woman named Doctor Amari who might be able to extract the secrets of entering the Institute from Kellogg's brain.\n" +
-                    "\n" +
-                    "\n" +
-                    "\n" +
-                    "\n" +
-                    "\n",
-            imageId=R.drawable.weapon_10mm_pistol, attributes= mapOf(
+            description="There's a woman named Doctor Amari who might be able to extract the secrets of entering the Institute from Kellogg's brain.",
+            attributes= mapOf(
                 "Talk to Doctor Amari" to "",
             ))),
         SelectionItem(textLeft="Out of Time", data= SelectionItemData(
-            description="I haven't found Shaun yet, but I did meet a desperate man in need of help What kind of work have I woken up to?\n\n\n\n\n\n",
-            imageId=R.drawable.weapon_10mm_pistol, attributes= mapOf(
+            description="I haven't found Shaun yet, but I did meet a desperate man in need of help What kind of world have I woken up to?", attributes= mapOf(
                 "Investigate Concord" to "",
                 "Kill the Insects" to "",
                 "Search the neighbourhood with Codsworth" to "",
@@ -44,16 +38,7 @@ class QuestsFragment : Fragment() {
                 "Go home" to "",
                 "Exit Vault 111" to "",
             ))),
-//        SelectionItem(textLeft="Out of Time", data= SelectionItemData(
-//            description="I haven't found Shaun yet, but I did meet a desperate man in need of help What kind of work have I woken up to?\n",
-//            imageId=R.drawable.weapon_10mm_pistol, attributes= mapOf(
-//                "Investigate Concord" to "",
-//                "Kill the Insects" to "",
-//                "Search the neighbourhood with Codsworth" to "",
-//                "Talk to Codsworth" to "",
-//                "Go home" to "",
-//                "Exit Vault 111" to "",
-//            ))),
+
     )
 
     inner class PositionListener : PositionChangeListener {
