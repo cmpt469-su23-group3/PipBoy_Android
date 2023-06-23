@@ -63,12 +63,11 @@ class FullscreenActivity : AppCompatActivity() {
     }
 
     private fun handleHolotape(payload: JSONObject) {
-        var holotape = Holotape(
-            payload.get(getString(R.string.type)) as String,
-            payload.get(getString(R.string.name)) as String
-        )
 
-        // TODO: Do something with holotape (ex. complete quest, add item to inv, etc.)
+        var holotape = Holotape(payload.get(getString(R.string.id)) as String)
+
+        // TODO: Dialog that indicates some action
+        // TODO: Update layout attributes of quest to signify it's completed
     }
 
     private fun setupTopNav() {

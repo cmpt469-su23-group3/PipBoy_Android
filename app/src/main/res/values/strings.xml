@@ -49,6 +49,5 @@
     <string name="inv_weapon_stat_value">Value</string>
 
     <!-- Holotape fields -->
-    <string name="type">type</string>
-    <string name="name">name</string>
+    <string name="id">id</string>
 </resources>
