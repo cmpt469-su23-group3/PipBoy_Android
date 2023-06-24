@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:baselineAligned="false"
+    android:id="@+id/attribute"
+    >
+
+    <!-- Left-aligned text -->
+    <TextView
+        android:id="@+id/attributeTextLeftQuests"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_weight="1"
+        android:background="#0F1D13"
+        android:gravity="start"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:textColor="@color/text_finished_quest" />
+
+    <!-- Right-aligned text -->
+    <TextView
+        android:id="@+id/attributeTextRightQuests"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="end"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:gravity="end"
+        android:background="@color/background_finished_quest"
+        android:textColor="@color/text_finished_quest"
+    />
+</LinearLayout>
