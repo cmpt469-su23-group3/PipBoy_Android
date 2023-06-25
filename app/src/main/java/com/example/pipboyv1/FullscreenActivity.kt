@@ -48,7 +48,7 @@ class FullscreenActivity : AppCompatActivity() {
 
         setupTopNav()
         
-        setupPotInputs()
+        setupPotInputs(forceMock = true) // Keeping this true for Mon Jun 26's demo
     }
 
     private fun setupTopNav() {
