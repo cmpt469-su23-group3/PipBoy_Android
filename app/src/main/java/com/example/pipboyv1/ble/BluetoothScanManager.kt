@@ -38,6 +38,7 @@ class BluetoothScanManager(private val btAdapter: BluetoothAdapter) {
         override fun onScanResult(callbackType: Int, result: ScanResult) {
             val dev = result.device
             Log.i("ScanCallback", "Found BLE device, name: ${dev.name}, address: ${dev.address}")
+            stopScan()
         }
     }
 }
