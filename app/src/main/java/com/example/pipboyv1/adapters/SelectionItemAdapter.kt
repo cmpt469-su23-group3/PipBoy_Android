@@ -9,12 +9,12 @@ import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pipboyv1.R
 import com.example.pipboyv1.classes.SelectionItem
-import com.example.pipboyv1.input.PositionChangeListener
+import com.example.pipboyv1.input.SelectionItemInputListener
 
 class SelectionItemAdapter(private val selectionItemList: List<SelectionItem>): RecyclerView.Adapter<SelectionItemAdapter.ViewHolder>() {
     private var selectionItemLayoutList: MutableList<LinearLayout> = mutableListOf()
     private var selectionPosition: Int = 0
-    private lateinit var positionChangeListener: PositionChangeListener
+    private lateinit var selectionItemInputListener: SelectionItemInputListener
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val selectionItem: LinearLayout
@@ -63,8 +63,8 @@ class SelectionItemAdapter(private val selectionItemList: List<SelectionItem>): 
     }
 
     // Method must be called by the parent to listen for position change
-    fun setValueChangeListener(positionChangeListener: PositionChangeListener?) {
-        this.positionChangeListener = positionChangeListener!!
+    fun setValueChangeListener(selectionItemInputListener: SelectionItemInputListener?) {
+        this.selectionItemInputListener = selectionItemInputListener!!
     }
 
     private fun handleSelectionItemClick(viewHolder: ViewHolder, position: Int) {
@@ -76,7 +76,7 @@ class SelectionItemAdapter(private val selectionItemList: List<SelectionItem>): 
         updateSelectionItemStyling(viewHolder.selectionItem, viewHolder, true)
 
         // Update selection in parent
-        positionChangeListener.onValueChange(position)
+        selectionItemInputListener.onValueChange(position)
     }
 
     private fun updateSelectionItemStyling(selectionItem: LinearLayout, viewHolder: ViewHolder, selected: Boolean) {

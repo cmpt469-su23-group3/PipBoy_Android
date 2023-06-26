@@ -12,14 +12,14 @@ import com.example.pipboyv1.adapters.SelectionItemAdapter
 import com.example.pipboyv1.classes.SelectionItem
 import com.example.pipboyv1.classes.SelectionItemData
 import com.example.pipboyv1.helpers.populateDisplayItemQuest
-import com.example.pipboyv1.input.PositionChangeListener
+import com.example.pipboyv1.input.SelectionItemInputListener
+import java.util.concurrent.atomic.AtomicInteger
 
 class QuestsFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: SelectionItemAdapter
 
-    private var position: Int = 0
-
+    private var position: AtomicInteger = AtomicInteger()
 
     private val imgDimension: Int = 250
     private val selectionItems: MutableList<SelectionItem> = mutableListOf(
@@ -58,10 +58,11 @@ class QuestsFragment : Fragment() {
 
     )
 
-    inner class PositionListener : PositionChangeListener {
+    inner class QuestSelectionItemInputResponder : SelectionItemInputListener {
+        // Note: Differs from t he regular `SelectionItemInputResponder` because `populateDisplayItemQuest` must be called
         override fun onValueChange(newPosition: Int) {
-            position = newPosition
-            populateDisplayItemQuest(selectionItems[position].data, view, context, imgDimension)
+            position.set(newPosition)
+            populateDisplayItemQuest(selectionItems[position.get()].data, view, context, imgDimension)
         }
     }
     override fun onCreateView(
@@ -70,7 +71,6 @@ class QuestsFragment : Fragment() {
     ): View? {
         adapter = SelectionItemAdapter(selectionItems)
         adapter.setHasStableIds(true)
-        adapter.setValueChangeListener(PositionListener())
 
         return inflater.inflate(R.layout.fragment_quests, container, false)
     }
@@ -78,14 +78,17 @@ class QuestsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        adapter.setValueChangeListener(QuestSelectionItemInputResponder())
+
         selectionItems.sortBy { it.textLeft }
+
         recyclerView = view.findViewById(R.id.dataQuestsSelectorRecyclerView) as RecyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
 
         // Populate display panel
-        populateDisplayItemQuest(selectionItems[position].data, view, context, imgDimension)
+        populateDisplayItemQuest(selectionItems[position.get()].data, view, context, imgDimension)
     }
 
 }
