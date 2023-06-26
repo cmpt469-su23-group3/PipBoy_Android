@@ -1,9 +1,11 @@
-package com.example.pipboyv1.input
+package com.example.pipboyv1.ble
 
+import com.example.pipboyv1.input.IPotInputContainer
+import com.example.pipboyv1.input.PotInputListener
 import java.util.concurrent.ConcurrentHashMap
 
 
-class BlePotInputContainer : IPotInputContainer {
+class BlePotInputContainer(private val bluetoothScanManager: BluetoothScanManager) : IPotInputContainer {
     
     private val listeners: MutableSet<PotInputListener> = ConcurrentHashMap.newKeySet()
 
