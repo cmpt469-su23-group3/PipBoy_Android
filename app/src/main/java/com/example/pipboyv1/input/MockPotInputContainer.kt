@@ -6,7 +6,9 @@ import kotlin.Exception
 class MockPotInputContainer : IPotInputContainer {
     
     private val listeners: MutableSet<PotInputListener> = mutableSetOf()
-    private var mockPotValues: FloatArray = FloatArray(3) { 0F }
+    companion object {
+        private var mockPotValues: FloatArray = FloatArray(3) { 0F }
+    }
 
     override fun addListener(listener: PotInputListener) {
         listeners += listener
