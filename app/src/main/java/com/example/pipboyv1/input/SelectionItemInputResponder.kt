@@ -6,7 +6,7 @@ import com.example.pipboyv1.classes.SelectionItem
 import com.example.pipboyv1.helpers.populateDisplayItem
 import java.util.concurrent.atomic.AtomicInteger
 
-class SelectionItemInputResponder(var position: AtomicInteger, val selectionItems: List<SelectionItem>, val view: View?, val context: Context?): SelectionItemInputListener {
+class SelectionItemInputResponder(val position: AtomicInteger, val selectionItems: List<SelectionItem>, val view: View?, val context: Context?): SelectionItemInputListener {
 
     override fun onValueChange(newPosition: Int) {
         position.set(newPosition)
