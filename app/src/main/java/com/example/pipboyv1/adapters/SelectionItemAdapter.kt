@@ -63,8 +63,8 @@ class SelectionItemAdapter(private val selectionItemList: List<SelectionItem>): 
     }
 
     // Method must be called by the parent to listen for position change
-    fun setValueChangeListener(selectionItemInputListener: SelectionItemInputListener?) {
-        this.selectionItemInputListener = selectionItemInputListener!!
+    fun setValueChangeListener(selectionItemInputListener: SelectionItemInputListener) {
+        this.selectionItemInputListener = selectionItemInputListener
     }
 
     private fun handleSelectionItemClick(viewHolder: ViewHolder, position: Int) {
