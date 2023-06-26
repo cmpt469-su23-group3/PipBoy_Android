@@ -59,7 +59,7 @@ class QuestsFragment : Fragment() {
     )
 
     inner class QuestSelectionItemInputResponder : SelectionItemInputListener {
-        // Note: Differs from t he regular `SelectionItemInputResponder` because `populateDisplayItemQuest` must be called
+        // Note: Quests behave differently from other selection items
         override fun onValueChange(newPosition: Int) {
             position.set(newPosition)
             populateDisplayItemQuest(selectionItems[position.get()].data, view, context, imgDimension)
