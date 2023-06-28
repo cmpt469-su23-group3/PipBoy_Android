@@ -12,12 +12,13 @@ import com.example.pipboyv1.classes.SelectionItem
 import com.example.pipboyv1.classes.SelectionItemData
 import com.example.pipboyv1.adapters.SelectionItemAdapter
 import com.example.pipboyv1.helpers.populateDisplayItem
-import com.example.pipboyv1.input.PositionChangeListener
+import com.example.pipboyv1.input.SelectionItemInputResponder
+import java.util.concurrent.atomic.AtomicInteger
 
 class PerksFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: SelectionItemAdapter
-    private var position: Int = 0
+    private var position: AtomicInteger = AtomicInteger()
     private val selectionItems: List<SelectionItem> = listOf(
         SelectionItem(textLeft="Iron Fist", data=SelectionItemData(description="Channel your chi to unleash devastating fury! Punching attacks do 20% more damage to your opponent.", imageId=R.drawable.perk_iron_fist)),
         SelectionItem(textLeft="Pickpocket", data=SelectionItemData(description="Your quick hands and sticky fingers make picking pockets 25% easier.", imageId=R.drawable.perk_pickpocket)),
@@ -28,20 +29,12 @@ class PerksFragment : Fragment() {
         SelectionItem(textLeft="Fortune Finder", data=SelectionItemData(description="You've learned to discover the Wasteland's hidden wealth, and discover more bottle caps in containers.", imageId=R.drawable.perk_fortune_finder)),
     )
 
-    inner class PositionListener : PositionChangeListener {
-        override fun onValueChange(newPosition: Int) {
-            position = newPosition
-            populateDisplayItem(selectionItems[position].data, view, context)
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         adapter = SelectionItemAdapter(selectionItems)
         adapter.setHasStableIds(true)
-        adapter.setValueChangeListener(PositionListener())
 
         return inflater.inflate(R.layout.fragment_perks, container, false)
     }
@@ -49,11 +42,13 @@ class PerksFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        adapter.setValueChangeListener(SelectionItemInputResponder(position, selectionItems, view, context))
+
         recyclerView = view.findViewById(R.id.statPerksSelectorRecyclerView) as RecyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
         // Populate display panel
-        populateDisplayItem(selectionItems[position].data, view, context)
+        populateDisplayItem(selectionItems[position.get()].data, view, context)
     }
 }
