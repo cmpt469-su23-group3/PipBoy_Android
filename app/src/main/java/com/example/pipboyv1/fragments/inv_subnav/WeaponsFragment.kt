@@ -12,13 +12,14 @@ import com.example.pipboyv1.adapters.SelectionItemAdapter
 import com.example.pipboyv1.classes.SelectionItem
 import com.example.pipboyv1.classes.SelectionItemData
 import com.example.pipboyv1.helpers.populateDisplayItem
-import com.example.pipboyv1.input.PositionChangeListener
+import com.example.pipboyv1.input.SelectionItemInputResponder
+import java.util.concurrent.atomic.AtomicInteger
 
 class WeaponsFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: SelectionItemAdapter
 
-    private var position: Int = 0
+    private var position: AtomicInteger = AtomicInteger()
     private var DAMAGE: String = "Damage"
     private var FIRERATE: String = "Fire Rate"
     private var RANGE: String = "Range"
@@ -84,19 +85,12 @@ class WeaponsFragment : Fragment() {
         )))
     )
 
-    inner class PositionListener : PositionChangeListener {
-        override fun onValueChange(newPosition: Int) {
-            position = newPosition
-            populateDisplayItem(selectionItems[position].data, view, context, imgDimension)
-        }
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         adapter = SelectionItemAdapter(selectionItems)
         adapter.setHasStableIds(true)
-        adapter.setValueChangeListener(PositionListener())
 
         return inflater.inflate(R.layout.fragment_weapons, container, false)
     }
@@ -104,13 +98,16 @@ class WeaponsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        adapter.setValueChangeListener(SelectionItemInputResponder(position, selectionItems, view, context))
+
         selectionItems.sortBy { it.textLeft }
+
         recyclerView = view.findViewById(R.id.invWeaponsSelectorRecyclerView) as RecyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
 
         // Populate display panel
-        populateDisplayItem(selectionItems[position].data, view, context, imgDimension)
+        populateDisplayItem(selectionItems[position.get()].data, view, context, imgDimension)
     }
 }

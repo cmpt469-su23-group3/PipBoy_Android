@@ -1,6 +1,6 @@
 package com.example.pipboyv1.input
 
-interface PositionChangeListener {
+interface SelectionItemInputListener {
 
     fun onValueChange(newPosition: Int)
 
