@@ -34,9 +34,13 @@ class MockPotInputContainer : IPotInputContainer {
         if (decrementValue < 0F) {
             throw Exception("Potentiometer value to increment must not be negative. Given value is: $decrementValue")
         }
-        if (mockPotValues[potIndex] - decrementValue < 0F) {
+
+        val newPotVal = mockPotValues[potIndex] - decrementValue
+        if (newPotVal < 0F) {
             // could show a debug pop-up window here
             mockPotValues[potIndex] = 0F
+        } else {
+            mockPotValues[potIndex] = newPotVal
         }
 
         for (listener in listeners) {
@@ -49,9 +53,13 @@ class MockPotInputContainer : IPotInputContainer {
         if (incrementValue < 0F) {
             throw Exception("Potentiometer value to increment must not be negative. Given value is: $incrementValue")
         }
-        if (mockPotValues[potIndex] + incrementValue > 100F) {
+
+        val newPotVal = mockPotValues[potIndex] + incrementValue
+        if (newPotVal > 100F) {
             // could show a debug pop-up window here
             mockPotValues[potIndex] = 100F
+        } else {
+            mockPotValues[potIndex] = newPotVal
         }
 
         for (listener in listeners) {
