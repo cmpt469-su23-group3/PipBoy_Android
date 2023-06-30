@@ -6,6 +6,9 @@ import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.pipboyv1.fragments.topnav.DataFragment
@@ -16,22 +19,25 @@ import com.example.pipboyv1.fragments.topnav.StatFragment
 import com.example.pipboyv1.adapters.ViewPagerAdapter
 import com.example.pipboyv1.ble.BlePotInputContainer
 import com.example.pipboyv1.ble.BluetoothScanManager
+import com.example.pipboyv1.mockBle.PotValueDialogDisplay
+import com.example.pipboyv1.mockBle.PotIndexDialogDisplay
 import com.example.pipboyv1.input.IPotInputContainer
 import com.example.pipboyv1.input.MockPotInputContainer
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class FullscreenActivity : AppCompatActivity() {
-    
+
     companion object {
         private const val BLE_REQUEST_CODE: Int = 1
     }
-    
+
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager2: ViewPager2
     private lateinit var adapter: ViewPagerAdapter
     private lateinit var tabLayoutMediator: TabLayoutMediator
-    
+    private lateinit var mockPotMenuBtn: Button
+
     private lateinit var potInputContainer: IPotInputContainer
     private val bluetoothAdapter: BluetoothAdapter? by lazy {
         (getSystemService(Context.BLUETOOTH_SERVICE) as android.bluetooth.BluetoothManager).adapter
@@ -47,7 +53,8 @@ class FullscreenActivity : AppCompatActivity() {
         adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
 
         setupTopNav()
-        
+        setupMockPot()
+
         setupPotInputs(forceMock = true) // Keeping this true for Mon Jun 26's demo
     }
 
@@ -65,15 +72,49 @@ class FullscreenActivity : AppCompatActivity() {
         }
 
         viewPager2.adapter = adapter
-        tabLayoutMediator = TabLayoutMediator(tabLayout, viewPager2) {
-                tab, position -> tab.text = adapter.getFragmentTitle(position)
+        tabLayoutMediator = TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
+            tab.text = adapter.getFragmentTitle(position)
         }
         tabLayoutMediator.attach()
     }
-    
+
+    private fun setupMockPot() {
+        mockPotMenuBtn = findViewById(R.id.potMenuButton)
+        mockPotMenuBtn.setOnClickListener {
+            // TODO: display a pop up menu
+            val mockPotMenu: PopupMenu = PopupMenu(this, mockPotMenuBtn)
+            mockPotMenu.menuInflater.inflate(R.menu.menu_mockpot, mockPotMenu.menu)
+            mockPotMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
+                when(item.itemId) {
+                    R.id.addPotValItem -> {
+                        Toast.makeText(applicationContext, "Added to POT Value", Toast.LENGTH_SHORT)
+                            .show()
+//                        PotValueDialogDisplay.displayMockPotValueDialog(PotValueDialogDisplay.MOCK_POT_ADD)
+                    }
+                    R.id.subPotValItem -> {
+                        Toast.makeText(
+                            applicationContext,
+                            "Subtracted from POT Value",
+                            Toast.LENGTH_SHORT
+                        ).show()
+//                        PotValueDialogDisplay.displayMockPotValueDialog(PotValueDialogDisplay.MOCK_POT_SUB)
+                    }
+                    R.id.changePotValItem -> {
+                        Toast.makeText(applicationContext, "Changing POT value", Toast.LENGTH_SHORT)
+                            .show()
+//                        PotValueDialogDisplay.displayMockPotValueDialog(PotValueDialogDisplay.MOCK_POT_CHANGE)
+                    }
+                }
+                true
+            })
+            mockPotMenu.show()
+        }
+
+    }
+
     private fun setupPotInputs(forceMock: Boolean = false) {
         val container: IPotInputContainer
-        
+
         val blAdapter = if (forceMock) null else bluetoothAdapter
         if (blAdapter != null) {
             val mgr = BluetoothScanManager(blAdapter)
@@ -84,7 +125,7 @@ class FullscreenActivity : AppCompatActivity() {
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 BLE_REQUEST_CODE
             )
-            
+
             container = BlePotInputContainer(mgr)
         } else {
             container = MockPotInputContainer()
@@ -109,6 +150,7 @@ class FullscreenActivity : AppCompatActivity() {
             BLE_REQUEST_CODE -> {
                 bluetoothScanManager?.startScan()
             }
+
             else -> recreate()
         }
     }

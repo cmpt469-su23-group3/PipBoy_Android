@@ -14,8 +14,11 @@ class MockPotInputContainer : IPotInputContainer {
     override fun removeListener(listener: PotInputListener) {
         listeners -= listener
     }
-    
-    // TODO implement your mocks for calling the PotInputListener functions
+
+    fun getPotValue(potIndex: Int): Float {
+        return mockPotValues[potIndex]
+    }
+
     fun setPotValue(potIndex: Int, percentageValue: Float) {
         checkPotIndex(potIndex)
         if (percentageValue !in 0F..100F) {
