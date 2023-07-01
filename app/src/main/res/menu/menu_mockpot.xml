@@ -8,7 +8,4 @@
     <item
         android:id="@+id/subPotValItem"
         android:title="Pot Val -" />
-    <item
-        android:id="@+id/changePotValItem"
-        android:title="Pot Val Change" />
 </menu>

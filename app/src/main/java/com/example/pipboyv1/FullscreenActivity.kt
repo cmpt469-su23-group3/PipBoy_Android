@@ -83,15 +83,11 @@ class FullscreenActivity : AppCompatActivity() {
             mockPotMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
                 when(item.itemId) {
                     R.id.addPotValItem -> {
-                        MockPotDialog.displayPotIndexDialog(this, MockPotDialog.MOCK_POT_ADD,
+                        MockPotDialog.displayPotIndexDialog(this, MockPotDialog.PotAction.POT_ADD,
                             potInputContainer as MockPotInputContainer)
                     }
                     R.id.subPotValItem -> {
-                        MockPotDialog.displayPotIndexDialog(this, MockPotDialog.MOCK_POT_SUB,
-                            potInputContainer as MockPotInputContainer)
-                    }
-                    R.id.changePotValItem -> {
-                        MockPotDialog.displayPotIndexDialog(this, MockPotDialog.MOCK_POT_CHANGE,
+                        MockPotDialog.displayPotIndexDialog(this, MockPotDialog.PotAction.POT_SUB,
                             potInputContainer as MockPotInputContainer)
                     }
                 }

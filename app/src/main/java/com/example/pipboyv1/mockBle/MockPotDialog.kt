@@ -10,33 +10,33 @@ import com.example.pipboyv1.input.MockPotInputContainer
 import kotlin.Exception
 
 class MockPotDialog {
+    enum class PotIndex {
+        POT_ZERO, POT_ONE, POT_TWO
+    }
+
+    enum class PotAction {
+        POT_ADD, POT_SUB
+    }
+
     companion object {
-        private const val POT_ZERO: Int = 0
-        private const val POT_ONE: Int = 1
-        private const val POT_TWO: Int = 2
-
-        const val MOCK_POT_ADD: Int = 0
-        const val MOCK_POT_SUB: Int = 1
-        const val MOCK_POT_CHANGE: Int = 2
-
-        fun displayPotIndexDialog(activityContext: Context, mockPotType: Int,
+        fun displayPotIndexDialog(activityContext: Context, mockPotType: PotAction,
                                   mockPotContainer: MockPotInputContainer) {
             val alertDialog: AlertDialog.Builder = AlertDialog.Builder(activityContext)
-            val items: Array<String> = arrayOf<String>("Potentiometer 1", "Potentiometer 2", "Potentiometer 3")
+            val items: Array<String> = arrayOf("Potentiometer 1", "Potentiometer 2", "Potentiometer 3")
 
-            var potIndex: Int = 0
-            alertDialog.setSingleChoiceItems(items, potIndex, DialogInterface.OnClickListener { _: DialogInterface, choice: Int ->
+            var chosenPot: PotIndex = PotIndex.POT_ZERO
+            alertDialog.setSingleChoiceItems(items, 0, DialogInterface.OnClickListener { _: DialogInterface, choice: Int ->
                 when (choice) {
-                    0 -> { potIndex = POT_ZERO }
-                    1 -> { potIndex = POT_ONE }
-                    2 -> { potIndex = POT_TWO }
+                    0 -> { chosenPot = PotIndex.POT_ZERO }
+                    1 -> { chosenPot = PotIndex.POT_ONE }
+                    2 -> { chosenPot = PotIndex.POT_TWO }
                 }
             })
 
             alertDialog.setPositiveButton("Next", DialogInterface.OnClickListener { _: DialogInterface, _: Int ->
-                Toast.makeText(activityContext.applicationContext, "Chose POT $potIndex with option $mockPotType", Toast.LENGTH_SHORT)
+                Toast.makeText(activityContext.applicationContext, "Chose POT ${chosenPot.ordinal} with option $mockPotType", Toast.LENGTH_SHORT)
                     .show()
-                displayPotValueDialog(activityContext, potIndex, mockPotType, mockPotContainer)
+                displayPotValueDialog(activityContext, chosenPot, mockPotType, mockPotContainer)
             })
             alertDialog.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog: DialogInterface, _: Int ->
                 dialog.cancel()
@@ -46,23 +46,20 @@ class MockPotDialog {
             alertDialog.show()
         }
 
-        private fun displayPotValueDialog(activityContext: Context, potIndex: Int, mockPotType: Int,
+        private fun displayPotValueDialog(activityContext: Context, potIndex: PotIndex, mockPotType: PotAction,
                                           mockPotContainer: MockPotInputContainer) {
             val alertDialog: AlertDialog.Builder = AlertDialog.Builder(activityContext)
-            val selectedPotValue: Float =  mockPotContainer.getPotValue(potIndex)
-            alertDialog.setTitle("POT $potIndex value: $selectedPotValue")
+            val selectedPotValue: Float =  mockPotContainer.getPotValue(potIndex.ordinal)
+            alertDialog.setTitle("POT ${potIndex.ordinal} value: $selectedPotValue")
 
-            val potValueInput: EditText = EditText(activityContext)
+            val potValueInput = EditText(activityContext)
             potValueInput.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
             when (mockPotType) {
-                MOCK_POT_ADD -> {
-                    potValueInput.hint = "Value to Add"
+                PotAction.POT_ADD -> {
+                    potValueInput.hint = "Value to Add (Move Pot to Right)"
                 }
-                MOCK_POT_SUB -> {
-                    potValueInput.hint = "Value to Subtract"
-                }
-                MOCK_POT_CHANGE -> {
-                    potValueInput.hint = "New Value (Between 0-100)"
+                PotAction.POT_SUB -> {
+                    potValueInput.hint = "Value to Subtract (Move Pot to Left)"
                 }
                 else -> {
                     Toast.makeText(activityContext.applicationContext, "Uh oh. I didn't get what I was supposed to do with this data...",
@@ -75,19 +72,16 @@ class MockPotDialog {
             alertDialog.setPositiveButton("OK", DialogInterface.OnClickListener { _: DialogInterface, _: Int ->
                 try {
                     when (mockPotType) {
-                        MOCK_POT_ADD -> {
-                            mockPotContainer.moveRight(potIndex, potValueInput.text.toString().toFloat())
+                        PotAction.POT_ADD -> {
+                            mockPotContainer.moveRight(potIndex.ordinal, potValueInput.text.toString().toFloat())
                         }
-                        MOCK_POT_SUB -> {
-                            mockPotContainer.moveLeft(potIndex, potValueInput.text.toString().toFloat())
-                        }
-                        MOCK_POT_CHANGE -> {
-                            mockPotContainer.setPotValue(potIndex, potValueInput.text.toString().toFloat())
+                        PotAction.POT_SUB -> {
+                            mockPotContainer.moveLeft(potIndex.ordinal, potValueInput.text.toString().toFloat())
                         }
                     }
 
-                    val updatedPotValue: Float =  mockPotContainer.getPotValue(potIndex)
-                    Toast.makeText(activityContext.applicationContext, "New POT $potIndex value: $updatedPotValue",
+                    val updatedPotValue: Float =  mockPotContainer.getPotValue(potIndex.ordinal)
+                    Toast.makeText(activityContext.applicationContext, "New POT ${potIndex.ordinal} value: $updatedPotValue",
                         Toast.LENGTH_SHORT).show()
                 } catch (e: Exception) {
                     Toast.makeText(activityContext.applicationContext, e.message, Toast.LENGTH_SHORT).show()
