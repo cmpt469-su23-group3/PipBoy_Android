@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.pipboyv1.fragments.topnav.DataFragment
@@ -19,8 +18,7 @@ import com.example.pipboyv1.fragments.topnav.StatFragment
 import com.example.pipboyv1.adapters.ViewPagerAdapter
 import com.example.pipboyv1.ble.BlePotInputContainer
 import com.example.pipboyv1.ble.BluetoothScanManager
-import com.example.pipboyv1.mockBle.PotValueDialogDisplay
-import com.example.pipboyv1.mockBle.PotIndexDialogDisplay
+import com.example.pipboyv1.mockBle.MockPotDialog
 import com.example.pipboyv1.input.IPotInputContainer
 import com.example.pipboyv1.input.MockPotInputContainer
 import com.google.android.material.tabs.TabLayout
@@ -53,7 +51,6 @@ class FullscreenActivity : AppCompatActivity() {
         adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
 
         setupTopNav()
-        setupMockPot()
 
         setupPotInputs(forceMock = true) // Keeping this true for Mon Jun 26's demo
     }
@@ -81,28 +78,21 @@ class FullscreenActivity : AppCompatActivity() {
     private fun setupMockPot() {
         mockPotMenuBtn = findViewById(R.id.potMenuButton)
         mockPotMenuBtn.setOnClickListener {
-            // TODO: display a pop up menu
             val mockPotMenu: PopupMenu = PopupMenu(this, mockPotMenuBtn)
             mockPotMenu.menuInflater.inflate(R.menu.menu_mockpot, mockPotMenu.menu)
             mockPotMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
                 when(item.itemId) {
                     R.id.addPotValItem -> {
-                        Toast.makeText(applicationContext, "Added to POT Value", Toast.LENGTH_SHORT)
-                            .show()
-//                        PotValueDialogDisplay.displayMockPotValueDialog(PotValueDialogDisplay.MOCK_POT_ADD)
+                        MockPotDialog.displayPotIndexDialog(this, MockPotDialog.MOCK_POT_ADD,
+                            potInputContainer as MockPotInputContainer)
                     }
                     R.id.subPotValItem -> {
-                        Toast.makeText(
-                            applicationContext,
-                            "Subtracted from POT Value",
-                            Toast.LENGTH_SHORT
-                        ).show()
-//                        PotValueDialogDisplay.displayMockPotValueDialog(PotValueDialogDisplay.MOCK_POT_SUB)
+                        MockPotDialog.displayPotIndexDialog(this, MockPotDialog.MOCK_POT_SUB,
+                            potInputContainer as MockPotInputContainer)
                     }
                     R.id.changePotValItem -> {
-                        Toast.makeText(applicationContext, "Changing POT value", Toast.LENGTH_SHORT)
-                            .show()
-//                        PotValueDialogDisplay.displayMockPotValueDialog(PotValueDialogDisplay.MOCK_POT_CHANGE)
+                        MockPotDialog.displayPotIndexDialog(this, MockPotDialog.MOCK_POT_CHANGE,
+                            potInputContainer as MockPotInputContainer)
                     }
                 }
                 true
@@ -129,6 +119,7 @@ class FullscreenActivity : AppCompatActivity() {
             container = BlePotInputContainer(mgr)
         } else {
             container = MockPotInputContainer()
+            setupMockPot()
             runOnUiThread {
                 AlertDialog.Builder(this).apply {
                     setMessage("Note: Using mocked pot. inputs")
