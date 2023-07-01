@@ -10,7 +10,7 @@ import com.example.pipboyv1.input.MockPotInputContainer
 import kotlin.Exception
 
 class MockPotDialog {
-    enum class PotIndex {
+    private enum class PotIndex {
         POT_ZERO, POT_ONE, POT_TWO
     }
 
