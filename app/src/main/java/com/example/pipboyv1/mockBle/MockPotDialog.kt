@@ -53,7 +53,7 @@ class MockPotDialog {
             alertDialog.setTitle("POT $potIndex value: $selectedPotValue")
 
             val potValueInput: EditText = EditText(activityContext)
-            potValueInput.inputType = InputType.TYPE_CLASS_NUMBER
+            potValueInput.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
             when (mockPotType) {
                 MOCK_POT_ADD -> {
                     potValueInput.hint = "Value to Add"
