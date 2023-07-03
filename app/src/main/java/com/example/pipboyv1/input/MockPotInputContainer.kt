@@ -14,18 +14,9 @@ class MockPotInputContainer : IPotInputContainer {
     override fun removeListener(listener: PotInputListener) {
         listeners -= listener
     }
-    
-    // TODO implement your mocks for calling the PotInputListener functions
-    fun setPotValue(potIndex: Int, percentageValue: Float) {
-        checkPotIndex(potIndex)
-        if (percentageValue !in 0F..100F) {
-            throw Exception("Potentiometer value to be set must be between 0 and 100. Given value: $percentageValue")
-        }
 
-        mockPotValues[potIndex] = percentageValue
-        for (listener in listeners) {
-            listener.onInputChange(potIndex, percentageValue)
-        }
+    fun getPotValue(potIndex: Int): Float {
+        return mockPotValues[potIndex]
     }
 
     // Left means decreasing the value and right means increasing the value
@@ -37,10 +28,9 @@ class MockPotInputContainer : IPotInputContainer {
 
         val newPotVal = mockPotValues[potIndex] - decrementValue
         if (newPotVal < 0F) {
-            // could show a debug pop-up window here
-            mockPotValues[potIndex] = 0F
+            setPotValue(potIndex, 0F)
         } else {
-            mockPotValues[potIndex] = newPotVal
+            setPotValue(potIndex, newPotVal)
         }
 
         for (listener in listeners) {
@@ -56,14 +46,25 @@ class MockPotInputContainer : IPotInputContainer {
 
         val newPotVal = mockPotValues[potIndex] + incrementValue
         if (newPotVal > 100F) {
-            // could show a debug pop-up window here
-            mockPotValues[potIndex] = 100F
+            setPotValue(potIndex, 100F)
         } else {
-            mockPotValues[potIndex] = newPotVal
+            setPotValue(potIndex, newPotVal)
         }
 
         for (listener in listeners) {
             listener.onMoveRight(potIndex, mockPotValues[potIndex])
+        }
+    }
+
+    private fun setPotValue(potIndex: Int, percentageValue: Float) {
+        checkPotIndex(potIndex)
+        if (percentageValue !in 0F..100F) {
+            throw Exception("Potentiometer value to be set must be between 0 and 100. Given value: $percentageValue")
+        }
+
+        mockPotValues[potIndex] = percentageValue
+        for (listener in listeners) {
+            listener.onInputChange(potIndex, percentageValue)
         }
     }
 
