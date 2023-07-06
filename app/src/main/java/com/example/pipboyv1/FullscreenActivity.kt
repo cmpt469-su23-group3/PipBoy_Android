@@ -86,7 +86,13 @@ class FullscreenActivity : AppCompatActivity() {
 
     private fun handleHolotape(payload: JSONObject) {
 
-        var holotape = Holotape(payload.get(getString(R.string.id)) as String)
+        val holotape = Holotape(payload.get(getString(R.string.id)) as String)
+
+        runOnUiThread {
+            AlertDialog.Builder(this).apply {
+                setMessage("Holotape: $holotape")
+            }.show()
+        }
 
         // TODO: Dialog that indicates some action
         // TODO: Update layout attributes of quest to signify it's completed
