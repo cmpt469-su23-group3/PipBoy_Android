@@ -12,12 +12,13 @@ import com.example.pipboyv1.classes.SelectionItem
 import com.example.pipboyv1.classes.SelectionItemData
 import com.example.pipboyv1.adapters.SelectionItemAdapter
 import com.example.pipboyv1.helpers.populateDisplayItem
-import com.example.pipboyv1.input.PositionChangeListener
+import com.example.pipboyv1.input.SelectionItemInputResponder
+import java.util.concurrent.atomic.AtomicInteger
 
 class SpecialFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: SelectionItemAdapter
-    private var position: Int = 0
+    private var position: AtomicInteger = AtomicInteger()
     private val selectionItems: List<SelectionItem> = listOf(
         SelectionItem(textLeft="Strength", textRight="0", data=SelectionItemData(description="Strength is a measure of your raw physical power. It affects how much you can carry, and determines the effectiveness of all melee attacks.", imageId=R.drawable.stat_strength)),
         SelectionItem(textLeft="Perception", textRight="0", data=SelectionItemData(description="Perception is the ability to see, hear, taste and notice unusual things. A high Perception is important for a sharpshooter.", imageId=R.drawable.stat_perception)),
@@ -28,20 +29,12 @@ class SpecialFragment : Fragment() {
         SelectionItem(textLeft="Luck", textRight="0", data=SelectionItemData(description="Luck is a measure of your general good fortune, and affects the recharge rates of critical hits.", imageId=R.drawable.stat_luck))
     )
 
-    inner class PositionListener : PositionChangeListener {
-        override fun onValueChange(newPosition: Int) {
-            position = newPosition
-            populateDisplayItem(selectionItems[position].data, view, context)
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         adapter = SelectionItemAdapter(selectionItems)
         adapter.setHasStableIds(true)
-        adapter.setValueChangeListener(PositionListener())
 
         return inflater.inflate(R.layout.fragment_special, container, false)
     }
@@ -49,11 +42,13 @@ class SpecialFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        adapter.setValueChangeListener(SelectionItemInputResponder(position, selectionItems, view, context))
+
         recyclerView = view.findViewById(R.id.statSpecialSelectorRecyclerView) as RecyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
         // Populate display panel
-        populateDisplayItem(selectionItems[position].data, view, context)
+        populateDisplayItem(selectionItems[position.get()].data, view, context)
     }
 }
