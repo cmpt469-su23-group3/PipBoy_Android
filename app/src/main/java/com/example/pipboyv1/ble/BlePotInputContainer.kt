@@ -5,9 +5,11 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothGattCharacteristic.FORMAT_FLOAT
 import android.util.Log
+import android.widget.Toast
 import com.beepiz.bluetooth.gattcoroutines.ExperimentalBleGattCoroutinesCoroutinesApi
 import com.beepiz.bluetooth.gattcoroutines.GattConnection
 import com.beepiz.bluetooth.gattcoroutines.extensions.requireCharacteristic
+import com.example.pipboyv1.FullscreenActivity
 import com.example.pipboyv1.ble.BluetoothIDs.POT_SERVICE_UUID
 import com.example.pipboyv1.ble.BluetoothIDs.POT_1_CHARACTERISTIC_UUID
 import com.example.pipboyv1.ble.BluetoothIDs.POT_2_CHARACTERISTIC_UUID
@@ -23,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap
 @OptIn(ExperimentalBleGattCoroutinesCoroutinesApi::class)
 @SuppressLint("MissingPermission")
 class BlePotInputContainer(
+    private val activity: FullscreenActivity,
     private val bluetoothAdapter: BluetoothAdapter,
     private val coroutineScope: CoroutineScope
 ) : IPotInputContainer {
@@ -57,8 +60,11 @@ class BlePotInputContainer(
         coroutineScope.launch { 
             val gatt = GattConnection(bluetoothDevice)
             try {
+                Log.i(LOGGING_TAG, "Connecting...")
                 gatt.connect()
+                Log.i(LOGGING_TAG, "Connected; discovering services")
                 gatt.discoverServices()
+                Log.i(LOGGING_TAG, "Discovered services")
 
                 val serviceUuid = POT_SERVICE_UUID.toUUID()
                 val characteristic1 = gatt.requireCharacteristic(serviceUuid, POT_1_CHARACTERISTIC_UUID.toUUID())
@@ -66,6 +72,8 @@ class BlePotInputContainer(
                 val characteristic3 = gatt.requireCharacteristic(serviceUuid, POT_3_CHARACTERISTIC_UUID.toUUID())
 
                 Log.i(LOGGING_TAG, "Found service and characteristics")
+                
+                Toast.makeText(activity.applicationContext, "Found BLE pots", Toast.LENGTH_LONG).show()
                 
                 gatt.readCharacteristic(characteristic1).getFloatValue(FORMAT_FLOAT, 0)
             } finally {

@@ -1,11 +1,11 @@
 package com.example.pipboyv1
 
 import android.Manifest
-import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.PopupMenu
 import android.widget.Toast
@@ -104,8 +104,9 @@ class FullscreenActivity : AppCompatActivity() {
         if (blAdapter != null) {
             val bluetoothScope: CoroutineScope = lifecycleScope
 
-            potInputContainer = BlePotInputContainer(blAdapter, bluetoothScope)
-            
+            potInputContainer = BlePotInputContainer(this, blAdapter, bluetoothScope)
+
+            Log.i("setupPotInputs", "Requesting permissions")
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
@@ -130,6 +131,7 @@ class FullscreenActivity : AppCompatActivity() {
 
         when (requestCode) {
             BLE_REQUEST_CODE -> {
+                Log.i("setupPotInputs", "Permissions granted")
                 (potInputContainer as? BlePotInputContainer)?.onPermissionsGranted()
             }
 

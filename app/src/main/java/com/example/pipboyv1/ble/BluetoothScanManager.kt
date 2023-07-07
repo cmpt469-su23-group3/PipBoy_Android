@@ -18,6 +18,10 @@ class BluetoothScanManager(
     private val btAdapter: BluetoothAdapter,
 ) {
     
+    companion object {
+        private const val LOG_TAG: String = "BluetoothScanManager"
+    }
+    
     private val bleScanner: BluetoothLeScanner by lazy { btAdapter.bluetoothLeScanner }
     
     private val scanFilter: ScanFilter = ScanFilter.Builder()
@@ -29,10 +33,12 @@ class BluetoothScanManager(
     
     
     fun startScan(onDeviceFound: (BluetoothDevice) -> Unit) {
+        Log.i(LOG_TAG, "Starting scan")
         bleScanner.startScan(listOf(scanFilter), scanSettings, ScanCallback(onDeviceFound))
     }
     
     fun stopScan() {
+        Log.i(LOG_TAG, "Stopped scan")
         bleScanner.stopScan(NoOpScanCallback)
     }
     
@@ -49,7 +55,7 @@ class BluetoothScanManager(
             done.set(true)
             
             val dev = result.device
-            Log.i("ScanCallback", "Found BLE device, name: ${dev.name}, address: ${dev.address}")
+            Log.i(LOG_TAG, "Found BLE device, name: ${dev.name}, address: ${dev.address}")
             onDeviceFound(dev)
             stopScan()
         }
