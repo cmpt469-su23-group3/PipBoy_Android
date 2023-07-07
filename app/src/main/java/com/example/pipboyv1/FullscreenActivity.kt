@@ -6,6 +6,8 @@ import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
+import android.widget.PopupMenu
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
@@ -17,6 +19,7 @@ import com.example.pipboyv1.fragments.topnav.StatFragment
 import com.example.pipboyv1.adapters.ViewPagerAdapter
 import com.example.pipboyv1.ble.BlePotInputContainer
 import com.example.pipboyv1.ble.BluetoothScanManager
+import com.example.pipboyv1.mockBle.MockPotDialog
 import com.example.pipboyv1.input.IPotInputContainer
 import com.example.pipboyv1.input.MockPotInputContainer
 import com.google.android.material.tabs.TabLayout
@@ -33,7 +36,8 @@ class FullscreenActivity : AppCompatActivity() {
     private lateinit var viewPager2: ViewPager2
     private lateinit var adapter: ViewPagerAdapter
     private lateinit var tabLayoutMediator: TabLayoutMediator
-    
+    private lateinit var mockPotMenuBtn: Button
+
     private lateinit var potInputContainer: IPotInputContainer
     private val bluetoothAdapter: BluetoothAdapter? by lazy {
         (getSystemService(Context.BLUETOOTH_SERVICE) as android.bluetooth.BluetoothManager).adapter
@@ -66,12 +70,35 @@ class FullscreenActivity : AppCompatActivity() {
         }
 
         viewPager2.adapter = adapter
-        tabLayoutMediator = TabLayoutMediator(tabLayout, viewPager2) {
-                tab, position -> tab.text = adapter.getFragmentTitle(position)
+        tabLayoutMediator = TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
+            tab.text = adapter.getFragmentTitle(position)
         }
         tabLayoutMediator.attach()
     }
-    
+
+    private fun setupMockPot() {
+        mockPotMenuBtn = findViewById(R.id.potMenuButton)
+        mockPotMenuBtn.setOnClickListener {
+            val mockPotMenu: PopupMenu = PopupMenu(this, mockPotMenuBtn)
+            mockPotMenu.menuInflater.inflate(R.menu.menu_mockpot, mockPotMenu.menu)
+            mockPotMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
+                when(item.itemId) {
+                    R.id.addPotValItem -> {
+                        MockPotDialog.displayPotIndexDialog(this, MockPotDialog.PotAction.POT_ADD,
+                            potInputContainer as MockPotInputContainer)
+                    }
+                    R.id.subPotValItem -> {
+                        MockPotDialog.displayPotIndexDialog(this, MockPotDialog.PotAction.POT_SUB,
+                            potInputContainer as MockPotInputContainer)
+                    }
+                }
+                true
+            })
+            mockPotMenu.show()
+        }
+
+    }
+
     private fun setupPotInputs(forceMock: Boolean = false) {
         val blAdapter = if (forceMock) null else bluetoothAdapter
         if (blAdapter != null) {
@@ -105,6 +132,7 @@ class FullscreenActivity : AppCompatActivity() {
             BLE_REQUEST_CODE -> {
                 (potInputContainer as? BlePotInputContainer)?.onPermissionsGranted()
             }
+
             else -> recreate()
         }
     }

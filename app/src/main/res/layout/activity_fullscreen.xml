@@ -1,27 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
     android:orientation="horizontal"
-    tools:context=".FullscreenActivity"
->
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/topNavTabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabMode="fixed"
-        app:tabBackground="@drawable/top_nav_tab_background"
-        style="@style/TopNavTabLayout"
-    />
+    tools:context=".FullscreenActivity">
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/topNavViewPager2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toBottomOf="@id/topNavTabLayout"
         android:layout_marginTop="?attr/actionBarSize"
-    />
+        app:layout_constraintTop_toBottomOf="@id/topNavTabLayout" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/topNavTabLayout"
+        style="@style/TopNavTabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabBackground="@drawable/top_nav_tab_background"
+        app:tabMode="fixed" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/potMenuButton"
+            android:layout_width="95dp"
+            android:layout_height="wrap_content"
+            android:text="POT Menu" />
+
+    </LinearLayout>
 </FrameLayout>
