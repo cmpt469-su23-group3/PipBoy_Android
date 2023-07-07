@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
@@ -112,10 +113,10 @@ class FullscreenActivity : AppCompatActivity() {
             )
         } else {
             potInputContainer = MockPotInputContainer()
+            setupMockPot()
             runOnUiThread {
-                AlertDialog.Builder(this).apply {
-                    setMessage("Note: Using mocked pot. inputs")
-                }.show()
+                Toast.makeText(applicationContext, "Note: Using mocked pot. inputs", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
