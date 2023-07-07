@@ -18,7 +18,6 @@ import com.example.pipboyv1.fragments.topnav.RadioFragment
 import com.example.pipboyv1.fragments.topnav.StatFragment
 import com.example.pipboyv1.adapters.ViewPagerAdapter
 import com.example.pipboyv1.ble.BlePotInputContainer
-import com.example.pipboyv1.ble.BluetoothScanManager
 import com.example.pipboyv1.mockBle.MockPotDialog
 import com.example.pipboyv1.input.IPotInputContainer
 import com.example.pipboyv1.input.MockPotInputContainer
