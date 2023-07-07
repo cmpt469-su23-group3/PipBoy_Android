@@ -7,6 +7,7 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.example.pipboyv1.fragments.topnav.DataFragment
 import com.example.pipboyv1.fragments.topnav.InvFragment
@@ -20,6 +21,7 @@ import com.example.pipboyv1.input.IPotInputContainer
 import com.example.pipboyv1.input.MockPotInputContainer
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.CoroutineScope
 
 class FullscreenActivity : AppCompatActivity() {
     
@@ -36,7 +38,6 @@ class FullscreenActivity : AppCompatActivity() {
     private val bluetoothAdapter: BluetoothAdapter? by lazy {
         (getSystemService(Context.BLUETOOTH_SERVICE) as android.bluetooth.BluetoothManager).adapter
     }
-    private var bluetoothScanManager: BluetoothScanManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +49,7 @@ class FullscreenActivity : AppCompatActivity() {
 
         setupTopNav()
         
-        setupPotInputs(forceMock = true) // Keeping this true for Mon Jun 26's demo
+        setupPotInputs()
     }
 
     private fun setupTopNav() {
@@ -72,30 +73,25 @@ class FullscreenActivity : AppCompatActivity() {
     }
     
     private fun setupPotInputs(forceMock: Boolean = false) {
-        val container: IPotInputContainer
-        
         val blAdapter = if (forceMock) null else bluetoothAdapter
         if (blAdapter != null) {
-            val mgr = BluetoothScanManager(blAdapter)
-            bluetoothScanManager = mgr
+            val bluetoothScope: CoroutineScope = lifecycleScope
 
+            potInputContainer = BlePotInputContainer(blAdapter, bluetoothScope)
+            
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 BLE_REQUEST_CODE
             )
-            
-            container = BlePotInputContainer(mgr)
         } else {
-            container = MockPotInputContainer()
+            potInputContainer = MockPotInputContainer()
             runOnUiThread {
                 AlertDialog.Builder(this).apply {
                     setMessage("Note: Using mocked pot. inputs")
                 }.show()
             }
         }
-
-        potInputContainer = container
     }
 
     override fun onRequestPermissionsResult(
@@ -107,7 +103,7 @@ class FullscreenActivity : AppCompatActivity() {
 
         when (requestCode) {
             BLE_REQUEST_CODE -> {
-                bluetoothScanManager?.startScan()
+                (potInputContainer as? BlePotInputContainer)?.onPermissionsGranted()
             }
             else -> recreate()
         }
