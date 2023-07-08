@@ -9,6 +9,7 @@ class ViewPagerAdapter(
     fragmentManager: FragmentManager,
     lifecycle: Lifecycle
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
+    
     private val fragmentList: MutableList<Fragment> = mutableListOf()
     private val fragmentTitleList: MutableList<String> = mutableListOf()
 
@@ -28,4 +29,9 @@ class ViewPagerAdapter(
     fun getFragmentTitle(position: Int): String {
         return if (position <= itemCount - 1) fragmentTitleList[position] else fragmentTitleList[0]
     }
+    
+    fun getFragmentList(): List<Fragment> = fragmentList
+    
+    inline fun <reified F : Fragment> getFragmentByClass(): F = 
+        getFragmentList().first { f -> f is F } as F
 }

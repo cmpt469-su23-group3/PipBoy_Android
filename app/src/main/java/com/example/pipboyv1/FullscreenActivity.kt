@@ -6,6 +6,7 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.PopupMenu
 import android.widget.Toast
@@ -19,6 +20,7 @@ import com.example.pipboyv1.fragments.topnav.RadioFragment
 import com.example.pipboyv1.fragments.topnav.StatFragment
 import com.example.pipboyv1.adapters.ViewPagerAdapter
 import com.example.pipboyv1.ble.BlePotInputContainer
+import com.example.pipboyv1.fragments.topnav.DebugFragment
 import com.example.pipboyv1.mockBle.MockPotDialog
 import com.example.pipboyv1.input.IPotInputContainer
 import com.example.pipboyv1.input.MockPotInputContainer
@@ -30,6 +32,7 @@ class FullscreenActivity : AppCompatActivity() {
     
     companion object {
         private const val BLE_REQUEST_CODE: Int = 1
+        private const val SHOW_DEBUG_TAB: Boolean = true
     }
     
     private lateinit var tabLayout: TabLayout
@@ -50,23 +53,33 @@ class FullscreenActivity : AppCompatActivity() {
         tabLayout = findViewById(R.id.topNavTabLayout)
         viewPager2 = findViewById(R.id.topNavViewPager2)
         adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
-
-        setupTopNav()
         
+        mockPotMenuBtn = findViewById(R.id.potMenuButton)
+        mockPotMenuBtn.visibility = View.INVISIBLE
+        
+        setupTopNav()
         setupPotInputs()
+        
+        if (SHOW_DEBUG_TAB) {
+            potInputContainer.addListener(adapter.getFragmentByClass<DebugFragment>())
+        }
     }
 
     private fun setupTopNav() {
-        val topNavTabs = mapOf(
+        val topNavTabs = mutableMapOf(
             getString(R.string.stat_button) to StatFragment(),
             getString(R.string.inv_button) to InvFragment(),
             getString(R.string.data_button) to DataFragment(),
             getString(R.string.map_button) to MapFragment(),
             getString(R.string.radio_button) to RadioFragment(),
         )
+        
+        if (SHOW_DEBUG_TAB) {
+            topNavTabs += "DEBUG" to DebugFragment()
+        }
 
-        for (topNavTab in topNavTabs.entries.iterator()) {
-            adapter.addFragment(topNavTab.value, topNavTab.key)
+        topNavTabs.forEach { (title, fragment) -> 
+            adapter.addFragment(fragment, title)
         }
 
         viewPager2.adapter = adapter
@@ -77,7 +90,6 @@ class FullscreenActivity : AppCompatActivity() {
     }
 
     private fun setupMockPot() {
-        mockPotMenuBtn = findViewById(R.id.potMenuButton)
         mockPotMenuBtn.setOnClickListener {
             val mockPotMenu: PopupMenu = PopupMenu(this, mockPotMenuBtn)
             mockPotMenu.menuInflater.inflate(R.menu.menu_mockpot, mockPotMenu.menu)
@@ -96,7 +108,7 @@ class FullscreenActivity : AppCompatActivity() {
             })
             mockPotMenu.show()
         }
-
+        mockPotMenuBtn.visibility = View.VISIBLE
     }
 
     private fun setupPotInputs(forceMock: Boolean = false) {
