@@ -3,8 +3,6 @@ package com.example.pipboyv1.ble
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
-import android.bluetooth.BluetoothGattCharacteristic.FORMAT_FLOAT
-import android.bluetooth.BluetoothGattCharacteristic.FORMAT_SFLOAT
 import android.util.Log
 import android.widget.Toast
 import com.beepiz.bluetooth.gattcoroutines.BGC
@@ -24,6 +22,7 @@ import com.example.pipboyv1.util.toUUID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.text.DecimalFormat
 import java.util.concurrent.ConcurrentHashMap
 
 
@@ -37,10 +36,17 @@ class BlePotInputContainer(
     
     companion object {
         private const val LOGGING_TAG: String = "BlePotInputContainer"
+        
+        private val decimalFormat: DecimalFormat = DecimalFormat("0.0000")
     }
 
     private val listeners: MutableSet<PotInputListener> = ConcurrentHashMap.newKeySet()
-    private val mgr: BluetoothScanManager by lazy { BluetoothScanManager(bluetoothAdapter) }
+    private val bluetoothScanMgr: BluetoothScanManager by lazy { BluetoothScanManager(bluetoothAdapter) }
+    private val potentiometers: MutableMap<Int, Potentiometer> = listOf(
+        Potentiometer(PotIDs.POT_0),
+        Potentiometer(PotIDs.POT_1),
+        Potentiometer(PotIDs.POT_2),
+    ).associateBy { it.potId }.toMutableMap()
 
     override fun addListener(listener: PotInputListener) {
         listeners += listener
@@ -57,6 +63,18 @@ class BlePotInputContainer(
         startScanning()
     }
     
+    private fun updatePot(potentiometer: Potentiometer, rawValue: Float) {
+        val oldFilteredValue = potentiometer.filteredValue
+
+        potentiometer.updateRawValue(rawValue)
+
+        val currentFilteredValue = potentiometer.filteredValue
+        if (oldFilteredValue != currentFilteredValue) {
+            // The filtered value got updated
+            // TODO
+        }
+    }
+    
     private fun onPotValueUpdatedRaw(potID: Int, newValue: String) {
         listeners.forEach { listener ->
             listener.onInputChangeRaw(potID, newValue)
@@ -64,12 +82,12 @@ class BlePotInputContainer(
     }
     
     private fun startScanning() {
-        mgr.startScan(this::onDeviceFound)
+        bluetoothScanMgr.startScan(this::onDeviceFound)
     }
     
     private fun onDeviceFound(bluetoothDevice: BluetoothDevice) {
         coroutineScope.launch { 
-            val gatt = GattConnection(bluetoothDevice)
+            val gatt = GattConnection(bluetoothDevice, GattConnection.ConnectionSettings(autoConnect = true))
             try {
                 Log.i(LOGGING_TAG, "Connecting...")
                 gatt.connect()
@@ -107,8 +125,11 @@ class BlePotInputContainer(
                 gatt.readCharacteristic(characteristic)
                 val byteArray = characteristic.value
                 val intBits = (byteArray[0].toInt() and 0xFF) or (byteArray[1].toInt() and 0xFF shl 8) or (byteArray[2].toInt() and 0xFF shl 16) or (byteArray[3].toInt() and 0xFF shl 24)
-                val value = Float.fromBits(intBits)
-                onPotValueUpdatedRaw(potID, "${(0..3).joinToString(separator = " ") { i -> byteArray[i].toUnsignedHex() }}  -->  $value")
+                val rawValue = Float.fromBits(intBits)
+
+                val potentiometer = potentiometers.getOrPut(potID) { Potentiometer(potID) }
+                updatePot(potentiometer, rawValue)
+                onPotValueUpdatedRaw(potID, "${(0..3).joinToString(separator = " ") { i -> byteArray[i].toUnsignedHex() }} -> ${decimalFormat.format(rawValue)} | ${decimalFormat.format(potentiometer.filteredValue)}")
             }
         } catch (opFailedExc: OperationFailedException) {
             // Sometimes we'll get random cases of error code 133. We'll just reconnect and try again
