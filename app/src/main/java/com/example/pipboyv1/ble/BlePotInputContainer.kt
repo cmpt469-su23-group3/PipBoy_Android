@@ -71,7 +71,18 @@ class BlePotInputContainer(
         val currentFilteredValue = potentiometer.filteredValue
         if (oldFilteredValue != currentFilteredValue) {
             // The filtered value got updated
-            // TODO
+            listeners.forEach { listener -> 
+                listener.onInputChange(potentiometer.potId, currentFilteredValue)
+            }
+            
+            val moveLeft = currentFilteredValue < oldFilteredValue
+            listeners.forEach { listener -> 
+                if (moveLeft) {
+                    listener.onMoveLeft(potentiometer.potId, currentFilteredValue)
+                } else {
+                    listener.onMoveRight(potentiometer.potId, currentFilteredValue)
+                }
+            }
         }
     }
     
