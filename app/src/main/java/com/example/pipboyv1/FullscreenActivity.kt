@@ -63,6 +63,8 @@ class FullscreenActivity : AppCompatActivity() {
         if (SHOW_DEBUG_TAB) {
             potInputContainer.addListener(adapter.getFragmentByClass<DebugFragment>())
         }
+        
+        potInputContainer.addListener(MainTabInputListener(viewPager2, adapter))
     }
 
     private fun setupTopNav() {

@@ -16,7 +16,7 @@ class Potentiometer(val potId: Int) {
          * Coefficient in range [[0.0, 1.0]] that determines how much weight previous samples have.
          * A low alpha value has a lot more lag and takes more older samples into account.
          */
-        const val EMA_ALPHA: Float = 0.5f
+        const val EMA_ALPHA: Float = 0.8f
 
         /**
          * Threshold at which to change the [filteredValue].
