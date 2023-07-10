@@ -11,4 +11,9 @@ interface PotInputListener {
     
     fun onMoveRight(potIndex: Int, percentageValue: Float)
     
+    //region Debug methods
+    
+    fun onInputChangeRaw(potIndex: Int, value: String) {}
+    
+    //endregion
 }
