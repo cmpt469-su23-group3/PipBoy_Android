@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.topnav.RadioFragment"
+>
+    <!-- TODO: Replace with actual layout -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="111dp"
+            android:layout_height="29dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:text="DEBUG"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/debugInfo"
+            android:layout_width="705dp"
+            android:layout_height="357dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="32dp"
+            android:text="This is a textview test"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:fontFamily="monospace"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
