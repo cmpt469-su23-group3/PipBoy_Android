@@ -21,7 +21,12 @@ class Potentiometer(val potId: Int) {
         /**
          * Threshold at which to change the [filteredValue].
          */
-        const val THRESHOLD: Float = 0.05f
+        const val FILTERED_VALUE_THRESHOLD: Float = 0.05f
+
+        /**
+         * If a value exceeds this delta value once, then it does not get put in the EMA.
+         */
+        const val OUTLIER_DELTA: Float = 0.6f
     }
     
     var rawValue: Float = 0f
@@ -32,9 +37,27 @@ class Potentiometer(val potId: Int) {
     
     private var emaValue: Float = 0f
     
+    private var lastOutlier: Float = 0f
+    private var isLastValueOutlier: Boolean = false
+    
     fun updateRawValue(newRawValue: Float) {
         this.rawValue = newRawValue
-        runExponentialMovingAverage(newRawValue)
+        
+        if (isOutlierValue(newRawValue)) {
+            if (!isLastValueOutlier) {
+                isLastValueOutlier = true
+                lastOutlier = newRawValue
+            } else {
+                runExponentialMovingAverage(lastOutlier)
+                runExponentialMovingAverage(newRawValue)
+                isLastValueOutlier = false
+            }
+        } else {
+            runExponentialMovingAverage(newRawValue)
+            if (isLastValueOutlier) {
+                isLastValueOutlier = false
+            }
+        }
     }
     
     private fun runExponentialMovingAverage(newRawValue: Float) {
@@ -46,9 +69,12 @@ class Potentiometer(val potId: Int) {
         
         emaValue = (EMA_ALPHA * newRawValue) + ((1f - EMA_ALPHA) * emaValue)
         
-        if (abs(emaValue - filteredValue) >= THRESHOLD) {
+        if (abs(emaValue - filteredValue) >= FILTERED_VALUE_THRESHOLD) {
             filteredValue = emaValue
         }
     }
+    
+    private fun isOutlierValue(newRawValue: Float): Boolean = 
+        abs(filteredValue - newRawValue) >= OUTLIER_DELTA
     
 }
