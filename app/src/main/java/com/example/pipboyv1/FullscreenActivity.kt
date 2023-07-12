@@ -23,7 +23,7 @@ import com.example.pipboyv1.ble.BlePotInputContainer
 import com.example.pipboyv1.fragments.topnav.DebugFragment
 import com.example.pipboyv1.mockBle.MockPotDialog
 import com.example.pipboyv1.input.IPotInputContainer
-import com.example.pipboyv1.input.MockPotInputContainer
+import com.example.pipboyv1.mockBle.MockPotInputContainer
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.CoroutineScope
@@ -63,6 +63,8 @@ class FullscreenActivity : AppCompatActivity() {
         if (SHOW_DEBUG_TAB) {
             potInputContainer.addListener(adapter.getFragmentByClass<DebugFragment>())
         }
+        
+        potInputContainer.addListener(MainTabInputListener(viewPager2, adapter))
     }
 
     private fun setupTopNav() {
@@ -97,11 +99,13 @@ class FullscreenActivity : AppCompatActivity() {
                 when(item.itemId) {
                     R.id.addPotValItem -> {
                         MockPotDialog.displayPotIndexDialog(this, MockPotDialog.PotAction.POT_ADD,
-                            potInputContainer as MockPotInputContainer)
+                            potInputContainer as MockPotInputContainer
+                        )
                     }
                     R.id.subPotValItem -> {
                         MockPotDialog.displayPotIndexDialog(this, MockPotDialog.PotAction.POT_SUB,
-                            potInputContainer as MockPotInputContainer)
+                            potInputContainer as MockPotInputContainer
+                        )
                     }
                 }
                 true

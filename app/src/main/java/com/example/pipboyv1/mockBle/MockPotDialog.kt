@@ -6,7 +6,6 @@ import android.content.DialogInterface
 import android.text.InputType
 import android.widget.EditText
 import android.widget.Toast
-import com.example.pipboyv1.input.MockPotInputContainer
 import kotlin.Exception
 
 class MockPotDialog {

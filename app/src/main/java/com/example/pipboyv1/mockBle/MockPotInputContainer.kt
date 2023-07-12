@@ -1,5 +1,7 @@
-package com.example.pipboyv1.input
+package com.example.pipboyv1.mockBle
 
+import com.example.pipboyv1.input.IPotInputContainer
+import com.example.pipboyv1.input.PotInputListener
 import kotlin.Exception
 
 
