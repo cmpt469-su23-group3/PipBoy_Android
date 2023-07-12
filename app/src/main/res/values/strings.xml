@@ -47,4 +47,7 @@
     <string name="inv_weapon_stat_accuracy">Accuracy</string>
     <string name="inv_weapon_stat_weight">Weight</string>
     <string name="inv_weapon_stat_value">Value</string>
+
+    <!-- Holotape fields -->
+    <string name="id">id</string>
 </resources>
