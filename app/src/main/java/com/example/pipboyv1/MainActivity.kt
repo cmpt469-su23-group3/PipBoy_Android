@@ -1,7 +1,6 @@
 package com.example.pipboyv1
 
 import android.Manifest
-import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.Intent
@@ -24,9 +23,9 @@ import com.example.pipboyv1.fragments.topnav.RadioFragment
 import com.example.pipboyv1.fragments.topnav.StatFragment
 import com.example.pipboyv1.adapters.ViewPagerAdapter
 import com.example.pipboyv1.ble.BlePotInputContainer
+import com.example.pipboyv1.classes.HolotapeContainer
 import com.example.pipboyv1.fragments.topnav.DebugFragment
 import com.example.pipboyv1.mockBle.MockPotDialog
-import com.example.pipboyv1.classes.Holotape
 import com.example.pipboyv1.input.IPotInputContainer
 import com.example.pipboyv1.mockBle.MockPotInputContainer
 import com.google.android.material.tabs.TabLayout
@@ -34,7 +33,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.CoroutineScope
 import org.json.JSONObject
 
-class FullscreenActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val BLE_REQUEST_CODE: Int = 1
@@ -98,17 +97,13 @@ class FullscreenActivity : AppCompatActivity() {
     }
 
     private fun handleHolotape(payload: JSONObject) {
+        val holotapeID = payload.get("id") as Int
 
-        val holotape = Holotape(payload.get(getString(R.string.id)) as String)
+        if (HolotapeContainer.holotapes.find { it.id == holotapeID } == null) { return }
 
-        runOnUiThread {
-            AlertDialog.Builder(this).apply {
-                setMessage("Holotape: $holotape")
-            }.show()
-        }
-
-        // TODO: Dialog that indicates some action
-        // TODO: Update layout attributes of quest to signify it's completed
+        val intent = Intent(window.context, HolotapeActivity::class.java)
+        intent.putExtra("holotapeID", holotapeID)
+        startActivity(intent)
     }
 
     private fun setupTopNav() {

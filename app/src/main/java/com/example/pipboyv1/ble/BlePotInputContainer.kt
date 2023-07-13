@@ -10,7 +10,7 @@ import com.beepiz.bluetooth.gattcoroutines.ExperimentalBleGattCoroutinesCoroutin
 import com.beepiz.bluetooth.gattcoroutines.GattConnection
 import com.beepiz.bluetooth.gattcoroutines.OperationFailedException
 import com.beepiz.bluetooth.gattcoroutines.extensions.requireCharacteristic
-import com.example.pipboyv1.FullscreenActivity
+import com.example.pipboyv1.MainActivity
 import com.example.pipboyv1.ble.BluetoothIDs.POT_SERVICE_UUID
 import com.example.pipboyv1.ble.BluetoothIDs.POT_1_CHARACTERISTIC_UUID
 import com.example.pipboyv1.ble.BluetoothIDs.POT_2_CHARACTERISTIC_UUID
@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap
 @OptIn(ExperimentalBleGattCoroutinesCoroutinesApi::class)
 @SuppressLint("MissingPermission")
 class BlePotInputContainer(
-    private val activity: FullscreenActivity,
+    private val activity: MainActivity,
     private val bluetoothAdapter: BluetoothAdapter,
     private val coroutineScope: CoroutineScope
 ) : IPotInputContainer {
