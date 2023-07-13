@@ -64,7 +64,7 @@ class FullscreenActivity : AppCompatActivity() {
         mockPotMenuBtn = findViewById(R.id.potMenuButton)
         mockPotMenuBtn.visibility = View.INVISIBLE
 
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this)
+//        nfcAdapter = NfcAdapter.getDefaultAdapter(this)
 
         setupTopNav()
         setupPotInputs()
@@ -172,6 +172,7 @@ class FullscreenActivity : AppCompatActivity() {
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 BLE_REQUEST_CODE
             )
+            nfcAdapter = NfcAdapter.getDefaultAdapter(this)
         } else {
             potInputContainer = MockPotInputContainer()
             setupMockPot()
