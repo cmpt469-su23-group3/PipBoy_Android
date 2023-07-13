@@ -98,8 +98,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun handleHolotape(payload: JSONObject) {
         val holotapeID = payload.get("id") as Int
+        Log.e("handleHolotape", "Holotape with ID $holotapeID scanned")
 
-        if (HolotapeContainer.holotapes.find { it.id == holotapeID } == null) { return }
+        if (HolotapeContainer.holotapes.find { it.id == holotapeID } == null) {
+            Log.e("handleHolotape", "Holotape does not exist")
+            return
+        }
 
         val intent = Intent(window.context, HolotapeActivity::class.java)
         intent.putExtra("holotapeID", holotapeID)
