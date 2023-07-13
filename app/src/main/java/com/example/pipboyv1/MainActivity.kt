@@ -103,6 +103,8 @@ class MainActivity : AppCompatActivity() {
 
         val intent = Intent(window.context, HolotapeActivity::class.java)
         intent.putExtra("holotapeID", holotapeID)
+
+        finish()
         startActivity(intent)
     }
 

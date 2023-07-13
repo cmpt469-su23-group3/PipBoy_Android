@@ -29,12 +29,17 @@ class HolotapeActivity : AppCompatActivity() {
             // TODO: Find better way to get content
             val intent = Intent(window.context, HolotapeContentActivity::class.java)
             intent.putExtra("content", holotape.attributes.values.toList()[newPosition])
+
+            // NOTE: finish() intentionally NOT used here -> doesn't return to the last activity otherwise
             startActivity(intent)
         }
 
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_holotape)
+
         val holotapeID: Int = intent.extras?.get("holotapeID") as Int
         holotape = holotapes.find { it.id == holotapeID }!!
 
@@ -45,12 +50,11 @@ class HolotapeActivity : AppCompatActivity() {
 
         adapter = SelectionItemAdapter(selectionItems)
         adapter.setHasStableIds(true)
-
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_holotape)
     }
 
     override fun onStart() {
+        super.onStart()
+
         adapter.setValueChangeListener(HolotapeSelectionItemInputResponder())
 
         recyclerView = findViewById(R.id.holotapeSelectorRecyclerView)
@@ -60,9 +64,7 @@ class HolotapeActivity : AppCompatActivity() {
         backButton = findViewById(R.id.holotape_back)
         backButton.text = "<"
         backButton.setOnClickListener{
-            this.finish()
+            finish()
         }
-
-        super.onStart()
     }
 }
