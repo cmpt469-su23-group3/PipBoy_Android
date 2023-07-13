@@ -23,6 +23,42 @@ object HolotapeContainer {
                     "\n" +
                     "All the noises I've been hearing, I'm not setting foot in there. I'll probably head back and drag one of the new guys over here and make him do it.\n",
         )),
+        Holotape(1, mapOf(
+            "[9/7/2287]" to
+                    "9/7/2287\n" +
+                    "\n" +
+                    "Bess and I got in just before sundown. Old place is still in one piece, though the north side's sunk a little more. Need to shore it up the next time I'm out this way. Spring?\n" +
+                    "\n" +
+                    "Whole place has been trashed, though. Damn raiders. Take me a week or two to get it cleaned out again.\n",
+            "[9/12/2287]" to
+                    "9/12/2287\n" +
+                    "\n" +
+                    "Forgot how nice it was to get off the road. Bess seems to be settling in well, too.\n" +
+                    "\n" +
+                    "Hard to believe it's been ten years. I still remember Annika leveling that shotgun at me. What an introduction. Think we were both glad she never pulled the trigger.\n",
+            "[9/14/2287]" to
+                    "9/14/2287\n" +
+                    "\n" +
+                    "Couple of Bloatflies bothering Bess this morning. Chased them off. Nasty Things.\n" +
+                    "\n" +
+                    "Spent the afternoon rigging up a zapper with parts from the old generator. Seems to work well enough. One jolt of that oughta keep them away for good.\n",
+            "[9/15/2287]" to
+                    "9/15/2287\n" +
+                    "\n" +
+                    "Shooting stars tonight. Sat on the deck and watched them, just like we used to. She's been gone three winters now. All I've got left is her locket, and this old place. She deserved better.\n",
+            "[9/17/2287]" to
+                    "9/17/2287\n" +
+                    "\n" +
+                    "Out fishing when the bugs came back. Bloatflies and worse. Hell of a swarm. I got a couple of good shots off, but upset the boat. Had to swim back.\n" +
+                    "\n" +
+                    "I think I drove them off, at least for now. Bess is spooked, but she'll be all right. If this keeps up, well leave first thing in the morning.\n",
+            "[9/17/2287]" to
+                    "9/17/2287\n" +
+                    "\n" +
+                    "I can't find the locket. It must've slipped out of my pocket when the boat tipped over.\n" +
+                    "\n" +
+                    "I have to go back. It's all I got to remember her by. I can't lose it, too.\n",
+        )),
     )
 
 }
