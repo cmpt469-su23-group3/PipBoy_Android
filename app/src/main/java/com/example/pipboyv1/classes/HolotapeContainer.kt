@@ -3,7 +3,7 @@ package com.example.pipboyv1.classes
 object HolotapeContainer {
 
     val holotapes: List<Holotape> = listOf(
-        Holotape(0, mapOf(
+        Holotape(0, "", mapOf(
             "[Sully's Log 6/17]" to
                     "This is a great spot. With the right crew I'd have no problem keeping this place locked down. Traders run close enough for easy pickins, but not so close that we end up skinned.\n" +
                     "\n" +
@@ -23,7 +23,9 @@ object HolotapeContainer {
                     "\n" +
                     "All the noises I've been hearing, I'm not setting foot in there. I'll probably head back and drag one of the new guys over here and make him do it.\n",
         )),
-        Holotape(1, mapOf(
+        Holotape(1,
+            "Welcome, Edwin. Please select an entry:",
+            mapOf(
             "[9/7/2287]" to
                     "9/7/2287\n" +
                     "\n" +
@@ -59,6 +61,14 @@ object HolotapeContainer {
                     "\n" +
                     "I have to go back. It's all I got to remember her by. I can't lose it, too.\n",
         )),
+        Holotape(2,
+            "USAF Remote Sentry Prototype MKIV\n" +
+                    "\n" +
+                    "----ERROR CODE 992GF7----\n" +
+                    "Link cannot be established with sentry. If wired, check for proper connection. If non-wired, terminal must have clear site to currently connected sentry.\n" +
+                    "\n" +
+                    "Commissioned by <REDACTED> and built by <REDACTED>, this prototype sentry must only be operated by offical personal of <REDACTED> or the associated client.\n",
+        )
     )
 
 }
