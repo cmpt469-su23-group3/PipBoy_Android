@@ -19,10 +19,10 @@ class HolotapeContentActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        textView = findViewById(R.id.holotape_content)
+        textView = findViewById(R.id.holotapeContent)
         textView.text = content
 
-        backButton = findViewById(R.id.holotape_content_back)
+        backButton = findViewById(R.id.holotapeContentBack)
         backButton.text = "<"
         backButton.setOnClickListener{
             finish()

@@ -16,6 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger
 
 class HolotapeActivity : AppCompatActivity() {
     private lateinit var holotape: Holotape
+    private lateinit var description: TextView
     private lateinit var recyclerView: RecyclerView
     private lateinit var backButton: TextView // TextView used for simplicity / styling
     private lateinit var adapter: SelectionItemAdapter
@@ -55,13 +56,16 @@ class HolotapeActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
+        description = findViewById(R.id.holotapeDescription)
+        description.text = holotape.description
+
         adapter.setValueChangeListener(HolotapeSelectionItemInputResponder())
 
         recyclerView = findViewById(R.id.holotapeSelectorRecyclerView)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
-        backButton = findViewById(R.id.holotape_back)
+        backButton = findViewById(R.id.holotapeBack)
         backButton.text = "<"
         backButton.setOnClickListener{
             finish()
