@@ -64,8 +64,6 @@ class FullscreenActivity : AppCompatActivity() {
         mockPotMenuBtn = findViewById(R.id.potMenuButton)
         mockPotMenuBtn.visibility = View.INVISIBLE
 
-//        nfcAdapter = NfcAdapter.getDefaultAdapter(this)
-
         setupTopNav()
         setupPotInputs()
         handleIntent(intent)
