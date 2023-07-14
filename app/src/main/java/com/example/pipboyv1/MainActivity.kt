@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity() {
         val holotapeID = payload.get("id") as Int
         Log.e("handleHolotape", "Holotape with ID $holotapeID scanned")
 
-        if (HolotapeContainer.holotapes.find { it.id == holotapeID } == null) {
+        if (HolotapeContainer.holotapes.none { it.id == holotapeID }) {
             Log.e("handleHolotape", "Holotape does not exist")
             return
         }
