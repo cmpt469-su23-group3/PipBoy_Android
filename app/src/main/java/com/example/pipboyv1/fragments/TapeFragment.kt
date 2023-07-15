@@ -34,6 +34,7 @@ class TapeFragment : Fragment() {
 
             val content = holotape.attributes.values.toList()[newPosition]
 
+            // Switch to holotape content fragment
             parentFragmentManager.beginTransaction().replace(R.id.fragmentContainer, holotapeContentFragment).addToBackStack(null).commit()
             holotapeContentFragment.onHolotapeContentSelected(content)
         }

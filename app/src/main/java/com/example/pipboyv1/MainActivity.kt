@@ -22,23 +22,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // Use main fragment
-        supportFragmentManager.beginTransaction().add(R.id.fragmentContainer, mainFragment).addToBackStack(null).commit()
+        supportFragmentManager.beginTransaction().add(R.id.fragmentContainer, mainFragment).commit()
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
 
         handleIntent(intent)
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
-            handleIntent(intent)
-        }
-    }
-
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+
         setIntent(intent)
+
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
+            Log.i("onResume", "nfc intent being handled again for some reason???")
+            handleIntent(intent)
+        }
     }
 
     private fun handleIntent(intent: Intent) {
@@ -58,6 +57,7 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
+        // Switch to holotape fragment
         supportFragmentManager.beginTransaction().replace(R.id.fragmentContainer, holotapeFragment).addToBackStack(null).commit()
         holotapeFragment.onHolotapeLoaded(holotapeID)
     }
