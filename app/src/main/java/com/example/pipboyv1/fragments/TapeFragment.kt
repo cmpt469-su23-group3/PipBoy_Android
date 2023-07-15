@@ -1,4 +1,4 @@
-package com.example.pipboyv1.fragments.topnav
+package com.example.pipboyv1.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -21,10 +21,12 @@ class TapeFragment : Fragment() {
     private lateinit var holotape: Holotape
     private lateinit var description: TextView
     private lateinit var recyclerView: RecyclerView
+    private lateinit var backButton: TextView // TextView used for simplicity / styling
     private lateinit var adapter: SelectionItemAdapter
     private var descriptionText: String = ""
     private val selectionItems: MutableList<SelectionItem> = mutableListOf()
     private var position: AtomicInteger = AtomicInteger()
+    private val holotapeContentFragment = TapeContentFragment()
 
     inner class HolotapeSelectionItemInputResponder : SelectionItemInputListener {
         override fun onValueChange(newPosition: Int) {
@@ -32,8 +34,8 @@ class TapeFragment : Fragment() {
 
             val content = holotape.attributes.values.toList()[newPosition]
 
-            // TODO: Replace current view with holotape content
-
+            parentFragmentManager.beginTransaction().replace(R.id.fragmentContainer, holotapeContentFragment).addToBackStack(null).commit()
+            holotapeContentFragment.onHolotapeContentSelected(content)
         }
     }
 
@@ -58,6 +60,12 @@ class TapeFragment : Fragment() {
         recyclerView = view.findViewById(R.id.holotapeSelectorRecyclerView)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+
+        backButton = view.findViewById(R.id.holotapeBack)
+        backButton.text = "<"
+        backButton.setOnClickListener{
+            parentFragmentManager.popBackStackImmediate()
+        }
     }
 
     fun onHolotapeLoaded(holotapeID: Int) {
