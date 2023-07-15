@@ -30,13 +30,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HolotapeActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="sensorLandscape"
-            android:theme="@style/Theme.PipBoyV1.Fullscreen" />
-        <activity
             android:name=".HolotapeContentActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="true"
             android:screenOrientation="sensorLandscape"
             android:theme="@style/Theme.PipBoyV1.Fullscreen" />
     </application>

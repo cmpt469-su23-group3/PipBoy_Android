@@ -6,27 +6,30 @@ import android.content.Context
 import android.content.Intent
 import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
+import com.example.pipboyv1.adapters.ViewPagerAdapter
+import com.example.pipboyv1.ble.BlePotInputContainer
+import com.example.pipboyv1.classes.HolotapeContainer
+import com.example.pipboyv1.fragments.MainFragment
 import com.example.pipboyv1.fragments.topnav.DataFragment
+import com.example.pipboyv1.fragments.topnav.DebugFragment
 import com.example.pipboyv1.fragments.topnav.InvFragment
 import com.example.pipboyv1.fragments.topnav.MapFragment
 import com.example.pipboyv1.fragments.topnav.RadioFragment
 import com.example.pipboyv1.fragments.topnav.StatFragment
-import com.example.pipboyv1.adapters.ViewPagerAdapter
-import com.example.pipboyv1.ble.BlePotInputContainer
-import com.example.pipboyv1.classes.HolotapeContainer
-import com.example.pipboyv1.fragments.topnav.DebugFragment
-import com.example.pipboyv1.mockBle.MockPotDialog
+import com.example.pipboyv1.fragments.topnav.TapeFragment
 import com.example.pipboyv1.input.IPotInputContainer
+import com.example.pipboyv1.mockBle.MockPotDialog
 import com.example.pipboyv1.mockBle.MockPotInputContainer
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -52,15 +55,21 @@ class MainActivity : AppCompatActivity() {
     }
     private lateinit var nfcAdapter: NfcAdapter
 
+    private val mainFragment = MainFragment()
+    private val holotapeFragment = TapeFragment()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_fullscreen)
+        setContentView(R.layout.activity_main)
 
-        tabLayout = findViewById(R.id.topNavTabLayout)
-        viewPager2 = findViewById(R.id.topNavViewPager2)
+        supportFragmentManager.beginTransaction().replace(R.id.fragmentContainer, mainFragment).commit()
+
+        // TODO: Fix these always being null -_-
+        tabLayout = mainFragment.view?.findViewById(R.id.topNavTabLayout) ?: return
+        viewPager2 = mainFragment.view?.findViewById(R.id.topNavViewPager2) ?: return
         adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
 
-        mockPotMenuBtn = findViewById(R.id.potMenuButton)
+        mockPotMenuBtn = mainFragment.view?.findViewById(R.id.potMenuButton) ?: return
         mockPotMenuBtn.visibility = View.INVISIBLE
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
@@ -105,11 +114,9 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        val intent = Intent(window.context, HolotapeActivity::class.java)
-        intent.putExtra("holotapeID", holotapeID)
-
-        finish()
-        startActivity(intent)
+        // Create and commit a new transaction
+        supportFragmentManager.beginTransaction().replace(R.id.fragmentContainer, holotapeFragment).commit()
+        holotapeFragment.onHolotapeLoaded(holotapeID)
     }
 
     private fun setupTopNav() {
