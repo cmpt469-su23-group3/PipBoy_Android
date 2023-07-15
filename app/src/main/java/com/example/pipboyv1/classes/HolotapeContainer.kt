@@ -68,7 +68,10 @@ object HolotapeContainer {
                     "Link cannot be established with sentry. If wired, check for proper connection. If non-wired, terminal must have clear site to currently connected sentry.\n" +
                     "\n" +
                     "Commissioned by <REDACTED> and built by <REDACTED>, this prototype sentry must only be operated by offical personal of <REDACTED> or the associated client.\n",
-        )
+        ),
+        Holotape(3, "", mapOf(
+            "packageName" to "packageNameGoesHere",
+        )),
     )
 
 }

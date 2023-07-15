@@ -1,6 +1,7 @@
 package com.example.pipboyv1
 
 import android.content.Intent
+import android.content.pm.PackageManager.NameNotFoundException
 import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
 import android.os.Bundle
@@ -51,6 +52,23 @@ class MainActivity : AppCompatActivity() {
     private fun handleHolotape(payload: JSONObject) {
         val holotapeID = payload.get("id") as Int
         Log.e("handleHolotape", "Holotape with ID $holotapeID scanned")
+
+
+        if (holotapeID == 3) {
+            val holotape = HolotapeContainer.holotapes.first { it.id == holotapeID }
+
+            try {
+                val intent: Intent = packageManager.getLaunchIntentForPackage(holotape.attributes["packageName"]!!)
+                    ?: throw NameNotFoundException()
+
+                intent.addCategory(Intent.CATEGORY_LAUNCHER)
+                startActivity(intent)
+            }
+            catch(e: NameNotFoundException) {
+                Log.e("handleHolotape", "DOOM is not installed :(")
+            }
+            return
+        }
 
         if (HolotapeContainer.holotapes.none { it.id == holotapeID }) {
             Log.e("handleHolotape", "Holotape does not exist")
