@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity() {
         setIntent(intent)
 
         if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
-            Log.i("onResume", "nfc intent being handled again for some reason???")
             handleIntent(intent)
         }
     }
