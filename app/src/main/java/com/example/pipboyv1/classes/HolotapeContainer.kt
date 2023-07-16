@@ -70,7 +70,7 @@ object HolotapeContainer {
                     "Commissioned by <REDACTED> and built by <REDACTED>, this prototype sentry must only be operated by offical personal of <REDACTED> or the associated client.\n",
         ),
         Holotape(3, "", mapOf(
-            "packageName" to "packageNameGoesHere",
+            "packageName" to "com.eltechs.originaldoom",
         )),
     )
 
