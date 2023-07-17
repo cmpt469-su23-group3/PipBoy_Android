@@ -70,18 +70,15 @@ class RadioFragment : Fragment(), PotInputListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initMediaPlayers()
-
-        // TODO: create a counter to keep track of the times of the audio track
-        // use modulo
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        adapter = SelectionItemAdapter(selectionItems)
+        adapter = SelectionItemAdapter(selectionItems, requireContext())
         adapter.setHasStableIds(true)
+        adapter.deselectAll()
         return inflater.inflate(R.layout.fragment_radio, container, false)
     }
 
@@ -106,14 +103,6 @@ class RadioFragment : Fragment(), PotInputListener {
         }
     }
 
-    override fun onMoveLeft(potIndex: Int, percentageValue: Float) {
-//        TODO("Not yet implemented")
-    }
-
-    override fun onMoveRight(potIndex: Int, percentageValue: Float) {
-//        TODO("Not yet implemented")
-    }
-
     override fun onResume() {
         super.onResume()
         inRadioView = true
@@ -132,6 +121,7 @@ class RadioFragment : Fragment(), PotInputListener {
         var selectedStartFreq: Float = -1.0f
         var selectedEndFreq: Float = -1.0f
         var selectedRadioName: String = ""
+        var selectedRadioPosition: Int = 0
 
         for (radioStationData in radioStationDataList) {
             if (currentFrequency in radioStationData.startFreq .. radioStationData.endFreq) {
@@ -146,6 +136,7 @@ class RadioFragment : Fragment(), PotInputListener {
                 }
                 break
             }
+            selectedRadioPosition++
         }
 
         if (!inRadioFreqRange) {
@@ -162,7 +153,7 @@ class RadioFragment : Fragment(), PotInputListener {
             radioVolume = 1.0f * radioClarityPercentage * currentVolumeMultiplier
             staticVolume = 1.0f * staticClarityPercentage * currentVolumeMultiplier
 
-            highlightRadioUiItem(selectedRadioName)
+            highlightRadioUiItem(selectedRadioPosition)
         }
 
         if (inRadioView) {
@@ -184,12 +175,12 @@ class RadioFragment : Fragment(), PotInputListener {
         radioMediaPlayer.setVolume(_radioVolume, _radioVolume)
     }
 
-    private fun highlightRadioUiItem(radioName: String) {
-
+    private fun highlightRadioUiItem(radioSelectionPosition: Int) {
+        adapter.handleSelectionItemClick(radioSelectionPosition)
     }
 
     private fun clearUiRadioHighlight() {
-
+        adapter.deselectAll()
     }
 
     private fun calculateClarity(selectedFrequency: Float, fullClarityFreq: Float,
@@ -219,16 +210,6 @@ class RadioFragment : Fragment(), PotInputListener {
         radioMediaPlayer = MediaPlayer()
     }
 
-    private fun startRadioStationAudio(songAfd: AssetFileDescriptor) {
-        // Note: this implementation is for a single song radio station
-        val currentTimeStamp: Int = (SystemClock.elapsedRealtime() % songAfd.length) as Int
-
-        radioMediaPlayer.setDataSource(songAfd.fileDescriptor, songAfd.startOffset, songAfd.length)
-        radioMediaPlayer.prepare()
-        radioMediaPlayer.seekTo(currentTimeStamp)
-        radioMediaPlayer.start()
-    }
-
     private fun startRadioStationAudio(songIdList: MutableList<Int>) {
         val songDurationList: MutableList<Int> = mutableListOf()
         var songListTotalTime: Long = 0
@@ -255,5 +236,13 @@ class RadioFragment : Fragment(), PotInputListener {
         radioMediaPlayer.prepare()
         radioMediaPlayer.seekTo(radioTimeOffset as Int)
         radioMediaPlayer.start()
+    }
+
+    override fun onMoveLeft(potIndex: Int, percentageValue: Float) {
+
+    }
+
+    override fun onMoveRight(potIndex: Int, percentageValue: Float) {
+
     }
 }
