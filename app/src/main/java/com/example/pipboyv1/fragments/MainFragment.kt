@@ -1,112 +1,83 @@
-package com.example.pipboyv1
+package com.example.pipboyv1.fragments
 
 import android.Manifest
-import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
-import android.content.Intent
-import android.nfc.NdefMessage
-import android.nfc.NfcAdapter
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.recreate
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
+import com.example.pipboyv1.MainActivity
+import com.example.pipboyv1.MainTabInputListener
+import com.example.pipboyv1.R
+import com.example.pipboyv1.adapters.ViewPagerAdapter
+import com.example.pipboyv1.ble.BlePotInputContainer
 import com.example.pipboyv1.fragments.topnav.DataFragment
+import com.example.pipboyv1.fragments.topnav.DebugFragment
 import com.example.pipboyv1.fragments.topnav.InvFragment
 import com.example.pipboyv1.fragments.topnav.MapFragment
 import com.example.pipboyv1.fragments.topnav.RadioFragment
 import com.example.pipboyv1.fragments.topnav.StatFragment
-import com.example.pipboyv1.adapters.ViewPagerAdapter
-import com.example.pipboyv1.ble.BlePotInputContainer
-import com.example.pipboyv1.fragments.topnav.DebugFragment
-import com.example.pipboyv1.mockBle.MockPotDialog
-import com.example.pipboyv1.classes.Holotape
 import com.example.pipboyv1.input.IPotInputContainer
+import com.example.pipboyv1.mockBle.MockPotDialog
 import com.example.pipboyv1.mockBle.MockPotInputContainer
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.CoroutineScope
-import org.json.JSONObject
 
-class FullscreenActivity : AppCompatActivity() {
-
+@Suppress("DEPRECATION")
+class MainFragment : Fragment() {
     companion object {
         private const val BLE_REQUEST_CODE: Int = 1
         private const val SHOW_DEBUG_TAB: Boolean = true
+    }
+
+    private lateinit var mockPotMenuBtn: Button
+
+    private lateinit var potInputContainer: IPotInputContainer
+    private val bluetoothAdapter: BluetoothAdapter? by lazy {
+        (requireActivity().getSystemService(Context.BLUETOOTH_SERVICE) as android.bluetooth.BluetoothManager).adapter
     }
 
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager2: ViewPager2
     private lateinit var adapter: ViewPagerAdapter
     private lateinit var tabLayoutMediator: TabLayoutMediator
-    private lateinit var mockPotMenuBtn: Button
 
-    private lateinit var potInputContainer: IPotInputContainer
-    private val bluetoothAdapter: BluetoothAdapter? by lazy {
-        (getSystemService(Context.BLUETOOTH_SERVICE) as android.bluetooth.BluetoothManager).adapter
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_main, container, false)
     }
-    private lateinit var nfcAdapter: NfcAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_fullscreen)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        tabLayout = findViewById(R.id.topNavTabLayout)
-        viewPager2 = findViewById(R.id.topNavViewPager2)
-        adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
+        tabLayout = view.findViewById(R.id.topNavTabLayout) ?: return
+        viewPager2 = view.findViewById(R.id.topNavViewPager2) ?: return
+        adapter = ViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
 
-        mockPotMenuBtn = findViewById(R.id.potMenuButton)
+        mockPotMenuBtn = view.findViewById(R.id.potMenuButton) ?: return
         mockPotMenuBtn.visibility = View.INVISIBLE
 
         setupTopNav()
         setupPotInputs()
-        handleIntent(intent)
 
         if (SHOW_DEBUG_TAB) {
             potInputContainer.addListener(adapter.getFragmentByClass<DebugFragment>())
         }
-        
+
         potInputContainer.addListener(MainTabInputListener(viewPager2, adapter))
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
-            handleIntent(intent)
-        }
-    }
-
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        setIntent(intent)
-    }
-
-    private fun handleIntent(intent: Intent) {
-        intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)?.also { rawMsgs ->
-            (rawMsgs[0] as NdefMessage).apply {
-                handleHolotape(JSONObject(String(records[0].payload)))
-            }
-        }
-    }
-
-    private fun handleHolotape(payload: JSONObject) {
-
-        val holotape = Holotape(payload.get(getString(R.string.id)) as String)
-
-        runOnUiThread {
-            AlertDialog.Builder(this).apply {
-                setMessage("Holotape: $holotape")
-            }.show()
-        }
-
-        // TODO: Dialog that indicates some action
-        // TODO: Update layout attributes of quest to signify it's completed
     }
 
     private fun setupTopNav() {
@@ -135,23 +106,26 @@ class FullscreenActivity : AppCompatActivity() {
 
     private fun setupMockPot() {
         mockPotMenuBtn.setOnClickListener {
-            val mockPotMenu: PopupMenu = PopupMenu(this, mockPotMenuBtn)
+            val mockPotMenu = PopupMenu(context, mockPotMenuBtn)
             mockPotMenu.menuInflater.inflate(R.menu.menu_mockpot, mockPotMenu.menu)
-            mockPotMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
-                when(item.itemId) {
+            mockPotMenu.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
                     R.id.addPotValItem -> {
-                        MockPotDialog.displayPotIndexDialog(this, MockPotDialog.PotAction.POT_ADD,
+                        MockPotDialog.displayPotIndexDialog(
+                            requireContext(), MockPotDialog.PotAction.POT_ADD,
                             potInputContainer as MockPotInputContainer
                         )
                     }
+
                     R.id.subPotValItem -> {
-                        MockPotDialog.displayPotIndexDialog(this, MockPotDialog.PotAction.POT_SUB,
+                        MockPotDialog.displayPotIndexDialog(
+                            requireContext(), MockPotDialog.PotAction.POT_SUB,
                             potInputContainer as MockPotInputContainer
                         )
                     }
                 }
                 true
-            })
+            }
             mockPotMenu.show()
         }
         mockPotMenuBtn.visibility = View.VISIBLE
@@ -162,11 +136,11 @@ class FullscreenActivity : AppCompatActivity() {
         if (blAdapter != null) {
             val bluetoothScope: CoroutineScope = lifecycleScope
 
-            potInputContainer = BlePotInputContainer(this, blAdapter, bluetoothScope)
+            potInputContainer = BlePotInputContainer(activity as MainActivity, blAdapter, bluetoothScope)
 
             Log.i("setupPotInputs", "Requesting permissions")
             ActivityCompat.requestPermissions(
-                this,
+                requireActivity(),
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 BLE_REQUEST_CODE
             )
@@ -174,8 +148,8 @@ class FullscreenActivity : AppCompatActivity() {
         } else {
             potInputContainer = MockPotInputContainer()
             setupMockPot()
-            runOnUiThread {
-                Toast.makeText(applicationContext, "Note: Using mocked pot. inputs", Toast.LENGTH_SHORT)
+            requireActivity().runOnUiThread {
+                Toast.makeText(requireActivity().applicationContext, "Note: Using mocked pot. inputs", Toast.LENGTH_SHORT)
                     .show()
             }
         }
@@ -194,7 +168,7 @@ class FullscreenActivity : AppCompatActivity() {
                 (potInputContainer as? BlePotInputContainer)?.onPermissionsGranted()
             }
 
-            else -> recreate()
+            else -> recreate(activity as MainActivity)
         }
     }
 }
