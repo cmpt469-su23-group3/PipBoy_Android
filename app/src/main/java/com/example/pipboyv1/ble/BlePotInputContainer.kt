@@ -39,13 +39,19 @@ class BlePotInputContainer(
         
         private val decimalFormat: DecimalFormat = DecimalFormat("0.0000")
     }
+    
+    private object PotentiometerFactory {
+        private const val USE_POTENTIOMETER_SMOOTHING: Boolean = false
+        
+        fun create(potID: Int): Potentiometer = Potentiometer(potID, USE_POTENTIOMETER_SMOOTHING)
+    }
 
     private val listeners: MutableSet<PotInputListener> = ConcurrentHashMap.newKeySet()
     private val bluetoothScanMgr: BluetoothScanManager by lazy { BluetoothScanManager(bluetoothAdapter) }
     private val potentiometers: MutableMap<Int, Potentiometer> = listOf(
-        Potentiometer(PotIDs.POT_0),
-        Potentiometer(PotIDs.POT_1),
-        Potentiometer(PotIDs.POT_2),
+        PotentiometerFactory.create(PotIDs.POT_0),
+        PotentiometerFactory.create(PotIDs.POT_1),
+        PotentiometerFactory.create(PotIDs.POT_2),
     ).associateBy { it.potId }.toMutableMap()
 
     override fun addListener(listener: PotInputListener) {
@@ -138,7 +144,9 @@ class BlePotInputContainer(
                 val intBits = (byteArray[0].toInt() and 0xFF) or (byteArray[1].toInt() and 0xFF shl 8) or (byteArray[2].toInt() and 0xFF shl 16) or (byteArray[3].toInt() and 0xFF shl 24)
                 val rawValue = Float.fromBits(intBits)
 
-                val potentiometer = potentiometers.getOrPut(potID) { Potentiometer(potID) }
+                val potentiometer = potentiometers.getOrPut(potID) { 
+                    PotentiometerFactory.create(potID)
+                }
                 updatePot(potentiometer, rawValue)
                 onPotValueUpdatedRaw(potID, "${(0..3).joinToString(separator = " ") { i -> byteArray[i].toUnsignedHex() }} -> ${decimalFormat.format(rawValue)} | ${decimalFormat.format(potentiometer.filteredValue)}")
             }
