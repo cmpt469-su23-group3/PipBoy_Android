@@ -60,6 +60,7 @@ class BlePotInputContainer(
      * Called when we can finally start scanning.
      */
     fun onPermissionsGranted() {
+        Log.i(LOGGING_TAG, "onPermissionsGranted: starting scanning...")
         startScanning()
     }
     

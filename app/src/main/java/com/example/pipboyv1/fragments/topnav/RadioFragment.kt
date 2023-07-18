@@ -4,6 +4,7 @@ import android.content.res.AssetFileDescriptor
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,8 @@ import kotlin.math.abs
 class RadioFragment : Fragment(), PotInputListener {
 
     companion object {
+        private const val LOG_TAG: String = "RadioFragment"
+
         private const val RADIO_NAME_CLASSICAL = "Classical Radio"
         private const val RADIO_NAME_DIAMOND = "Diamond City Radio"
 //        private const val RADIO_NAME_NUKA = "Nuka-Cola Family Radio"
@@ -63,8 +66,8 @@ class RadioFragment : Fragment(), PotInputListener {
     )
 
     private val radioStationDataList: MutableList<RadioStationData> = mutableListOf(
-        RadioStationData(RADIO_NAME_CLASSICAL, 5.0f, 8.0f, 0, mutableListOf(R.raw.MUS_Institute_Strauss_BlueDanubeWaltz)),
-        RadioStationData(RADIO_NAME_DIAMOND, 18.0f, 21.0f, 0, mutableListOf(R.raw.MUS_Radio_Diamond_TheInkSpots_IDontWantToSet)),
+        RadioStationData(RADIO_NAME_CLASSICAL, 5.0f, 8.0f, 0, mutableListOf(R.raw.mus_institute_strauss_bluedanubewaltz)),
+        RadioStationData(RADIO_NAME_DIAMOND, 18.0f, 21.0f, 0, mutableListOf(R.raw.mus_radio_diamond_theinkspots_idontwanttoset)),
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,9 +79,8 @@ class RadioFragment : Fragment(), PotInputListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        adapter = SelectionItemAdapter(selectionItems, requireContext())
+        adapter = SelectionItemAdapter(selectionItems, requireContext(), -1)
         adapter.setHasStableIds(true)
-        adapter.deselectAll()
         return inflater.inflate(R.layout.fragment_radio, container, false)
     }
 
@@ -97,6 +99,7 @@ class RadioFragment : Fragment(), PotInputListener {
     }
 
     override fun onInputChange(potIndex: Int, percentageValue: Float) {
+        Log.i(LOG_TAG, "onInputChange triggered on RadioFragment")
         when(potIndex) {
             1 -> { changeFrequency(percentageValue) }
             2 -> { changeVolume(percentageValue) }
@@ -107,12 +110,14 @@ class RadioFragment : Fragment(), PotInputListener {
         super.onResume()
         inRadioView = true
         setMediaPlayerVolume(staticVolume, radioVolume)
+        Log.i(LOG_TAG, "onResume | staticVolume: $staticVolume, radioVolume: $radioVolume")
     }
 
     override fun onPause() {
         super.onPause()
         inRadioView = false
         setMediaPlayerVolume(0.0f, 0.0f)
+        Log.i(LOG_TAG, "onPause called.")
     }
 
     private fun changeFrequency(potPercentageValue: Float) {
@@ -204,7 +209,6 @@ class RadioFragment : Fragment(), PotInputListener {
         staticMediaPlayer = MediaPlayer.create(this.context, R.raw.static_white_noise)
         staticMediaPlayer.isLooping = true
         staticMediaPlayer.setVolume(0.0f, 0.0f)
-        staticMediaPlayer.prepare()
         staticMediaPlayer.start()
 
         radioMediaPlayer = MediaPlayer()

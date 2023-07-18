@@ -12,9 +12,9 @@ import com.example.pipboyv1.R
 import com.example.pipboyv1.classes.SelectionItem
 import com.example.pipboyv1.input.SelectionItemInputListener
 
-class SelectionItemAdapter(private val selectionItemList: List<SelectionItem>, private val mContext: Context): RecyclerView.Adapter<SelectionItemAdapter.ViewHolder>() {
+class SelectionItemAdapter(private val selectionItemList: List<SelectionItem>, private val mContext: Context, private val initialSelection: Int = 0): RecyclerView.Adapter<SelectionItemAdapter.ViewHolder>() {
     private var selectionItemLayoutList: MutableList<LinearLayout> = mutableListOf()
-    private var selectionPosition: Int = 0
+    private var selectionPosition: Int = initialSelection
     private lateinit var selectionItemInputListener: SelectionItemInputListener
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -42,8 +42,10 @@ class SelectionItemAdapter(private val selectionItemList: List<SelectionItem>, p
             selectionItemLayoutList.add(viewHolder.selectionItem)
         }
 
-        // Select first item by default
-        updateSelectionItemStyling(selectionItemLayoutList[selectionPosition], true)
+        // Select item if applicable
+        if (selectionPosition != -1) {
+            updateSelectionItemStyling(selectionItemLayoutList[selectionPosition], true)
+        }
 
         // Add an click listener to the selection item itself
         viewHolder.selectionItem.setOnClickListener {

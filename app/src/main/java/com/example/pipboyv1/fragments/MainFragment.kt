@@ -34,10 +34,9 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.CoroutineScope
 
-@Suppress("DEPRECATION")
 class MainFragment : Fragment() {
     companion object {
-        private const val BLE_REQUEST_CODE: Int = 1
+        const val BLE_REQUEST_CODE: Int = 1
         private const val SHOW_DEBUG_TAB: Boolean = true
     }
 
@@ -73,6 +72,7 @@ class MainFragment : Fragment() {
         setupTopNav()
         setupPotInputs()
 
+        potInputContainer.addListener(adapter.getFragmentByClass<RadioFragment>())
         if (SHOW_DEBUG_TAB) {
             potInputContainer.addListener(adapter.getFragmentByClass<DebugFragment>())
         }
@@ -144,7 +144,7 @@ class MainFragment : Fragment() {
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 BLE_REQUEST_CODE
             )
-            nfcAdapter = NfcAdapter.getDefaultAdapter(this)
+//            nfcAdapter = NfcAdapter.getDefaultAdapter(this)
         } else {
             potInputContainer = MockPotInputContainer()
             setupMockPot()
@@ -155,20 +155,8 @@ class MainFragment : Fragment() {
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray,
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        when (requestCode) {
-            BLE_REQUEST_CODE -> {
-                Log.i("setupPotInputs", "Permissions granted")
-                (potInputContainer as? BlePotInputContainer)?.onPermissionsGranted()
-            }
-
-            else -> recreate(activity as MainActivity)
-        }
+    fun onBlePermissionGranted() {
+        Log.i("setupPotInputs", "Permissions granted")
+        (potInputContainer as? BlePotInputContainer)?.onPermissionsGranted()
     }
 }
