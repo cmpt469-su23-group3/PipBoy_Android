@@ -14,7 +14,7 @@ import com.example.pipboyv1.fragments.TapeFragment
 import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var nfcAdapter: NfcAdapter
+    private var nfcAdapter: NfcAdapter? = null
 
     private val mainFragment = MainFragment()
     private val holotapeFragment = TapeFragment()
