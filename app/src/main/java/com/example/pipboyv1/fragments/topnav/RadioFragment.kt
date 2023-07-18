@@ -41,6 +41,8 @@ class RadioFragment : Fragment(), PotInputListener {
         var currentTrack = _currentTrack
     }
 
+    private var radioInitialized: Boolean = false
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: SelectionItemAdapter
 
@@ -66,8 +68,8 @@ class RadioFragment : Fragment(), PotInputListener {
     )
 
     private val radioStationDataList: MutableList<RadioStationData> = mutableListOf(
-        RadioStationData(RADIO_NAME_CLASSICAL, 5.0f, 8.0f, 0, mutableListOf(R.raw.mus_institute_strauss_bluedanubewaltz)),
-        RadioStationData(RADIO_NAME_DIAMOND, 18.0f, 21.0f, 0, mutableListOf(R.raw.mus_radio_diamond_theinkspots_idontwanttoset)),
+        RadioStationData(RADIO_NAME_CLASSICAL, 0.05f, 0.15f, 0, mutableListOf(R.raw.mus_institute_strauss_bluedanubewaltz)),
+        RadioStationData(RADIO_NAME_DIAMOND, 0.44f, 0.54f, 0, mutableListOf(R.raw.mus_radio_diamond_theinkspots_idontwanttoset)),
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,13 +98,22 @@ class RadioFragment : Fragment(), PotInputListener {
         recyclerView = view.findViewById(R.id.radioSelectorRecyclerView) as RecyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        radioInitialized = true
+//        Log.i(LOG_TAG, "radioFragment UI is now initialized")
     }
 
     override fun onInputChange(potIndex: Int, percentageValue: Float) {
-        Log.i(LOG_TAG, "onInputChange triggered on RadioFragment")
-        when(potIndex) {
-            1 -> { changeFrequency(percentageValue) }
-            2 -> { changeVolume(percentageValue) }
+        if (radioInitialized) {
+//            Log.i(LOG_TAG, "onInputChange triggered on RadioFragment")
+            when (potIndex) {
+                1 -> {
+                    changeFrequency(percentageValue)
+                }
+
+                2 -> {
+                    changeVolume(percentageValue)
+                }
+            }
         }
     }
 
@@ -130,6 +141,7 @@ class RadioFragment : Fragment(), PotInputListener {
 
         for (radioStationData in radioStationDataList) {
             if (currentFrequency in radioStationData.startFreq .. radioStationData.endFreq) {
+                Log.i(LOG_TAG, "current frequency is $currentFrequency in radio $selectedRadioName")
                 inRadioFreqRange = true
                 selectedRadioName = radioStationData.name
                 selectedStartFreq = radioStationData.startFreq
@@ -148,6 +160,9 @@ class RadioFragment : Fragment(), PotInputListener {
             staticVolume = 1.0f * currentVolumeMultiplier
             radioVolume = 0.0f
             isPlayingRadioStation = false
+
+            radioMediaPlayer.stop()
+            radioMediaPlayer.reset()
 
             clearUiRadioHighlight()
         }
@@ -208,10 +223,11 @@ class RadioFragment : Fragment(), PotInputListener {
     private fun initMediaPlayers() {
         staticMediaPlayer = MediaPlayer.create(this.context, R.raw.static_white_noise)
         staticMediaPlayer.isLooping = true
-        staticMediaPlayer.setVolume(0.0f, 0.0f)
         staticMediaPlayer.start()
 
         radioMediaPlayer = MediaPlayer()
+
+        setMediaPlayerVolume(0.0f, 0.0f)
     }
 
     private fun startRadioStationAudio(songIdList: MutableList<Int>) {
@@ -238,7 +254,7 @@ class RadioFragment : Fragment(), PotInputListener {
             context?.resources?.openRawResourceFd(currentTrackId) ?: return
         radioMediaPlayer.setDataSource(songAfd.fileDescriptor, songAfd.startOffset, songAfd.length)
         radioMediaPlayer.prepare()
-        radioMediaPlayer.seekTo(radioTimeOffset as Int)
+        radioMediaPlayer.seekTo(radioTimeOffset.toInt())
         radioMediaPlayer.start()
     }
 
