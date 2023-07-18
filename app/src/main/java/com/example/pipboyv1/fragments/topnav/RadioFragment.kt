@@ -74,7 +74,13 @@ class RadioFragment : Fragment(), PotInputListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initMediaPlayers()
+        staticMediaPlayer = MediaPlayer.create(this.context, R.raw.static_white_noise)
+        staticMediaPlayer.isLooping = true
+        staticMediaPlayer.start()
+
+        radioMediaPlayer = MediaPlayer()
+
+        setMediaPlayerVolume(0.0f, 0.0f)
     }
 
     override fun onCreateView(
@@ -131,6 +137,15 @@ class RadioFragment : Fragment(), PotInputListener {
         Log.i(LOG_TAG, "onPause called.")
     }
 
+    private fun changeVolume(potPercentageValue: Float) {
+        currentVolumeMultiplier = potPercentageValue
+        radioVolume = calculateMediaPlayerVolume(radioClarityPercentage, currentVolumeMultiplier)
+        staticVolume = calculateMediaPlayerVolume(staticClarityPercentage, currentVolumeMultiplier)
+        if (inRadioView) {
+            setMediaPlayerVolume(staticVolume, radioVolume)
+        }
+    }
+
     private fun changeFrequency(potPercentageValue: Float) {
         currentFrequency = potPercentageValue
         var inRadioFreqRange: Boolean = false
@@ -141,11 +156,11 @@ class RadioFragment : Fragment(), PotInputListener {
 
         for (radioStationData in radioStationDataList) {
             if (currentFrequency in radioStationData.startFreq .. radioStationData.endFreq) {
-                Log.i(LOG_TAG, "current frequency is $currentFrequency in radio $selectedRadioName")
                 inRadioFreqRange = true
                 selectedRadioName = radioStationData.name
                 selectedStartFreq = radioStationData.startFreq
                 selectedEndFreq = radioStationData.endFreq
+                Log.i(LOG_TAG, "current frequency is $currentFrequency in radio $selectedRadioName")
 
                 if (!isPlayingRadioStation) {
                     startRadioStationAudio(radioStationData.resIdList)
@@ -159,10 +174,12 @@ class RadioFragment : Fragment(), PotInputListener {
         if (!inRadioFreqRange) {
             staticVolume = 1.0f * currentVolumeMultiplier
             radioVolume = 0.0f
-            isPlayingRadioStation = false
 
-            radioMediaPlayer.stop()
-            radioMediaPlayer.reset()
+            if (isPlayingRadioStation) {
+                radioMediaPlayer.stop()
+                radioMediaPlayer.reset()
+                isPlayingRadioStation = false
+            }
 
             clearUiRadioHighlight()
         }
@@ -170,8 +187,8 @@ class RadioFragment : Fragment(), PotInputListener {
             val fullClarityFreq: Float = (selectedStartFreq + selectedEndFreq) / 2
             radioClarityPercentage = calculateClarity(currentFrequency, fullClarityFreq, selectedStartFreq, selectedEndFreq)
             staticClarityPercentage = 1.0f - radioClarityPercentage
-            radioVolume = 1.0f * radioClarityPercentage * currentVolumeMultiplier
-            staticVolume = 1.0f * staticClarityPercentage * currentVolumeMultiplier
+            radioVolume = calculateMediaPlayerVolume(radioClarityPercentage, currentVolumeMultiplier)
+            staticVolume = calculateMediaPlayerVolume(staticClarityPercentage, currentVolumeMultiplier)
 
             highlightRadioUiItem(selectedRadioPosition)
         }
@@ -181,19 +198,7 @@ class RadioFragment : Fragment(), PotInputListener {
         }
     }
 
-    private fun changeVolume(potPercentageValue: Float) {
-        currentVolumeMultiplier = potPercentageValue
-        radioVolume = 1.0f * radioClarityPercentage * currentVolumeMultiplier
-        staticVolume = 1.0f * staticClarityPercentage * currentVolumeMultiplier
-        if (inRadioView) {
-            setMediaPlayerVolume(staticVolume, radioVolume)
-        }
-    }
-
-    private fun setMediaPlayerVolume(_staticVolume: Float, _radioVolume: Float) {
-        staticMediaPlayer.setVolume(_staticVolume, _staticVolume)
-        radioMediaPlayer.setVolume(_radioVolume, _radioVolume)
-    }
+    /* Private helper functions */
 
     private fun highlightRadioUiItem(radioSelectionPosition: Int) {
         adapter.handleSelectionItemClick(radioSelectionPosition)
@@ -218,16 +223,6 @@ class RadioFragment : Fragment(), PotInputListener {
         }
 
         return distanceToSelectedFreq / distanceToMiddle
-    }
-
-    private fun initMediaPlayers() {
-        staticMediaPlayer = MediaPlayer.create(this.context, R.raw.static_white_noise)
-        staticMediaPlayer.isLooping = true
-        staticMediaPlayer.start()
-
-        radioMediaPlayer = MediaPlayer()
-
-        setMediaPlayerVolume(0.0f, 0.0f)
     }
 
     private fun startRadioStationAudio(songIdList: MutableList<Int>) {
@@ -257,6 +252,17 @@ class RadioFragment : Fragment(), PotInputListener {
         radioMediaPlayer.seekTo(radioTimeOffset.toInt())
         radioMediaPlayer.start()
     }
+
+    private inline fun calculateMediaPlayerVolume(clarityPercentage: Float, volumeMultiplier: Float): Float {
+        return 1.0f * clarityPercentage * volumeMultiplier
+    }
+
+    private fun setMediaPlayerVolume(_staticVolume: Float, _radioVolume: Float) {
+        staticMediaPlayer.setVolume(_staticVolume, _staticVolume)
+        radioMediaPlayer.setVolume(_radioVolume, _radioVolume)
+    }
+
+    /* Unimplemented inherited methods */
 
     override fun onMoveLeft(potIndex: Int, percentageValue: Float) {
 
