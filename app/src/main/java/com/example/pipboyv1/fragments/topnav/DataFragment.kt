@@ -41,8 +41,8 @@ class DataFragment : Fragment() {
     private fun setupSubNav() {
         val subNavTabs = mapOf(
             getString(R.string.data_quests_button) to QuestsFragment(),
-//            getString(R.string.data_workshops_button) to WorkshopsFragment(),
-//            getString(R.string.data_stats_button) to StatsFragment(),
+            getString(R.string.data_workshops_button) to WorkshopsFragment(),
+            getString(R.string.data_stats_button) to StatsFragment(),
         )
 
         for (subNavTab in subNavTabs.entries.iterator()) {
