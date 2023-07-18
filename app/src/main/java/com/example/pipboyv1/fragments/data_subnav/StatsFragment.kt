@@ -24,16 +24,16 @@ class StatsFragment : Fragment() {
     private val imgDimension: Int = 250
     private val selectionItems: MutableList<SelectionItem> = mutableListOf(
         SelectionItem(textLeft="General", data= SelectionItemData(imageId=-1, attributes= mapOf(
-            "Locations Discovered" to "116",
-            "Locaitons Cleared" to "",
-            "Days Passed" to "",
-            "Hours Slept" to "",
-            "Hours Waiting" to "",
-            "Caps Found" to "",
-            "Most Caps Carried" to "",
-            "Junk Collected" to "",
-            "Chests Looted" to "",
-            "Magazines Found" to "",
+            "Locations Discovered" to "12",
+            "Locaitons Cleared" to "10",
+            "Days Passed" to "2",
+            "Hours Slept" to "5",
+            "Hours Waiting" to "5",
+            "Caps Found" to "3445",
+            "Most Caps Carried" to "1530",
+            "Junk Collected" to "50",
+            "Chests Looted" to "31",
+            "Magazines Found" to "20",
         ))
         ),
         SelectionItem(textLeft="Quest", data= SelectionItemData(imageId=-1, attributes= mapOf(
