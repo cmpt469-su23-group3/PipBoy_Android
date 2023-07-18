@@ -87,19 +87,13 @@ class RadioFragment : Fragment(), PotInputListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        adapter = SelectionItemAdapter(selectionItems, requireContext(), -1)
+        adapter = SelectionItemAdapter(selectionItems, requireContext(), -1, false)
         adapter.setHasStableIds(true)
         return inflater.inflate(R.layout.fragment_radio, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        adapter.setValueChangeListener(object : SelectionItemInputListener {
-            override fun onValueChange(newPosition: Int) {
-                position.set(newPosition)
-            }
-        })
 
         recyclerView = view.findViewById(R.id.radioSelectorRecyclerView) as RecyclerView
         recyclerView.adapter = adapter
