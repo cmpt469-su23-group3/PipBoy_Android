@@ -9,7 +9,7 @@ import kotlin.math.abs
  * 
  * https://www.norwegiancreations.com/2015/10/tutorial-potentiometers-with-arduino-and-filtering/ 
  */
-class Potentiometer(val potId: Int) {
+class Potentiometer(val potId: Int, val useEmaSmoothing: Boolean) {
     
     companion object {
         /**
@@ -36,31 +36,38 @@ class Potentiometer(val potId: Int) {
         private set
     
     private var emaValue: Float = 0f
-    
     private var lastOutlier: Float = 0f
     private var isLastValueOutlier: Boolean = false
     
     fun updateRawValue(newRawValue: Float) {
         this.rawValue = newRawValue
         
+        if (this.useEmaSmoothing) {
+            runExponentialMovingAverage(newRawValue)
+        } else {
+            this.filteredValue = newRawValue
+        }
+    }
+    
+    private fun runExponentialMovingAverage(newRawValue: Float) {
         if (isOutlierValue(newRawValue)) {
             if (!isLastValueOutlier) {
                 isLastValueOutlier = true
                 lastOutlier = newRawValue
             } else {
-                runExponentialMovingAverage(lastOutlier)
-                runExponentialMovingAverage(newRawValue)
+                updateExponentialMovingAverage(lastOutlier)
+                updateExponentialMovingAverage(newRawValue)
                 isLastValueOutlier = false
             }
         } else {
-            runExponentialMovingAverage(newRawValue)
+            updateExponentialMovingAverage(newRawValue)
             if (isLastValueOutlier) {
                 isLastValueOutlier = false
             }
         }
     }
     
-    private fun runExponentialMovingAverage(newRawValue: Float) {
+    private fun updateExponentialMovingAverage(newRawValue: Float) {
         /*
         Formula for EMA:
         S_1 = Y_1
