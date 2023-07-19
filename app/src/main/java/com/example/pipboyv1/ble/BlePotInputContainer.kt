@@ -70,6 +70,11 @@ class BlePotInputContainer(
         startScanning()
     }
     
+    private fun startReconnect() {
+        Log.i(LOGGING_TAG, "Reconnecting BLE...")
+        startScanning()
+    }
+    
     private fun updatePot(potentiometer: Potentiometer, rawValue: Float) {
         val oldFilteredValue = potentiometer.filteredValue
 
@@ -132,7 +137,8 @@ class BlePotInputContainer(
                     delay(50L)
                 }
             } finally {
-                gatt.disconnect()
+                gatt.close()
+                startReconnect()
             }
         }
     }
@@ -153,8 +159,7 @@ class BlePotInputContainer(
             }
         } catch (opFailedExc: OperationFailedException) {
             // Sometimes we'll get random cases of error code 133. We'll just reconnect and try again
-            gatt.disconnect()
-            startScanning()
+            gatt.close()
         }
     }
     
