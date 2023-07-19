@@ -6,13 +6,15 @@ import android.nfc.NfcAdapter
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import com.example.pipboyv1.ble.BlePotInputContainer
 import com.example.pipboyv1.classes.HolotapeContainer
 import com.example.pipboyv1.fragments.MainFragment
 import com.example.pipboyv1.fragments.TapeFragment
 import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var nfcAdapter: NfcAdapter
+    private var nfcAdapter: NfcAdapter? = null
 
     private val mainFragment = MainFragment()
     private val holotapeFragment = TapeFragment()
@@ -59,5 +61,21 @@ class MainActivity : AppCompatActivity() {
         // Switch to holotape fragment
         supportFragmentManager.beginTransaction().replace(R.id.fragmentContainer, holotapeFragment).addToBackStack(null).commit()
         holotapeFragment.onHolotapeLoaded(holotapeID)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray,
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when (requestCode) {
+            MainFragment.BLE_REQUEST_CODE -> {
+                mainFragment.onBlePermissionGranted()
+            }
+
+            else -> {}
+        }
     }
 }

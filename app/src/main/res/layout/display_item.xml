@@ -22,9 +22,9 @@
         android:layout_height="wrap_content"
         android:textColor="@color/text_1"
     />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/displayItemRecyclerView"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-    />
+        android:layout_height="wrap_content" />
 </LinearLayout>

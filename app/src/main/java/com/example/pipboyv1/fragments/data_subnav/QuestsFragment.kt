@@ -69,7 +69,7 @@ class QuestsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        adapter = SelectionItemAdapter(selectionItems)
+        adapter = SelectionItemAdapter(selectionItems, requireContext())
         adapter.setHasStableIds(true)
 
         return inflater.inflate(R.layout.fragment_quests, container, false)
