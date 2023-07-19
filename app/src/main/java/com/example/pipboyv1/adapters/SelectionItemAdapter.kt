@@ -84,7 +84,9 @@ class SelectionItemAdapter(private val selectionItemList: List<SelectionItem>, p
         updateSelectionItemStyling(selectionItemLayoutList[selectionPosition], true)
 
         // Update selection in parent
-        selectionItemInputListener.onValueChange(position)
+        if (hasClickListener) {
+            selectionItemInputListener.onValueChange(position)
+        }
     }
 
     fun deselectAll() {
