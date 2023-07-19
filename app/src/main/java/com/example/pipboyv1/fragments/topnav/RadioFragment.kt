@@ -32,13 +32,9 @@ class RadioFragment : Fragment(), PotInputListener {
 //        private const val RADIO_NAME_CIVIL_ALERT = "Civil Alert System Broadcast"
     }
 
-    inner class RadioStationData(_name: String, _startFreq: Float, _endFreq: Float, _currentTrack: Int, _resIdList: MutableList<Int>) {
-        val name = _name
-        val startFreq = _startFreq
-        val endFreq = _endFreq
-        val numTracks = _resIdList.size
-        val resIdList = _resIdList
-        var currentTrack = _currentTrack
+    inner class RadioStationData(val name: String, val startFreq: Float,
+                                 val endFreq: Float, val currentTrack: Int,  val resIdList: MutableList<Int>) {
+        val numTracks = resIdList.size
     }
 
     private var radioInitialized: Boolean = false
