@@ -1,5 +1,6 @@
 package com.example.pipboyv1.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +12,10 @@ import com.example.pipboyv1.R
 import com.example.pipboyv1.classes.SelectionItem
 import com.example.pipboyv1.input.SelectionItemInputListener
 
-class SelectionItemAdapter(private val selectionItemList: List<SelectionItem>): RecyclerView.Adapter<SelectionItemAdapter.ViewHolder>() {
+class SelectionItemAdapter(private val selectionItemList: List<SelectionItem>, private val mContext: Context,
+                           private val initialSelection: Int = 0, private val hasClickListener: Boolean = true): RecyclerView.Adapter<SelectionItemAdapter.ViewHolder>() {
     private var selectionItemLayoutList: MutableList<LinearLayout> = mutableListOf()
-    private var selectionPosition: Int = 0
+    private var selectionPosition: Int = initialSelection
     private lateinit var selectionItemInputListener: SelectionItemInputListener
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -41,12 +43,16 @@ class SelectionItemAdapter(private val selectionItemList: List<SelectionItem>): 
             selectionItemLayoutList.add(viewHolder.selectionItem)
         }
 
-        // Select first item by default
-        updateSelectionItemStyling(selectionItemLayoutList[selectionPosition], viewHolder, true)
+        // Select item if applicable
+        if (selectionPosition != -1) {
+            updateSelectionItemStyling(selectionItemLayoutList[selectionPosition], true)
+        }
 
-        // Add an click listener to the selection item itself
-        viewHolder.selectionItem.setOnClickListener {
-            handleSelectionItemClick(viewHolder, position)
+        // Add an click listener to the selection item itself if specified to have a click listener
+        if (hasClickListener) {
+            viewHolder.selectionItem.setOnClickListener {
+                handleSelectionItemClick(position)
+            }
         }
 
         viewHolder.textLeft.text = selectionItemList[position].textLeft
@@ -67,22 +73,38 @@ class SelectionItemAdapter(private val selectionItemList: List<SelectionItem>): 
         this.selectionItemInputListener = selectionItemInputListener
     }
 
-    private fun handleSelectionItemClick(viewHolder: ViewHolder, position: Int) {
-        // Deselect previous selection and reset styling
-        updateSelectionItemStyling(selectionItemLayoutList[selectionPosition], viewHolder, false)
+    fun handleSelectionItemClick(position: Int) {
+        // Deselect previous selection and reset styling if there was something selected previously
+        if (selectionPosition != -1) {
+            updateSelectionItemStyling(selectionItemLayoutList[selectionPosition], false)
+        }
 
         // Update selection in current view
         selectionPosition = position
-        updateSelectionItemStyling(viewHolder.selectionItem, viewHolder, true)
+        updateSelectionItemStyling(selectionItemLayoutList[selectionPosition], true)
 
         // Update selection in parent
         selectionItemInputListener.onValueChange(position)
     }
 
-    private fun updateSelectionItemStyling(selectionItem: LinearLayout, viewHolder: ViewHolder, selected: Boolean) {
+    fun deselectAll() {
+        // Deselect previous selection if applicable
+        if (selectionPosition != -1) {
+            updateSelectionItemStyling(selectionItemLayoutList[selectionPosition], false)
+        }
+
+        // Update selectionPosition to -1 -> indicates no selection before
+        selectionPosition = -1
+
+        if (hasClickListener) {
+            selectionItemInputListener.onValueChange(-1)
+        }
+    }
+
+    private fun updateSelectionItemStyling(selectionItem: LinearLayout, selected: Boolean) {
         // Note: Here, we pass `selectionItem` separately from `viewHolder` in order to update items *not currently selected*
-        val primaryColorId: Int = viewHolder.itemView.context.resources.getColor(R.color.text_1, null)
-        val backgroundColorId: Int = viewHolder.itemView.context.resources.getColor(R.color.background_1, null)
+        val primaryColorId: Int = mContext.getColor(R.color.text_1)
+        val backgroundColorId: Int = mContext.getColor(R.color.background_1)
 
         var txtColorId: Int = primaryColorId
         var bgColorId: Int = backgroundColorId
