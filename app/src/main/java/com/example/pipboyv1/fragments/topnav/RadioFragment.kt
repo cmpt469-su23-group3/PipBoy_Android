@@ -240,6 +240,10 @@ class RadioFragment : Fragment(), PotInputListener {
         radioMediaPlayer.setDataSource(songAfd.fileDescriptor, songAfd.startOffset, songAfd.length)
         radioMediaPlayer.prepare()
         radioMediaPlayer.seekTo(radioTimeOffset.toInt())
+
+        // temporary fix for single song radio stations
+        radioMediaPlayer.isLooping = true
+
         radioMediaPlayer.start()
     }
 
