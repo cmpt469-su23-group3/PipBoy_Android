@@ -13,7 +13,7 @@ import com.example.pipboyv1.classes.SelectionItem
 import com.example.pipboyv1.input.SelectionItemInputListener
 
 class SelectionItemAdapter(private val selectionItemList: List<SelectionItem>, private val mContext: Context,
-                           private val initialSelection: Int = 0, private val setClickListener: Boolean = true): RecyclerView.Adapter<SelectionItemAdapter.ViewHolder>() {
+                           private val initialSelection: Int = 0, private val hasClickListener: Boolean = true): RecyclerView.Adapter<SelectionItemAdapter.ViewHolder>() {
     private var selectionItemLayoutList: MutableList<LinearLayout> = mutableListOf()
     private var selectionPosition: Int = initialSelection
     private lateinit var selectionItemInputListener: SelectionItemInputListener
@@ -49,7 +49,7 @@ class SelectionItemAdapter(private val selectionItemList: List<SelectionItem>, p
         }
 
         // Add an click listener to the selection item itself if specified to have a click listener
-        if (setClickListener) {
+        if (hasClickListener) {
             viewHolder.selectionItem.setOnClickListener {
                 handleSelectionItemClick(position)
             }
@@ -95,7 +95,10 @@ class SelectionItemAdapter(private val selectionItemList: List<SelectionItem>, p
 
         // Update selectionPosition to -1 -> indicates no selection before
         selectionPosition = -1
-        selectionItemInputListener.onValueChange(-1)
+
+        if (hasClickListener) {
+            selectionItemInputListener.onValueChange(-1)
+        }
     }
 
     private fun updateSelectionItemStyling(selectionItem: LinearLayout, selected: Boolean) {
