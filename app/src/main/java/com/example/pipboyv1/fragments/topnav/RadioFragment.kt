@@ -1,9 +1,11 @@
 package com.example.pipboyv1.fragments.topnav
 
 import android.content.res.AssetFileDescriptor
+import android.media.MediaMetadataRetriever
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.SystemClock
+import android.provider.MediaStore.Audio.Media
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -23,6 +25,7 @@ class RadioFragment : Fragment(), PotInputListener {
 
     companion object {
         private const val LOG_TAG: String = "RadioFragment"
+        private const val AUDIO_LENGTH_RETRIEVAL_ERR = -1
 
         private const val RADIO_NAME_CLASSICAL = "Classical Radio"
         private const val RADIO_NAME_DIAMOND = "Diamond City Radio"
@@ -219,9 +222,14 @@ class RadioFragment : Fragment(), PotInputListener {
         val songDurationList: MutableList<Int> = mutableListOf()
         var songListTotalTime: Long = 0
         for (songId in songIdList) {
-            val mp: MediaPlayer = MediaPlayer.create(context, songId)
-            songListTotalTime += mp.duration
-            songDurationList.add(mp.duration)
+            val trackDurationMs: Int = getAudioFileMsLength(songId)
+
+            if (trackDurationMs == AUDIO_LENGTH_RETRIEVAL_ERR) {
+                throw Exception("Cannot retrieve duration of an audio track.")
+            }
+
+            songListTotalTime += trackDurationMs
+            songDurationList.add(trackDurationMs)
         }
         var radioTimeOffset: Long = SystemClock.elapsedRealtime() % songListTotalTime
         var songIndex: Int = 0
@@ -244,10 +252,23 @@ class RadioFragment : Fragment(), PotInputListener {
         // temporary fix for single song radio stations
         radioMediaPlayer.isLooping = true
 
+        songAfd.close()
         radioMediaPlayer.start()
     }
 
-    private inline fun calculateMediaPlayerVolume(clarityPercentage: Float, volumeMultiplier: Float): Float {
+    private fun getAudioFileMsLength(rRawId: Int): Int {
+        val mediaRetriever = MediaMetadataRetriever()
+        val songAfd: AssetFileDescriptor = context?.resources?.openRawResourceFd(rRawId) ?: return AUDIO_LENGTH_RETRIEVAL_ERR
+        mediaRetriever.setDataSource(songAfd.fileDescriptor)
+        val durationString: String = mediaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION) ?: return AUDIO_LENGTH_RETRIEVAL_ERR
+        mediaRetriever.release()
+        songAfd.close()
+
+        // This should be fine considering that MediaPlayer's method for getting track length returns an Int
+        return durationString.toInt()
+    }
+
+    private fun calculateMediaPlayerVolume(clarityPercentage: Float, volumeMultiplier: Float): Float {
         return 1.0f * clarityPercentage * volumeMultiplier
     }
 
