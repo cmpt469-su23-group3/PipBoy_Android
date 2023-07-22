@@ -3,6 +3,7 @@ package com.example.pipboyv1.fragments
 import android.Manifest
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -138,13 +139,7 @@ class MainFragment : Fragment() {
 
             potInputContainer = BlePotInputContainer(activity as MainActivity, blAdapter, bluetoothScope)
 
-            Log.i("setupPotInputs", "Requesting permissions")
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                BLE_REQUEST_CODE
-            )
-//            nfcAdapter = NfcAdapter.getDefaultAdapter(this)
+            requestBlePermissions()
         } else {
             potInputContainer = MockPotInputContainer()
             setupMockPot()
@@ -153,6 +148,22 @@ class MainFragment : Fragment() {
                     .show()
             }
         }
+    }
+
+    private fun requestBlePermissions() {
+        Log.i("setupPotInputs", "Requesting permissions")
+
+        val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            arrayOf(Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT)
+        } else {
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            permissions,
+            BLE_REQUEST_CODE
+        )
     }
 
     fun onBlePermissionGranted() {
