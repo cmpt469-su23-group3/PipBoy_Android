@@ -101,6 +101,7 @@ class MainFragment : Fragment() {
         viewPager2.adapter = adapter
         tabLayoutMediator = TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
             tab.text = adapter.getFragmentTitle(position)
+            tab.view.isClickable = false
         }
         tabLayoutMediator.attach()
     }

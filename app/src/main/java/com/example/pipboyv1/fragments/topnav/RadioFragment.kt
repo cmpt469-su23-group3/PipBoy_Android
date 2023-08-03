@@ -64,8 +64,8 @@ class RadioFragment : Fragment(), PotInputListener {
     )
 
     private val radioStationDataList: MutableList<RadioStationData> = mutableListOf(
-        RadioStationData(RADIO_NAME_CLASSICAL, 0.05f, 0.15f, 0, mutableListOf(R.raw.mus_institute_strauss_bluedanubewaltz)),
-        RadioStationData(RADIO_NAME_DIAMOND, 0.44f, 0.54f, 0, mutableListOf(R.raw.mus_radio_diamond_theinkspots_idontwanttoset)),
+        RadioStationData(RADIO_NAME_CLASSICAL, 0.05f, 0.20f, 0, mutableListOf(R.raw.mus_institute_strauss_bluedanubewaltz)),
+        RadioStationData(RADIO_NAME_DIAMOND, 0.45f, 0.60f, 0, mutableListOf(R.raw.mus_radio_diamond_theinkspots_idontwanttoset)),
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
